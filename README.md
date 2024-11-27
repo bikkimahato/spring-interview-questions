@@ -149,3 +149,57 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 98  | [What is the use of the @SpringBootApplication annotation?](#98-what-is-the-use-of-the-springbootapplication-annotation) |
 | 99  | [How do you run a Spring Boot application?](#99-how-do-you-run-a-spring-boot-application) |
 | 100 | [How do you test a Spring Boot application?](#100-how-do-you-test-a-spring-boot-application) |
+
+### Level : Spring Core Hard
+| No. | Questions |
+| --- | --------- |
+| 101 | [Explain the concept of Reactive Programming in Spring.](#101-explain-the-concept-of-reactive-programming-in-spring) |
+| 102 | [How does Spring WebFlux handle backpressure?](#102-how-does-spring-webflux-handle-backpressure) |
+| 103 | [What is the difference between Spring MVC and Spring WebFlux?](#103-what-is-the-difference-between-spring-mvc-and-spring-webflux) |
+| 104 | [How do you configure security in a Spring application?](#104-how-do-you-configure-security-in-a-spring-application) |
+| 105 | [What is the role of the @EnableWebSecurity annotation?](#105-what-is-the-role-of-the-enablewebsecurity-annotation) |
+| 106 | [How do you implement OAuth2 authentication in Spring Security?](#106-how-do-you-implement-oauth2-authentication-in-spring-security) |
+| 107 | [What is the use of the @PreAuthorize annotation?](#107-what-is-the-use-of-the-preauthorize-annotation) |
+| 108 | [How do you implement method-level security in Spring?](#108-how-do-you-implement-method-level-security-in-spring) |
+| 109 | [How do you configure a custom authentication provider in Spring Security?](#109-how-do-you-configure-a-custom-authentication-provider-in-spring-security) |
+| 110 | [What is the purpose of the SecurityContextHolder in Spring Security?](#110-what-is-the-purpose-of-the-securitycontextholder-in-spring-security) |
+| 111 | [Explain the concept of CSRF protection in Spring Security.](#111-explain-the-concept-of-csrf-protection-in-spring-security) |
+| 112 | [How do you configure session management in Spring Security?](#112-how-do-you-configure-session-management-in-spring-security) |
+| 113 | [What is the use of the @EnableAspectJAutoProxy annotation?](#113-what-is-the-use-of-the-enableaspectjautoproxy-annotation) |
+| 114 | [How do you implement global exception handling in Spring?](#114-how-do-you-implement-global-exception-handling-in-spring) |
+| 115 | [What is the use of the @ControllerAdvice annotation?](#115-what-is-the-use-of-the-controlleradvice-annotation) |
+| 116 | [How do you configure internationalization in a Spring application?](#116-how-do-you-configure-internationalization-in-a-spring-application) |
+| 117 | [What is the use of the MessageSource interface in Spring?](#117-what-is-the-use-of-the-messagesource-interface-in-spring) |
+| 118 | [How do you create a custom validator in Spring?](#118-how-do-you-create-a-custom-validator-in-spring) |
+| 119 | [What is the use of the @InitBinder annotation?](#119-what-is-the-use-of-the-initbinder-annotation) |
+| 120 | [How do you configure a custom property editor in Spring?](#120-how-do-you-configure-a-custom-property-editor-in-spring) |
+| 121 | [Explain the concept of Spring Cloud.](#121-explain-the-concept-of-spring-cloud) |
+| 122 | [How do you configure a microservice using Spring Cloud?](#122-how-do-you-configure-a-microservice-using-spring-cloud) |
+| 123 | [What is the use of the @EnableEurekaClient annotation?](#123-what-is-the-use-of-the-enableeurekaclient-annotation) |
+| 124 | [How do you configure load balancing in Spring Cloud?](#124-how-do-you-configure-load-balancing-in-spring-cloud) |
+| 125 | [What is the use of the @EnableFeignClients annotation?](#125-what-is-the-use-of-the-enablefeignclients-annotation) |
+| 126 | [How do you implement circuit breaker pattern in Spring Cloud?](#126-how-do-you-implement-circuit-breaker-pattern-in-spring-cloud) |
+| 127 | [What is the use of the @EnableCircuitBreaker annotation?](#127-what-is-the-use-of-the-enablecircuitbreaker-annotation) |
+| 128 | [How do you configure a distributed tracing system in Spring Cloud?](#128-how-do-you-configure-a-distributed-tracing-system-in-spring-cloud) |
+| 129 | [What is the use of the @EnableHystrixDashboard annotation?](#129-what-is-the-use-of-the-enablehystrixdashboard-annotation) |
+| 130 | [How do you configure a service gateway in Spring Cloud?](#130-how-do-you-configure-a-service-gateway-in-spring-cloud) |
+| 131 | [What is the use of the @EnableZuulProxy annotation?](#131-what-is-the-use-of-the-enablezuulproxy-annotation) |
+| 132 | [How do you implement API versioning in a Spring application?](#132-how-do-you-implement-api-versioning-in-a-spring-application) |
+| 133 | [What is the use of the @JsonView annotation in Spring?](#133-what-is-the-use-of-the-jsonview-annotation-in-spring) |
+| 134 | [How do you configure a custom JSON serializer in Spring?](#134-how-do-you-configure-a-custom-json-serializer-in-spring) |
+| 135 | [What is the use of the @JsonIgnore annotation?](#135-what-is-the-use-of-the-jsonignore-annotation) |
+| 136 | [How do you configure a custom exception handler in Spring?](#136-how-do-you-configure-a-custom-exception-handler-in-spring) |
+| 137 | [What is the use of the @RestControllerAdvice annotation?](#137-what-is-the-use-of-the-restcontrolleradvice-annotation) |
+| 138 | [How do you configure CORS in a Spring application?](#138-how-do-you-configure-cors-in-a-spring-application) |
+| 139 | [What is the use of the @CrossOrigin annotation?](#139-what-is-the-use-of-the-crossorigin-annotation) |
+| 140 | [How do you configure a custom HTTP message converter in Spring?](#140-how-do-you-configure-a-custom-http-message-converter-in-spring) |
+| 141 | [What is the use of the HttpMessageConverter interface in Spring?](#141-what-is-the-use-of-the-httpmessageconverter-interface-in-spring) |
+| 142 | [How do you configure a custom view resolver in Spring?](#142-how-do-you-configure-a-custom-view-resolver-in-spring) |
+| 143 | [What is the use of the ViewResolver interface in Spring?](#143-what-is-the-use-of-the-viewresolver-interface-in-spring) |
+| 144 | [How do you configure a custom locale resolver in Spring?](#144-how-do-you-configure-a-custom-locale-resolver-in-spring) |
+| 145 | [What is the use of the LocaleResolver interface in Spring?](#145-what-is-the-use-of-the-localeresolver-interface-in-spring) |
+| 146 | [How do you configure a custom theme resolver in Spring?](#146-how-do-you-configure-a-custom-theme-resolver-in-spring) |
+| 147 | [What is the use of the ThemeResolver interface in Spring?](#147-what-is-the-use-of-the-themeresolver-interface-in-spring) |
+| 148 | [How do you configure a custom session attribute in Spring?](#148-how-do-you-configure-a-custom-session-attribute-in-spring) |
+| 149 | [What is the use of the SessionAttributeStore interface in Spring?](#149-what-is-the-use-of-the-sessionattributestore-interface-in-spring) |
+| 150 | [How do you configure a custom handler interceptor in Spring?](#150-how-do-you-configure-a-custom-handler-interceptor-in-spring) |
