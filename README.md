@@ -1,6 +1,6 @@
 # Spring Interview Questions
 
-![Spring Logo](https://spring.io/img/spring-logo.png)
+![Spring Logo](https://spring.io/img/spring-2.svg)
 
 Welcome to the Spring Interview Questions repository! This repository is your go-to resource for preparing for Spring Framework interviews. It includes a comprehensive collection of questions and answers covering a wide range of topics and difficulty levels.
 
@@ -39,3 +39,59 @@ Happy Interview Preparation!
 Happy coding! If you find this repository helpful, please give it a star ⭐ and share it with others.
 
 ---
+
+## Spring Core
+### Table of Contents
+### Level : Spring Core Easy
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is the Spring Framework?](#1-what-is-the-spring-framework) |
+| 2   | [What are the advantages of using Spring Framework?](#2-what-are-the-advantages-of-using-spring-framework) |
+| 3   | [Explain Dependency Injection.](#3-explain-dependency-injection) |
+| 4   | [What are the different types of Dependency Injection?](#4-what-are-the-different-types-of-dependency-injection) |
+| 5   | [What is the BeanFactory in Spring?](#5-what-is-the-beanfactory-in-spring) |
+| 6   | [What is the ApplicationContext in Spring?](#6-what-is-the-applicationcontext-in-spring) |
+| 7   | [What is the difference between BeanFactory and ApplicationContext?](#7-what-is-the-difference-between-beanfactory-and-applicationcontext) |
+| 8   | [How do you configure a Spring application using XML?](#8-how-do-you-configure-a-spring-application-using-xml) |
+| 9   | [What is a Spring Bean?](#9-what-is-a-spring-bean) |
+| 10  | [What are the different scopes of Spring Beans?](#10-what-are-the-different-scopes-of-spring-beans) |
+| 11  | [How do you define a Spring Bean in XML configuration?](#11-how-do-you-define-a-spring-bean-in-xml-configuration) |
+| 12  | [What is the default scope of a Spring Bean?](#12-what-is-the-default-scope-of-a-spring-bean) |
+| 13  | [How do you inject a bean using constructor injection?](#13-how-do-you-inject-a-bean-using-constructor-injection) |
+| 14  | [How do you inject a bean using setter injection?](#14-how-do-you-inject-a-bean-using-setter-injection) |
+| 15  | [What is the role of the @Autowired annotation?](#15-what-is-the-role-of-the-autowired-annotation) |
+| 16  | [What is the purpose of the @Component annotation?](#16-what-is-the-purpose-of-the-component-annotation) |
+| 17  | [What are Spring stereotypes?](#17-what-are-spring-stereotypes) |
+| 18  | [How do you enable component scanning in Spring?](#18-how-do-you-enable-component-scanning-in-spring) |
+| 19  | [What is the difference between @Component, @Service, @Repository, and @Controller?](#19-what-is-the-difference-between-component-service-repository-and-controller) |
+| 20  | [How do you handle bean autowiring in Spring?](#20-how-do-you-handle-bean-autowiring-in-spring) |
+| 21  | [What is the use of the @Qualifier annotation?](#21-what-is-the-use-of-the-qualifier-annotation) |
+| 22  | [What is the Spring IoC container?](#22-what-is-the-spring-ioc-container) |
+| 23  | [Explain the lifecycle of a Spring Bean.](#23-explain-the-lifecycle-of-a-spring-bean) |
+| 24  | [What is Spring AOP framework?](#24-what-is-spring-aop-framework) |
+| 25  | [What is a pointcut in Spring AOP?](#25-what-is-a-pointcut-in-spring-aop) |
+| 26  | [What is an advice in Spring AOP?](#26-what-is-an-advice-in-spring-aop) |
+| 27  | [What are the different types of advice in Spring AOP?](#27-what-are-the-different-types-of-advice-in-spring-aop) |
+| 28  | [What is a join point in Spring AOP?](#28-what-is-a-join-point-in-spring-aop) |
+| 29  | [What is a proxy in Spring AOP?](#29-what-is-a-proxy-in-spring-aop) |
+| 30  | [How do you configure AOP in Spring using XML?](#30-how-do-you-configure-aop-in-spring-using-xml) |
+| 31  | [Explain the concept of Aspect in Spring AOP.](#31-explain-the-concept-of-aspect-in-spring-aop) |
+| 32  | [What is the @Aspect annotation used for?](#32-what-is-the-aspect-annotation-used-for) |
+| 33  | [How do you configure transactions in Spring?](#33-how-do-you-configure-transactions-in-spring) |
+| 34  | [What is the @Transactional annotation?](#34-what-is-the-transactional-annotation) |
+| 35  | [What is the difference between programmatic and declarative transaction management?](#35-what-is-the-difference-between-programmatic-and-declarative-transaction-management) |
+| 36  | [How do you manage properties in Spring?](#36-how-do-you-manage-properties-in-spring) |
+| 37  | [What is the Environment abstraction in Spring?](#37-what-is-the-environment-abstraction-in-spring) |
+| 38  | [How do you use @PropertySource to load properties in Spring?](#38-how-do-you-use-propertysource-to-load-properties-in-spring) |
+| 39  | [What is Spring Expression Language (SpEL)?](#39-what-is-spring-expression-language-spel) |
+| 40  | [How do you use SpEL in Spring applications?](#40-how-do-you-use-spel-in-spring-applications) |
+| 41  | [What is the purpose of the @Value annotation?](#41-what-is-the-purpose-of-the-value-annotation) |
+| 42  | [What is the Spring JDBC template?](#42-what-is-the-spring-jdbc-template) |
+| 43  | [How do you configure a DataSource in Spring?](#43-how-do-you-configure-a-datasource-in-spring) |
+| 44  | [How do you use the JdbcTemplate in Spring?](#44-how-do-you-use-the-jdbctemplate-in-spring) |
+| 45  | [What is the purpose of the @Repository annotation?](#45-what-is-the-purpose-of-the-repository-annotation) |
+| 46  | [What is the Spring Data JPA?](#46-what-is-the-spring-data-jpa) |
+| 47  | [How do you define a repository in Spring Data JPA?](#47-how-do-you-define-a-repository-in-spring-data-jpa) |
+| 48  | [What is the purpose of the @Entity annotation?](#48-what-is-the-purpose-of-the-entity-annotation) |
+| 49  | [What is the use of the @Id annotation in Spring Data JPA?](#49-what-is-the-use-of-the-id-annotation-in-spring-data-jpa) |
+| 50  | [How do you define a primary key generation strategy in Spring Data JPA?](#50-how-do-you-define-a-primary-key-generation-strategy-in-spring-data-jpa) |
