@@ -203,3 +203,242 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 148 | [How do you configure a custom session attribute in Spring?](#148-how-do-you-configure-a-custom-session-attribute-in-spring) |
 | 149 | [What is the use of the SessionAttributeStore interface in Spring?](#149-what-is-the-use-of-the-sessionattributestore-interface-in-spring) |
 | 150 | [How do you configure a custom handler interceptor in Spring?](#150-how-do-you-configure-a-custom-handler-interceptor-in-spring) |
+
+# Spring Core Easy Interview Questions and Answers
+### 1. What is the Spring Framework?
+
+The Spring Framework is an open-source application framework that provides comprehensive infrastructure support for developing Java applications. It was initially released in 2003 by Rod Johnson. Spring makes it easier to create enterprise-level applications by providing various modules and extensions to build robust and maintainable applications.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 2. What are the advantages of using Spring Framework?
+
+- **Modularity**: Spring is divided into several modules, allowing developers to use only the parts they need.
+- **Dependency Injection**: Promotes loose coupling by allowing objects to be injected into other objects.
+- **Aspect-Oriented Programming (AOP)**: Helps separate cross-cutting concerns such as logging, security, and transaction management.
+- **Transaction Management**: Simplifies the management of transactions.
+- **Integration with Other Frameworks**: Easily integrates with other frameworks like Hibernate, JPA, and Struts.
+- **Testability**: Provides support for unit testing and integration testing.
+- **Community Support**: Large community and extensive documentation.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 3. Explain Dependency Injection.
+
+Dependency Injection (DI) is a design pattern that allows an object to be created and injected with its dependencies by an external entity. This promotes loose coupling between objects and enhances testability and maintainability.
+
+**Example:**
+
+```java
+// Service interface
+public interface MessageService {
+    void sendMessage(String message, String receiver);
+}
+
+// Service implementation
+public class EmailService implements MessageService {
+    @Override
+    public void sendMessage(String message, String receiver) {
+        System.out.println("Email sent to " + receiver + " with Message: " + message);
+    }
+}
+
+// Consumer class
+public class MyApplication {
+    private MessageService service;
+
+    // Constructor-based dependency injection
+    public MyApplication(MessageService service) {
+        this.service = service;
+    }
+
+    public void processMessage(String message, String receiver) {
+        service.sendMessage(message, receiver);
+    }
+}
+
+// Main class
+public class MainApp {
+    public static void main(String[] args) {
+        // Injecting dependency
+        MessageService service = new EmailService();
+        MyApplication app = new MyApplication(service);
+        app.processMessage("Hello", "john@example.com");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 4. What are the different types of Dependency Injection?
+
+- **Constructor Injection**: Dependencies are provided through a class constructor.
+- **Setter Injection**: Dependencies are provided through setter methods.
+- **Interface Injection**: Dependencies are provided through an interface method (less common).
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 5. What is the BeanFactory in Spring?
+
+BeanFactory is the root interface for accessing a Spring bean container. It provides the configuration framework and basic functionality for managing beans. BeanFactory is lightweight and is typically used in simple applications or scenarios where resources are limited.
+
+**Example:**
+
+```java
+// XML Configuration (beans.xml)
+<beans>
+    <bean id="myBean" class="com.example.MyBean"/>
+</beans>
+
+// Java Code
+public class MainApp {
+    public static void main(String[] args) {
+        Resource resource = new ClassPathResource("beans.xml");
+        BeanFactory factory = new XmlBeanFactory(resource);
+        MyBean myBean = (MyBean) factory.getBean("myBean");
+        myBean.doSomething();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 6. What is the ApplicationContext in Spring?
+
+ApplicationContext is an extension of BeanFactory that provides more advanced features. It includes functionalities such as internationalization, event propagation, declarative mechanisms to create a bean, and various ways to look up a bean. It is more feature-rich and is typically used in enterprise applications.
+
+**Example:**
+
+```java
+// XML Configuration (beans.xml)
+<beans>
+    <bean id="myBean" class="com.example.MyBean"/>
+</beans>
+
+// Java Code
+public class MainApp {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+        MyBean myBean = (MyBean) context.getBean("myBean");
+        myBean.doSomething();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 7. What is the difference between BeanFactory and ApplicationContext?
+
+| Feature            | BeanFactory                              | ApplicationContext                          |
+|--------------------|------------------------------------------|---------------------------------------------|
+| Initialization     | Lazy initialization                      | Eager initialization                        |
+| Advanced Features  | Limited                                  | Provides advanced features like event propagation, declarative mechanisms, etc. |
+| Internationalization | Not supported                            | Supported                                   |
+| Event Handling     | Not supported                            | Supported                                   |
+| Dependency Injection | Basic                                   | Advanced (supports annotations, AOP, etc.) |
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 8. How do you configure a Spring application using XML?
+
+**Example:**
+
+```xml
+<!-- beans.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="myBean" class="com.example.MyBean">
+        <property name="property" value="value"/>
+    </bean>
+
+</beans>
+```
+
+```java
+// Java Code
+public class MainApp {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+        MyBean myBean = (MyBean) context.getBean("myBean");
+        myBean.doSomething();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 9. What is a Spring Bean?
+
+A Spring Bean is an object that is instantiated, assembled, and otherwise managed by the Spring IoC (Inversion of Control) container. Beans are the fundamental building blocks of a Spring application.
+
+**Example:**
+
+```java
+public class MyBean {
+    private String property;
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public void doSomething() {
+        System.out.println("Property value: " + property);
+    }
+}
+```
+
+```xml
+<!-- beans.xml -->
+<beans>
+    <bean id="myBean" class="com.example.MyBean">
+        <property name="property" value="value"/>
+    </bean>
+</beans>
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 10. What are the different scopes of Spring Beans?
+
+- **Singleton**: Only one instance of the bean is created for the Spring container. This is the default scope.
+- **Prototype**: A new instance is created each time the bean is requested.
+- **Request**: A new instance is created for each HTTP request. Applicable only in the context of a web-aware Spring ApplicationContext.
+- **Session**: A new instance is created for each HTTP session. Applicable only in the context of a web-aware Spring ApplicationContext.
+- **Global-session**: A single instance is created for the global HTTP session. Applicable only in the context of a web-aware Spring ApplicationContext.
+
+**Example:**
+
+```xml
+<!-- beans.xml -->
+<beans>
+    <bean id="singletonBean" class="com.example.SingletonBean" scope="singleton"/>
+    <bean id="prototypeBean" class="com.example.PrototypeBean" scope="prototype"/>
+</beans>
+```
+
+```java
+public class MainApp {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+
+        // Singleton Scope
+        SingletonBean singletonBean1 = (SingletonBean) context.getBean("singletonBean");
+        SingletonBean singletonBean2 = (SingletonBean) context.getBean("singletonBean");
+        System.out.println(singletonBean1 == singletonBean2); // true
+
+        // Prototype Scope
+        PrototypeBean prototypeBean1 = (PrototypeBean) context.getBean("prototypeBean");
+        PrototypeBean prototypeBean2 = (PrototypeBean) context.getBean("prototypeBean");
+        System.out.println(prototypeBean1 == prototypeBean2); // false
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
