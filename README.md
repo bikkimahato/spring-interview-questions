@@ -644,3 +644,134 @@ public class MyBean {
 ```
 #### **[⬆ Back to Top](#level--spring-core-easy)**
 ---
+
+### 21. What is the use of the @Qualifier annotation?
+
+The `@Qualifier` annotation is used to resolve the ambiguity when multiple beans of the same type are available in the Spring context. It specifies which bean should be injected.
+
+**Example:**
+
+```java
+@Component
+public class MyBean {
+    @Autowired
+    @Qualifier("specificDependency")
+    private Dependency dependency;
+
+    public void doSomething() {
+        dependency.perform();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 22. What is the Spring IoC container?
+
+The Spring IoC (Inversion of Control) container is responsible for managing the lifecycle and configuration of application objects (beans). It uses dependency injection to manage components and their dependencies.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 23. Explain the lifecycle of a Spring Bean.
+
+1. **Instantiation**: The bean is instantiated.
+2. **Populate Properties**: Spring IoC container populates the bean properties.
+3. **BeanNameAware**: If the bean implements `BeanNameAware`, Spring calls `setBeanName()`.
+4. **BeanFactoryAware**: If the bean implements `BeanFactoryAware`, Spring calls `setBeanFactory()`.
+5. **ApplicationContextAware**: If the bean implements `ApplicationContextAware`, Spring calls `setApplicationContext()`.
+6. **Pre-initialization (BeanPostProcessor)**: If there are any `BeanPostProcessor`s, their `postProcessBeforeInitialization()` methods are called.
+7. **InitializingBean**: If the bean implements `InitializingBean`, Spring calls `afterPropertiesSet()`.
+8. **Custom init-method**: If a custom init-method is specified, it is called.
+9. **Post-initialization (BeanPostProcessor)**: If there are any `BeanPostProcessor`s, their `postProcessAfterInitialization()` methods are called.
+10. **Bean is ready to use**: The bean is fully initialized and ready for use.
+11. **DisposableBean**: When the container is shutting down, if the bean implements `DisposableBean`, Spring calls `destroy()`.
+12. **Custom destroy-method**: If a custom destroy-method is specified, it is called.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 24. What is Spring AOP framework?
+
+Spring AOP (Aspect-Oriented Programming) framework allows the separation of cross-cutting concerns (such as logging, security, transaction management) from the main business logic. It provides a way to dynamically add behavior to existing code without modifying the code.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 25. What is a pointcut in Spring AOP?
+
+A pointcut is an expression that matches join points (points in program execution, such as method execution). It defines where the advice should be applied.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 26. What is an advice in Spring AOP?
+
+An advice is an action taken by an aspect at a particular join point. It defines what should be done at a matched join point.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 27. What are the different types of advice in Spring AOP?
+
+- **Before Advice**: Executes before a join point.
+- **After (finally) Advice**: Executes after a join point, regardless of the outcome.
+- **After Returning Advice**: Executes after a join point completes normally.
+- **After Throwing Advice**: Executes if a method exits by throwing an exception.
+- **Around Advice**: Surrounds a join point; it can control whether the join point is executed.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 28. What is a join point in Spring AOP?
+
+A join point is a point in the execution of the program, such as the execution of a method or the handling of an exception, where an aspect can be applied.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 29. What is a proxy in Spring AOP?
+
+A proxy is an object created by the AOP framework to implement the advised methods. It acts as an intermediary between the caller and the target object and is responsible for invoking the advice at the appropriate join points.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 30. How do you configure AOP in Spring using XML?
+
+**Example:**
+
+```xml
+<!-- beans.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- Aspect -->
+    <bean id="myAspect" class="com.example.MyAspect"/>
+
+    <!-- AOP Configuration -->
+    <aop:config>
+        <aop:aspect ref="myAspect">
+            <aop:pointcut id="myPointcut" expression="execution(* com.example..*(..))"/>
+            <aop:before method="beforeAdvice" pointcut-ref="myPointcut"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
+```
+
+```java
+// Aspect class
+public class MyAspect {
+    public void beforeAdvice() {
+        System.out.println("Executing before advice");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
