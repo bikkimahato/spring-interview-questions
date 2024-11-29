@@ -442,3 +442,205 @@ public class MainApp {
 ```
 #### **[⬆ Back to Top](#level--spring-core-easy)**
 ---
+
+### 11. How do you define a Spring Bean in XML configuration?
+
+A Spring Bean can be defined in the XML configuration file using the `<bean>` element. The `id` attribute specifies the bean's identifier, and the `class` attribute specifies the fully qualified class name of the bean.
+
+**Example:**
+
+```xml
+<!-- beans.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="myBean" class="com.example.MyBean">
+        <property name="property" value="value"/>
+    </bean>
+
+</beans>
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 12. What is the default scope of a Spring Bean?
+
+The default scope of a Spring Bean is `singleton`. This means that only one instance of the bean is created for the Spring container.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 13. How do you inject a bean using constructor injection?
+
+Constructor injection is performed by defining a constructor in the bean class and specifying the dependencies in the XML configuration.
+
+**Example:**
+
+```java
+public class MyBean {
+    private final Dependency dependency;
+
+    // Constructor
+    public MyBean(Dependency dependency) {
+        this.dependency = dependency;
+    }
+
+    public void doSomething() {
+        dependency.perform();
+    }
+}
+```
+
+```xml
+<!-- beans.xml -->
+<beans>
+    <bean id="dependency" class="com.example.Dependency"/>
+    <bean id="myBean" class="com.example.MyBean">
+        <constructor-arg ref="dependency"/>
+    </bean>
+</beans>
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 14. How do you inject a bean using setter injection?
+
+Setter injection is performed by defining setter methods in the bean class and specifying the dependencies in the XML configuration.
+
+**Example:**
+
+```java
+public class MyBean {
+    private Dependency dependency;
+
+    // Setter method
+    public void setDependency(Dependency dependency) {
+        this.dependency = dependency;
+    }
+
+    public void doSomething() {
+        dependency.perform();
+    }
+}
+```
+
+```xml
+<!-- beans.xml -->
+<beans>
+    <bean id="dependency" class="com.example.Dependency"/>
+    <bean id="myBean" class="com.example.MyBean">
+        <property name="dependency" ref="dependency"/>
+    </bean>
+</beans>
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 15. What is the role of the @Autowired annotation?
+
+The `@Autowired` annotation is used for automatic dependency injection in Spring. It can be applied to constructors, setter methods, and fields. Spring will automatically wire the annotated dependency by type.
+
+**Example:**
+
+```java
+@Component
+public class MyBean {
+    @Autowired
+    private Dependency dependency;
+
+    public void doSomething() {
+        dependency.perform();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 16. What is the purpose of the @Component annotation?
+
+The `@Component` annotation indicates that a class is a Spring component. It is a generic stereotype for any Spring-managed component and allows Spring to automatically detect and register the bean.
+
+**Example:**
+
+```java
+@Component
+public class MyBean {
+    public void doSomething() {
+        System.out.println("Doing something...");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 17. What are Spring stereotypes?
+
+Spring stereotypes are annotations that indicate the role of a Spring-managed component. These annotations help in better organizing and managing the components within a Spring application. Common stereotypes include `@Component`, `@Service`, `@Repository`, and `@Controller`.
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 18. How do you enable component scanning in Spring?
+
+Component scanning is enabled using the `<context:component-scan>` element in XML configuration or the `@ComponentScan` annotation in Java configuration.
+
+**Example (XML Configuration):**
+
+```xml
+<!-- beans.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.example"/>
+</beans>
+```
+
+**Example (Java Configuration):**
+
+```java
+@Configuration
+@ComponentScan(basePackages = "com.example")
+public class AppConfig {
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 19. What is the difference between @Component, @Service, @Repository, and @Controller?
+
+| Annotation    | Description                                                             |
+|---------------|-------------------------------------------------------------------------|
+| `@Component`  | Generic stereotype for any Spring-managed component.                    |
+| `@Service`    | Specialization of `@Component` for service layer components.           |
+| `@Repository` | Specialization of `@Component` for DAO (Data Access Object) components.|
+| `@Controller` | Specialization of `@Component` for web controllers in Spring MVC.      |
+
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
+
+### 20. How do you handle bean autowiring in Spring?
+
+Bean autowiring in Spring can be handled using the `@Autowired` annotation, which can be applied to fields, constructors, and setter methods. Spring will automatically resolve and inject the dependencies.
+
+**Example:**
+
+```java
+@Component
+public class MyBean {
+    @Autowired
+    private Dependency dependency;
+
+    public void doSomething() {
+        dependency.perform();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-easy)**
+---
