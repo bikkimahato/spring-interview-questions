@@ -1346,3 +1346,310 @@ public class MyService {
 ```
 #### **[⬆ Back to Top](#level--spring-core-medium)**
 ---
+
+### 61. What is the use of the @Async annotation?
+
+The `@Async` annotation is used to indicate that a method should be executed asynchronously. It can be applied to methods in classes annotated with `@Service`, `@Component`, or other stereotypes.
+
+**Example:**
+
+```java
+@Service
+public class MyService {
+    @Async
+    public void asyncMethod() {
+        // asynchronous code
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 62. How do you implement caching in Spring?
+
+Caching in Spring can be implemented using the `@EnableCaching` annotation and cache annotations such as `@Cacheable`, `@CachePut`, and `@CacheEvict`.
+
+**Example:**
+
+```java
+@Configuration
+@EnableCaching
+public class AppConfig {
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("myCache");
+    }
+}
+
+@Service
+public class MyService {
+    @Cacheable("myCache")
+    public String cacheableMethod() {
+        return "cached result";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 63. What is the use of the @Cacheable annotation?
+
+The `@Cacheable` annotation is used to indicate that the result of a method should be cached. The next time the method is called with the same parameters, the cached result is returned.
+
+**Example:**
+
+```java
+@Service
+public class MyService {
+    @Cacheable("myCache")
+    public String cacheableMethod() {
+        return "cached result";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 64. How do you configure a cache manager in Spring?
+
+A cache manager can be configured using XML configuration or Java configuration.
+
+**Example (Java Configuration):**
+
+```java
+@Configuration
+@EnableCaching
+public class AppConfig {
+    @Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("myCache");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 65. What is the Spring Event model?
+
+The Spring Event model is a mechanism for decoupling components using events and listeners. It allows beans to publish and listen to events within the application context.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 66. How do you publish and listen to events in Spring?
+
+Events can be published using the `ApplicationEventPublisher` and listened to using `@EventListener` or by implementing `ApplicationListener`.
+
+**Example:**
+
+```java
+// Event Class
+public class MyEvent extends ApplicationEvent {
+    public MyEvent(Object source) {
+        super(source);
+    }
+}
+
+// Publisher
+@Component
+public class MyEventPublisher {
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    public void publishEvent() {
+        MyEvent event = new MyEvent(this);
+        applicationEventPublisher.publishEvent(event);
+    }
+}
+
+// Listener
+@Component
+public class MyEventListener {
+    @EventListener
+    public void handleMyEvent(MyEvent event) {
+        System.out.println("Event received: " + event);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 67. What is the use of the @EventListener annotation?
+
+The `@EventListener` annotation is used to mark a method as an event listener. It listens for specific events and executes the method when the event is published.
+
+**Example:**
+
+```java
+@Component
+public class MyEventListener {
+    @EventListener
+    public void handleMyEvent(MyEvent event) {
+        System.out.println("Event received: " + event);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 68. What is Spring's Task Scheduler?
+
+Spring's Task Scheduler is an abstraction for scheduling tasks. It provides a way to execute tasks at specified intervals or at specific times.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 69. How do you schedule tasks in Spring?
+
+Tasks can be scheduled in Spring using the `@EnableScheduling` annotation and the `@Scheduled` annotation on methods.
+
+**Example:**
+
+```java
+@Configuration
+@EnableScheduling
+public class AppConfig {
+    // configuration
+}
+
+@Component
+public class MyTask {
+    @Scheduled(fixedRate = 5000)
+    public void scheduledTask() {
+        System.out.println("Task executed");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 70. What is the use of the @Scheduled annotation?
+
+The `@Scheduled` annotation is used to schedule tasks. It can be configured with parameters such as `fixedRate`, `fixedDelay`, and `cron` to specify the execution interval or timing.
+
+**Example:**
+
+```java
+@Component
+public class MyTask {
+    @Scheduled(fixedRate = 5000)
+    public void scheduledTask() {
+        System.out.println("Task executed");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 71. What is the Spring Web MVC framework?
+
+The Spring Web MVC framework is a module of the Spring Framework for building web applications. It follows the Model-View-Controller (MVC) pattern and provides support for handling requests, binding data, and rendering views.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 72. How do you configure a DispatcherServlet in Spring?
+
+The `DispatcherServlet` is configured in the `web.xml` file or using Java configuration.
+
+**Example (web.xml):**
+
+```xml
+<servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
+</servlet-mapping>
+```
+
+**Example (Java Configuration):**
+
+```java
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class<?>[] { AppConfig.class };
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class<?>[] { WebConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] { "/" };
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 73. What is the role of the @Controller annotation?
+
+The `@Controller` annotation is used to mark a class as a Spring MVC controller. It indicates that the class handles web requests and returns views.
+
+**Example:**
+
+```java
+@Controller
+public class MyController {
+    @RequestMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 74. How do you handle form submissions in Spring MVC?
+
+Form submissions in Spring MVC are handled using `@RequestMapping` or `@PostMapping` annotations on controller methods. The form data is bound to a model object.
+
+**Example:**
+
+```java
+@Controller
+public class MyController {
+    @GetMapping("/form")
+    public String showForm(Model model) {
+        model.addAttribute("user", new User());
+        return "form";
+    }
+
+    @PostMapping("/form")
+    public String submitForm(@ModelAttribute User user) {
+        // process form data
+        return "result";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 75. What is the use of the @RequestMapping annotation?
+
+The `@RequestMapping` annotation is used to map web requests to specific handler methods in a controller. It can be applied at the class level and method level to specify the URL patterns and HTTP methods.
+
+**Example:**
+
+```java
+@Controller
+@RequestMapping("/users")
+public class UserController {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getUser(@PathVariable("id") Long id, Model model) {
+        // get user by id
+        return "user";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
