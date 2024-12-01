@@ -1158,3 +1158,191 @@ The `strategy` attribute can take the following values:
 
 #### **[⬆ Back to Top](#level--spring-core-easy)**
 ---
+
+# Spring Core Medium Interview Questions and Answers
+### 51. How does Spring manage transactions?
+
+Spring manages transactions using the `PlatformTransactionManager` interface and its implementations. It can manage transactions declaratively using the `@Transactional` annotation or programmatically using `TransactionTemplate`. Spring handles the transaction lifecycle, including starting, committing, and rolling back transactions as needed.
+
+**Example:**
+
+```java
+@Service
+public class MyService {
+    @Transactional
+    public void performTransaction() {
+        // transactional code here
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 52. Explain the concept of Bean Post Processors.
+
+Bean Post Processors are special beans that allow you to modify or wrap beans before and after their initialization. They implement the `BeanPostProcessor` interface and can be used to add custom logic or behavior to bean creation.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 53. How do you create a custom Bean Post Processor?
+
+To create a custom Bean Post Processor, implement the `BeanPostProcessor` interface and override its `postProcessBeforeInitialization` and `postProcessAfterInitialization` methods.
+
+**Example:**
+
+```java
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomBeanPostProcessor implements BeanPostProcessor {
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) {
+        // custom logic before initialization
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) {
+        // custom logic after initialization
+        return bean;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 54. What is the BeanFactoryPostProcessor and how is it different from BeanPostProcessor?
+
+`BeanFactoryPostProcessor` is used to modify the `BeanFactory` configuration metadata before any beans are instantiated. It is different from `BeanPostProcessor`, which modifies bean instances after they are created.
+
+**Example:**
+
+```java
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+        // custom logic to modify BeanFactory configuration
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 55. How does Spring handle circular dependencies?
+
+Spring handles circular dependencies by using a three-phase process:
+1. Create bean instances and store them in a cache.
+2. Populate properties of the beans.
+3. Initialize beans.
+
+If a circular dependency is detected, Spring uses proxies or `ObjectFactory` to break the cycle.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 56. What is the use of the @Scope annotation?
+
+The `@Scope` annotation specifies the scope of a bean. Common scopes are `singleton`, `prototype`, `request`, `session`, and `application`.
+
+**Example:**
+
+```java
+@Component
+@Scope("prototype")
+public class MyBean {
+    // bean definition
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 57. Explain the concept of Spring Profiles.
+
+Spring Profiles allow you to group beans and configurations and activate them based on the environment or runtime conditions. Profiles help manage environment-specific configurations.
+
+**Example:**
+
+```java
+@Configuration
+@Profile("dev")
+public class DevConfig {
+    @Bean
+    public MyBean myBean() {
+        return new MyBean();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 58. How do you manage environment-specific properties in Spring?
+
+Environment-specific properties can be managed using property files and the `@PropertySource` annotation. Profiles can be used to load different properties based on the active profile.
+
+**Example:**
+
+```java
+@Configuration
+@PropertySource("classpath:application-${spring.profiles.active}.properties")
+public class AppConfig {
+    @Autowired
+    private Environment env;
+
+    @Bean
+    public MyBean myBean() {
+        return new MyBean(env.getProperty("my.property"));
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 59. What is the role of the @Profile annotation?
+
+The `@Profile` annotation is used to define beans that should only be created when a specific profile is active. It helps manage environment-specific beans and configurations.
+
+**Example:**
+
+```java
+@Configuration
+@Profile("prod")
+public class ProdConfig {
+    @Bean
+    public MyBean myBean() {
+        return new MyBean();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 60. How do you enable asynchronous method execution in Spring?
+
+Asynchronous method execution in Spring can be enabled using the `@EnableAsync` annotation and the `@Async` annotation on methods.
+
+**Example:**
+
+```java
+@Configuration
+@EnableAsync
+public class AppConfig {
+    // configuration
+}
+
+@Service
+public class MyService {
+    @Async
+    public void asyncMethod() {
+        // asynchronous code
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
