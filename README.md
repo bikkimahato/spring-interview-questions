@@ -11,7 +11,6 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 ## Topics Covered
 
 - Spring Core
-- Spring Boot
 - Spring MVC
 - Spring Data JPA
 - Spring Security
@@ -1648,6 +1647,493 @@ public class UserController {
     public String getUser(@PathVariable("id") Long id, Model model) {
         // get user by id
         return "user";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 76. How do you handle exceptions in Spring MVC?
+
+In Spring MVC, exceptions can be handled in various ways:
+
+1. **Using `@ExceptionHandler` Annotation:**
+   Define a method in your controller class to handle exceptions.
+
+   ```java
+   @Controller
+   public class MyController {
+
+       @ExceptionHandler(Exception.class)
+       public ModelAndView handleException(Exception ex) {
+           ModelAndView model = new ModelAndView("error");
+           model.addObject("exception", ex);
+           return model;
+       }
+   }
+   ```
+
+2. **Using `@ControllerAdvice` Annotation:**
+   This annotation is used to define global exception handling across multiple controllers.
+
+   ```java
+   @ControllerAdvice
+   public class GlobalExceptionHandler {
+
+       @ExceptionHandler(Exception.class)
+       public ModelAndView handleGlobalException(Exception ex) {
+           ModelAndView model = new ModelAndView("error");
+           model.addObject("exception", ex);
+           return model;
+       }
+   }
+   ```
+
+3. **Using `HandlerExceptionResolver` Interface:**
+   Implement this interface to create a centralized exception handling mechanism.
+
+   ```java
+   public class MyExceptionHandler implements HandlerExceptionResolver {
+
+       @Override
+       public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+           ModelAndView model = new ModelAndView("error");
+           model.addObject("exception", ex);
+           return model;
+       }
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 77. What is the use of the `@ExceptionHandler` annotation?
+
+The `@ExceptionHandler` annotation is used to handle specific exceptions thrown by controller methods. It allows you to define a method that will be invoked when a specific exception is thrown.
+
+Example:
+
+```java
+@Controller
+public class MyController {
+
+    @ExceptionHandler(MyException.class)
+    public ModelAndView handleMyException(MyException ex) {
+        ModelAndView model = new ModelAndView("error");
+        model.addObject("exception", ex);
+        return model;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 78. How do you configure view resolvers in Spring MVC?
+
+View resolvers in Spring MVC are configured in the `dispatcher-servlet.xml` file or using Java configuration.
+
+**XML Configuration:**
+
+```xml
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/views/"/>
+    <property name="suffix" value=".jsp"/>
+</bean>
+```
+
+**Java Configuration:**
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp("/WEB-INF/views/", ".jsp");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 79. What is the use of the `@ModelAttribute` annotation?
+
+The `@ModelAttribute` annotation is used to bind a method parameter or method return value to a named model attribute, and then expose it to a web view.
+
+**Example:**
+
+```java
+@Controller
+public class MyController {
+
+    @ModelAttribute("myModel")
+    public MyModel createModel() {
+        return new MyModel();
+    }
+
+    @RequestMapping("/example")
+    public String example(@ModelAttribute("myModel") MyModel model) {
+        // Use the model attribute
+        return "viewName";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 80. How do you perform validation in Spring MVC?
+
+Validation in Spring MVC is typically performed using the `@Valid` annotation and a `BindingResult` object.
+
+**Example:**
+
+```java
+@Controller
+public class MyController {
+
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public String submitForm(@Valid @ModelAttribute("formModel") FormModel formModel, BindingResult result) {
+        if (result.hasErrors()) {
+            return "formView";
+        }
+        return "successView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 81. What is the use of the `@Valid` annotation?
+
+The `@Valid` annotation is used to indicate that a bean should be validated before performing an action, such as processing a form submission.
+
+**Example:**
+
+```java
+@Controller
+public class MyController {
+
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public String submitForm(@Valid @ModelAttribute("formModel") FormModel formModel, BindingResult result) {
+        if (result.hasErrors()) {
+            return "formView";
+        }
+        return "successView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 82. How do you handle file uploads in Spring MVC?
+
+To handle file uploads, you need to configure a `MultipartResolver` bean and use the `MultipartFile` class in your controller.
+
+**Configuration:**
+
+```xml
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+```
+
+**Controller:**
+
+```java
+@Controller
+public class FileUploadController {
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (!file.isEmpty()) {
+            // Handle file upload
+        }
+        return "uploadView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 83. What is the use of the `MultipartResolver` in Spring MVC?
+
+The `MultipartResolver` is used to handle file uploads in Spring MVC applications. It parses multipart requests and makes the uploaded files accessible via the `MultipartFile` class.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 84. Explain the concept of `RestTemplate` in Spring.
+
+`RestTemplate` is a synchronous client to perform HTTP requests, exposing a simple, template method API over underlying HTTP client libraries.
+
+**Example:**
+
+```java
+RestTemplate restTemplate = new RestTemplate();
+String result = restTemplate.getForObject("https://api.example.com/resource", String.class);
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 85. How do you configure `RestTemplate` in Spring?
+
+You can configure `RestTemplate` as a bean in your Spring configuration.
+
+**Java Configuration:**
+
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 86. How do you make HTTP requests using `RestTemplate`?
+
+`RestTemplate` provides several methods to make HTTP requests.
+
+**Example:**
+
+```java
+RestTemplate restTemplate = new RestTemplate();
+
+// GET request
+String response = restTemplate.getForObject("https://api.example.com/resource", String.class);
+
+// POST request
+HttpHeaders headers = new HttpHeaders();
+headers.setContentType(MediaType.APPLICATION_JSON);
+HttpEntity<String> request = new HttpEntity<>("{\"key\":\"value\"}", headers);
+String response = restTemplate.postForObject("https://api.example.com/resource", request, String.class);
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 87. What is the Spring WebFlux framework?
+
+Spring WebFlux is a reactive web framework designed for asynchronous, non-blocking applications. It uses the Project Reactor library for reactive programming.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 88. How do you configure a WebFlux application in Spring?
+
+**Java Configuration:**
+
+```java
+@Configuration
+@EnableWebFlux
+public class WebFluxConfig implements WebFluxConfigurer {
+    // Configuration goes here
+}
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 89. What is the role of the `@RestController` annotation?
+
+The `@RestController` annotation is a specialized version of `@Controller` that combines `@Controller` and `@ResponseBody`. It is used to create RESTful web services.
+
+**Example:**
+
+```java
+@RestController
+public class MyRestController {
+
+    @GetMapping("/resource")
+    public String getResource() {
+        return "Hello, World!";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 90. How do you handle reactive streams in Spring WebFlux?
+
+Reactive streams in Spring WebFlux are handled using `Mono` and `Flux` types from Project Reactor.
+
+**Example:**
+
+```java
+@RestController
+public class ReactiveController {
+
+    @GetMapping("/mono")
+    public Mono<String> getMono() {
+        return Mono.just("Hello, Mono!");
+    }
+
+    @GetMapping("/flux")
+    public Flux<String> getFlux() {
+        return Flux.just("Hello", "Flux", "!");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 91. What is the Spring Boot framework?
+
+Spring Boot is a framework that simplifies the development of Spring applications by providing pre-configured templates and reducing boilerplate code. It also includes embedded servers, making it easy to run standalone applications.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 92. How do you configure a Spring Boot application?
+
+Spring Boot applications are typically configured using `application.properties` or `application.yml` files.
+
+**Example:**
+
+```properties
+server.port=8080
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=root
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 93. What are the benefits of using Spring Boot?
+
+- **Simplified Configuration:** Reduces boilerplate code and configuration.
+- **Embedded Servers:** Makes it easy to run standalone applications.
+- **Production-ready Features:** Includes features like health checks and metrics.
+- **Auto-Configuration:** Automatically configures Spring applications based on dependencies.
+- **Microservices Support:** Ideal for building microservices architecture.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 94. How do you create a RESTful web service using Spring Boot?
+
+**Example:**
+
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+@RestController
+@RequestMapping("/api")
+public class MyRestController {
+
+    @GetMapping("/resource")
+    public String getResource() {
+        return "Hello, World!";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 95. What is the role of the `application.properties` file in Spring Boot?
+
+The `application.properties` file is used to configure various properties of a Spring Boot application, such as server port, database connection details, and more.
+
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 96. How do you configure logging in Spring Boot?
+
+Logging in Spring Boot is configured using the `application.properties` file.
+
+**Example:**
+
+```properties
+logging.level.org.springframework=DEBUG
+logging.file.name=app.log
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 97. How do you handle exceptions in a Spring Boot application?
+
+In Spring Boot, exceptions can be handled using `@ControllerAdvice`, `@ExceptionHandler`, and `ResponseEntityExceptionHandler`.
+
+**Example:**
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleException(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 98. What is the use of the `@SpringBootApplication` annotation?
+
+The `@SpringBootApplication` annotation is a combination of `@Configuration`, `@EnableAutoConfiguration`, and `@ComponentScan`, providing a convenient way to configure a Spring Boot application.
+
+**Example:**
+
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 99. How do you run a Spring Boot application?
+
+A Spring Boot application can be run using the `main` method in the main application class or using the command line with `mvn spring-boot:run` or `gradle bootRun`.
+
+**Example:**
+
+```java
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
+
+### 100. How do you test a Spring Boot application?
+
+Spring Boot applications can be tested using Spring Boot Test, which provides utilities like `@SpringBootTest`, `@MockBean`, and `TestRestTemplate`.
+
+**Example:**
+
+```java
+@SpringBootTest
+public class MyControllerTest {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Test
+    public void testGetResource() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/resource", String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Hello, World!", response.getBody());
     }
 }
 ```
