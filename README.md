@@ -2409,3 +2409,469 @@ public class SecurityContextExample {
 ```
 #### **[⬆ Back to Top](#level--spring-core-medium)**
 ---
+
+### 111. Explain the concept of CSRF protection in Spring Security.
+
+CSRF (Cross-Site Request Forgery) protection prevents unauthorized commands being transmitted from a user that the web application trusts. Spring Security enables CSRF protection by default for web applications.
+
+Example:
+```java
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+public class CsrfSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 112. How do you configure session management in Spring Security?
+
+You can configure session management using `HttpSecurity`'s session management section.
+
+Example:
+```java
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+public class SessionManagementConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(true);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 113. What is the use of the @EnableAspectJAutoProxy annotation?
+
+`@EnableAspectJAutoProxy` enables support for handling components marked with AspectJ's `@Aspect` annotation, similar to functionality found in Spring's XML configuration.
+
+Example:
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+    // Configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 114. How do you implement global exception handling in Spring?
+
+You can implement global exception handling using `@ControllerAdvice` and `@ExceptionHandler` annotations.
+
+Example:
+```java
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleException(Exception e) {
+        return "error"; // Error view name
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 115. What is the use of the @ControllerAdvice annotation?
+
+`@ControllerAdvice` is used to define global exception handlers, data binders, and model attributes that apply to multiple controllers.
+
+Example:
+```java
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+@ControllerAdvice
+public class GlobalControllerAdvice {
+
+    @ModelAttribute("message")
+    public String globalMessage() {
+        return "Welcome to the application!";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 116. How do you configure internationalization in a Spring application?
+
+You configure internationalization (i18n) by defining `MessageSource`, locale resolver, and locale interceptor.
+
+Example:
+```java
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Locale;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.US);
+        return slr;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 117. What is the use of the MessageSource interface in Spring?
+
+`MessageSource` is used for resolving messages, with support for internationalization (i18n). It allows you to retrieve messages from properties files based on locale.
+
+Example:
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+
+import java.util.Locale;
+
+@Service
+public class MessageService {
+
+    @Autowired
+    private MessageSource messageSource;
+
+    public String getMessage(String code) {
+        return messageSource.getMessage(code, null, Locale.US);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 118. How do you create a custom validator in Spring?
+
+You create a custom validator by implementing the `Validator` interface and overriding the `validate` method.
+
+Example:
+```java
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+@Component
+public class CustomValidator implements Validator {
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return MyForm.class.equals(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        MyForm form = (MyForm) target;
+        if (form.getField() == null || form.getField().isEmpty()) {
+            errors.rejectValue("field", "field.empty", "Field cannot be empty");
+        }
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 119. What is the use of the @InitBinder annotation?
+
+`@InitBinder` is used to customize the data binding for a specific controller. It allows you to register custom editors or formatters.
+
+Example:
+```java
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.Controller;
+
+@Controller
+public class MyController {
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), false));
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 120. How do you configure a custom property editor in Spring?
+
+You configure a custom property editor by extending `PropertyEditorSupport` and registering it with `WebDataBinder`.
+
+Example:
+```java
+import java.beans.PropertyEditorSupport;
+
+public class CustomDateEditor extends PropertyEditorSupport {
+
+    private final SimpleDateFormat dateFormat;
+
+    public CustomDateEditor(SimpleDateFormat dateFormat, boolean allowEmpty) {
+        this.dateFormat = dateFormat;
+    }
+
+    @Override
+    public void setAsText(String text) throws IllegalArgumentException {
+        try {
+            setValue(dateFormat.parse(text));
+        } catch (ParseException e) {
+            setValue(null);
+        }
+    }
+
+    @Override
+    public String getAsText() {
+        return (getValue() != null ? dateFormat.format(getValue()) : "");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 121. Explain the concept of Spring Cloud.
+
+Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems, such as configuration management, service discovery, circuit breakers, routing, etc.
+
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 122. How do you configure a microservice using Spring Cloud?
+
+To configure a microservice, you typically use Spring Boot and Spring Cloud dependencies. You will configure the application to use service discovery, load balancing, and other Spring Cloud features.
+
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 123. What is the use of the @EnableEurekaClient annotation?
+
+`@EnableEurekaClient` is used to register a service with a Eureka server for service discovery.
+
+Example:
+```java
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableEurekaClient
+public class EurekaClientConfig {
+    // Configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 124. How do you configure load balancing in Spring Cloud?
+
+Load balancing can be configured using `Spring Cloud LoadBalancer` or `Ribbon` (deprecated) by annotating a `RestTemplate` bean with `@LoadBalanced`.
+
+Example:
+```java
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+public class LoadBalancerConfig {
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 125. What is the use of the @EnableFeignClients annotation?
+
+`@EnableFeignClients` is used to enable Feign clients, which allows you to create declarative REST clients.
+
+Example:
+```java
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableFeignClients
+public class FeignClientsConfig {
+    // Configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 126. How do you implement circuit breaker pattern in Spring Cloud?
+
+You can implement the circuit breaker pattern using `Resilience4j` or `Hystrix` (deprecated).
+
+Example with Resilience4j:
+```java
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+
+    @CircuitBreaker(name = "myService", fallbackMethod = "fallbackMethod")
+    public String doSomething() {
+        // service logic
+        return "Success";
+    }
+
+    public String fallbackMethod(Throwable t) {
+        return "Fallback response";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 127. What is the use of the @EnableCircuitBreaker annotation?
+
+`@EnableCircuitBreaker` is used to enable circuit breaker functionality in your application.
+
+Example:
+```java
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableCircuitBreaker
+public class CircuitBreakerConfig {
+    // Configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 128. How do you configure a distributed tracing system in Spring Cloud?
+
+To configure distributed tracing, you can use `Spring Cloud Sleuth` and `Zipkin`.
+
+Example:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-zipkin</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 129. What is the use of the @EnableHystrixDashboard annotation?
+
+`@EnableHystrixDashboard` is used to enable the Hystrix Dashboard for monitoring circuit breakers.
+
+Example:
+```java
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableHystrixDashboard
+public class HystrixDashboardConfig {
+    // Configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 130. How do you configure a service gateway in Spring Cloud?
+
+To configure a service gateway, you can use `Spring Cloud Gateway`.
+
+Example:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service1
+          uri: http://localhost:8081
+          predicates:
+            - Path=/service1/**
+        - id: service2
+          uri: http://localhost:8082
+          predicates:
+            - Path=/service2/**
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
