@@ -2139,3 +2139,273 @@ public class MyControllerTest {
 ```
 #### **[⬆ Back to Top](#level--spring-core-medium)**
 ---
+
+# Spring Core Hard Interview Questions and Answers
+### 101. Explain the concept of Reactive Programming in Spring.
+
+Reactive Programming is a programming paradigm oriented around data flows and the propagation of change. In Spring, Reactive Programming is implemented using the Project Reactor library, which provides support for creating reactive applications. Reactive Programming is built on the concept of non-blocking, event-driven programming with backpressure support.
+
+Key concepts:
+- **Publisher**: Emits a sequence of items.
+- **Subscriber**: Consumes the sequence of items emitted by the Publisher.
+- **Subscription**: Represents a one-to-one lifecycle of a Subscriber subscribing to a Publisher.
+- **Backpressure**: A mechanism to control the flow of data between Publisher and Subscriber.
+
+Example:
+```java
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+public class ReactiveExample {
+    public static void main(String[] args) {
+        Flux<String> flux = Flux.just("Hello", "World");
+        flux.subscribe(System.out::println);
+
+        Mono<String> mono = Mono.just("Spring Reactive");
+        mono.subscribe(System.out::println);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 102. How does Spring WebFlux handle backpressure?
+
+Spring WebFlux handles backpressure using Reactive Streams. Reactive Streams provide a standard for asynchronous stream processing with non-blocking backpressure. WebFlux leverages Project Reactor to implement Reactive Streams.
+
+Example:
+```java
+import reactor.core.publisher.Flux;
+
+public class BackpressureExample {
+    public static void main(String[] args) {
+        Flux.range(1, 100)
+            .onBackpressureBuffer(10)
+            .subscribe(
+                item -> System.out.println("Received: " + item),
+                error -> System.err.println("Error: " + error),
+                () -> System.out.println("Done")
+            );
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 103. What is the difference between Spring MVC and Spring WebFlux?
+
+| Feature        | Spring MVC                      | Spring WebFlux                        |
+|----------------|---------------------------------|---------------------------------------|
+| Programming    | Synchronous and blocking        | Asynchronous and non-blocking         |
+| Reactive       | No                              | Yes                                   |
+| Performance    | Suitable for traditional apps   | Suitable for high-concurrency apps    |
+| Underlying Lib | Servlet API                     | Project Reactor                       |
+| Controllers    | @Controller, @RestController    | @Controller, @RestController          |
+| Execution      | Single-threaded per request     | Event-loop model                      |
+
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 104. How do you configure security in a Spring application?
+
+You can configure security in a Spring application using `Spring Security`. This involves adding dependencies, defining security configuration classes, and customizing authentication/authorization.
+
+Example:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+            .antMatchers("/public/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .formLogin().and()
+            .httpBasic();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 105. What is the role of the @EnableWebSecurity annotation?
+
+`@EnableWebSecurity` is used to enable Spring Security’s web security support and provide the Spring MVC integration.
+
+Example:
+```java
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
+@EnableWebSecurity
+public class WebSecurityConfig {
+    // Security configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 106. How do you implement OAuth2 authentication in Spring Security?
+
+You can implement OAuth2 authentication using Spring Security’s `spring-security-oauth2` module.
+
+Example:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-client-id
+            client-secret: your-client-secret
+            scope: profile, email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://accounts.google.com/o/oauth2/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 107. What is the use of the @PreAuthorize annotation?
+
+`@PreAuthorize` is used to apply method-level security. It allows you to define access control expressions.
+
+Example:
+```java
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MyService {
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void secureMethod() {
+        // method logic
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 108. How do you implement method-level security in Spring?
+
+To implement method-level security, use `@EnableGlobalMethodSecurity` with `@PreAuthorize`, `@PostAuthorize`, `@Secured`, and `@RolesAllowed` annotations.
+
+Example:
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class MethodSecurityConfig {
+    // Configuration
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 109. How do you configure a custom authentication provider in Spring Security?
+
+You can configure a custom authentication provider by implementing `AuthenticationProvider` and overriding the `authenticate` and `supports` methods.
+
+Example:
+```java
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+public class CustomAuthenticationProvider implements AuthenticationProvider {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public CustomAuthenticationProvider(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+
+        // Custom authentication logic
+        UserDetails user = loadUserByUsername(username);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return new UsernamePasswordAuthenticationToken(username, password, user.getAuthorities());
+        } else {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+
+    private UserDetails loadUserByUsername(String username) {
+        // Load user from database or any other source
+        return User.withUsername(username).password(passwordEncoder.encode("password")).roles("USER").build();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 110. What is the purpose of the SecurityContextHolder in Spring Security?
+
+`SecurityContextHolder` holds the security context, including the authentication details of the currently authenticated user. It provides access to the `SecurityContext`.
+
+Example:
+```java
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+public class SecurityContextExample {
+    public void printAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            System.out.println("User: " + authentication.getName());
+        }
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-medium)**
+---
