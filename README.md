@@ -2875,3 +2875,557 @@ spring:
 ```
 #### **[⬆ Back to Top](#level--spring-core-hard)**
 ---
+
+### 131. What is the use of the @EnableZuulProxy annotation?
+
+The `@EnableZuulProxy` annotation is used in a Spring Boot application to enable Zuul, which is a gateway service that provides dynamic routing, monitoring, resiliency, security, and more. This annotation sets up a Zuul server that can forward requests to other services, effectively acting as an API gateway.
+
+### Example:
+```java
+@SpringBootApplication
+@EnableZuulProxy
+public class ApiGatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayApplication.class, args);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 132. How do you implement API versioning in a Spring application?
+
+API versioning can be implemented in Spring using different strategies such as URI versioning, request parameter versioning, and header versioning.
+
+### Example: URI Versioning
+```java
+@RestController
+@RequestMapping("/api/v1")
+public class ApiControllerV1 {
+    @GetMapping("/resource")
+    public ResponseEntity<String> getResourceV1() {
+        return ResponseEntity.ok("Resource V1");
+    }
+}
+
+@RestController
+@RequestMapping("/api/v2")
+public class ApiControllerV2 {
+    @GetMapping("/resource")
+    public ResponseEntity<String> getResourceV2() {
+        return ResponseEntity.ok("Resource V2");
+    }
+}
+```
+
+### Example: Request Parameter Versioning
+```java
+@RestController
+public class ApiController {
+    @GetMapping(value = "/resource", params = "version=1")
+    public ResponseEntity<String> getResourceV1() {
+        return ResponseEntity.ok("Resource V1");
+    }
+
+    @GetMapping(value = "/resource", params = "version=2")
+    public ResponseEntity<String> getResourceV2() {
+        return ResponseEntity.ok("Resource V2");
+    }
+}
+```
+
+### Example: Header Versioning
+```java
+@RestController
+public class ApiController {
+    @GetMapping(value = "/resource", headers = "X-API-Version=1")
+    public ResponseEntity<String> getResourceV1() {
+        return ResponseEntity.ok("Resource V1");
+    }
+
+    @GetMapping(value = "/resource", headers = "X-API-Version=2")
+    public ResponseEntity<String> getResourceV2() {
+        return ResponseEntity.ok("Resource V2");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 133. What is the use of the @JsonView annotation in Spring?
+
+The `@JsonView` annotation is used in Spring to control the serialization of JSON data. It allows you to define different views for different parts of your application, so you can expose different subsets of the data to different clients.
+
+### Example:
+```java
+public class Views {
+    public static class Public {}
+    public static class Internal extends Public {}
+}
+
+public class User {
+    @JsonView(Views.Public.class)
+    public String name;
+
+    @JsonView(Views.Internal.class)
+    public String email;
+}
+
+@RestController
+public class UserController {
+    @GetMapping("/user")
+    @JsonView(Views.Public.class)
+    public User getUser() {
+        return new User("John Doe", "john.doe@example.com");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 134. How do you configure a custom JSON serializer in Spring?
+
+You can configure a custom JSON serializer in Spring using the `@JsonSerialize` annotation along with a custom serializer class.
+
+### Example:
+```java
+public class CustomDateSerializer extends JsonSerializer<Date> {
+    @Override
+    public void serialize(Date date, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        gen.writeString(formatter.format(date));
+    }
+}
+
+public class Event {
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date eventDate;
+
+    // Getters and Setters
+}
+
+@RestController
+public class EventController {
+    @GetMapping("/event")
+    public Event getEvent() {
+        Event event = new Event();
+        event.setEventDate(new Date());
+        return event;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 135. What is the use of the @JsonIgnore annotation?
+
+The `@JsonIgnore` annotation is used to mark a property or field of a class to be ignored during the JSON serialization and deserialization process.
+
+### Example:
+```java
+public class User {
+    private String name;
+
+    @JsonIgnore
+    private String password;
+
+    // Getters and Setters
+}
+
+@RestController
+public class UserController {
+    @GetMapping("/user")
+    public User getUser() {
+        return new User("John Doe", "secret");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 136. How do you configure a custom exception handler in Spring?
+
+You can configure a custom exception handler in Spring using the `@ControllerAdvice` and `@ExceptionHandler` annotations.
+
+### Example:
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+@RestController
+public class ExampleController {
+    @GetMapping("/example")
+    public String getExample() {
+        throw new ResourceNotFoundException("Resource not found");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 137. What is the use of the @RestControllerAdvice annotation?
+
+The `@RestControllerAdvice` annotation is a specialized version of `@ControllerAdvice` that is used for global exception handling and data binding for `@RestController` classes.
+
+### Example:
+```java
+@RestControllerAdvice
+public class GlobalRestControllerAdvice {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 138. How do you configure CORS in a Spring application?
+
+You can configure CORS in a Spring application using the `@CrossOrigin` annotation or by defining a `CorsConfiguration` bean.
+
+### Example: Using @CrossOrigin
+```java
+@RestController
+@CrossOrigin(origins = "http://allowed-origin.com")
+public class ExampleController {
+    @GetMapping("/example")
+    public String getExample() {
+        return "Example response";
+    }
+}
+```
+
+### Example: Global CORS Configuration
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("http://allowed-origin.com");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 139. What is the use of the @CrossOrigin annotation?
+
+The `@CrossOrigin` annotation is used to enable Cross-Origin Resource Sharing (CORS) on specific controller methods or classes, allowing client applications from different origins to access resources.
+
+### Example:
+```java
+@RestController
+public class ExampleController {
+
+    @CrossOrigin(origins = "http://allowed-origin.com")
+    @GetMapping("/example")
+    public String getExample() {
+        return "Example response";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 140. How do you configure a custom HTTP message converter in Spring?
+
+You can configure a custom HTTP message converter in Spring by implementing the `HttpMessageConverter` interface and then adding it to the `WebMvcConfigurer`.
+
+### Example:
+```java
+public class CustomMessageConverter extends AbstractHttpMessageConverter<MyCustomObject> {
+
+    public CustomMessageConverter() {
+        super(new MediaType("application", "x-mycustomtype"));
+    }
+
+    @Override
+    protected boolean supports(Class<?> clazz) {
+        return MyCustomObject.class.equals(clazz);
+    }
+
+    @Override
+    protected MyCustomObject readInternal(Class<? extends MyCustomObject> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+        // Custom deserialization logic
+    }
+
+    @Override
+    protected void writeInternal(MyCustomObject myCustomObject, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+        // Custom serialization logic
+    }
+}
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new CustomMessageConverter());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 141. What is the use of the HttpMessageConverter interface in Spring?
+
+The `HttpMessageConverter` interface in Spring is used to convert HTTP requests and responses to and from Java objects. It provides methods to read and write data for specific media types.
+
+### Example:
+```java
+public class MyCustomObject {
+    private String data;
+    // Getters and Setters
+}
+
+public class CustomMessageConverter extends AbstractHttpMessageConverter<MyCustomObject> {
+    // Implementation details
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 142. How do you configure a custom view resolver in Spring?
+
+You can configure a custom view resolver in Spring by implementing the `ViewResolver` interface and then registering it as a bean.
+
+### Example:
+```java
+public class CustomViewResolver implements ViewResolver {
+    @Override
+    public View resolveViewName(String viewName, Locale locale) throws Exception {
+        // Custom view resolution logic
+        return new CustomView();
+    }
+}
+
+@Configuration
+public class WebConfig {
+    @Bean
+    public ViewResolver customViewResolver() {
+        return new CustomViewResolver();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 143. What is the use of the ViewResolver interface in Spring?
+
+The `ViewResolver` interface in Spring is used to resolve view names to actual `View` instances. It allows you to define custom logic to map logical view names to specific view implementations.
+
+### Example:
+```java
+public class CustomViewResolver implements ViewResolver {
+    @Override
+    public View resolveViewName(String viewName, Locale locale) throws Exception {
+        // Custom view resolution logic
+        return new CustomView();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 144. How do you configure a custom locale resolver in Spring?
+
+You can configure a custom locale resolver in Spring by implementing the `LocaleResolver` interface and then registering it as a bean.
+
+### Example:
+```java
+public class CustomLocaleResolver implements LocaleResolver {
+    @Override
+    public Locale resolveLocale(HttpServletRequest request) {
+        // Custom locale resolution logic
+    }
+
+    @Override
+    public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
+        // Custom locale setting logic
+    }
+}
+
+@Configuration
+public class WebConfig {
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new CustomLocaleResolver();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 145. What is the use of the LocaleResolver interface in Spring?
+
+The `LocaleResolver` interface in Spring is used to resolve the locale of the current request. It allows you to define custom logic to determine the locale based on the request.
+
+### Example:
+```java
+public class CustomLocaleResolver implements LocaleResolver {
+    @Override
+    public Locale resolveLocale(HttpServletRequest request) {
+        // Custom locale resolution logic
+    }
+
+    @Override
+    public void setLocale(HttpServletRequest request, HttpServletResponse response, Locale locale) {
+        // Custom locale setting logic
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 146. How do you configure a custom theme resolver in Spring?
+
+You can configure a custom theme resolver in Spring by implementing the `ThemeResolver` interface and then registering it as a bean.
+
+### Example:
+```java
+public class CustomThemeResolver implements ThemeResolver {
+    @Override
+    public String resolveThemeName(HttpServletRequest request) {
+        // Custom theme resolution logic
+    }
+
+    @Override
+    public void setThemeName(HttpServletRequest request, HttpServletResponse response, String themeName) {
+        // Custom theme setting logic
+    }
+}
+
+@Configuration
+public class WebConfig {
+    @Bean
+    public ThemeResolver themeResolver() {
+        return new CustomThemeResolver();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 147. What is the use of the ThemeResolver interface in Spring?
+
+The `ThemeResolver` interface in Spring is used to resolve the theme name for the current request. It allows you to define custom logic to determine the theme based on the request.
+
+### Example:
+```java
+public class CustomThemeResolver implements ThemeResolver {
+    @Override
+    public String resolveThemeName(HttpServletRequest request) {
+        // Custom theme resolution logic
+    }
+
+    @Override
+    public void setThemeName(HttpServletRequest request, HttpServletResponse response, String themeName) {
+        // Custom theme setting logic
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 148. How do you configure a custom session attribute in Spring?
+
+You can configure a custom session attribute in Spring by using the `@SessionAttributes` and `@ModelAttribute` annotations in your controller.
+
+### Example:
+```java
+@Controller
+@SessionAttributes("myAttribute")
+public class ExampleController {
+
+    @ModelAttribute("myAttribute")
+    public String myAttribute() {
+        return "Default Value";
+    }
+
+    @GetMapping("/example")
+    public String example(@ModelAttribute("myAttribute") String myAttribute, Model model) {
+        model.addAttribute("myAttribute", "New Value");
+        return "exampleView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 149. What is the use of the SessionAttributeStore interface in Spring?
+
+The `SessionAttributeStore` interface in Spring is used to manage session attributes. It allows you to define custom logic for storing and retrieving session attributes.
+
+### Example:
+```java
+public class CustomSessionAttributeStore implements SessionAttributeStore {
+    @Override
+    public void storeAttribute(WebRequest request, String attributeName, Object attributeValue) {
+        // Custom logic to store the attribute
+    }
+
+    @Override
+    public Object retrieveAttribute(WebRequest request, String attributeName) {
+        // Custom logic to retrieve the attribute
+    }
+
+    @Override
+    public void cleanupAttribute(WebRequest request, String attributeName) {
+        // Custom logic to clean up the attribute
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
+
+### 150. How do you configure a custom handler interceptor in Spring?
+
+You can configure a custom handler interceptor in Spring by implementing the `HandlerInterceptor` interface and then registering it with the `WebMvcConfigurer`.
+
+### Example:
+```java
+public class CustomHandlerInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Custom pre-handle logic
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // Custom post-handle logic
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // Custom after-completion logic
+    }
+}
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new CustomHandlerInterceptor());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-core-hard)**
+---
