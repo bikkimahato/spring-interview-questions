@@ -263,6 +263,35 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 49  | [How do you configure a custom validator in Spring MVC?](#49-how-do-you-configure-a-custom-validator-in-spring-mvc) |
 | 50  | [What is the role of FlashMap in Spring MVC?](#50-what-is-the-role-of-flashmap-in-spring-mvc) |
 
+### Level : Spring MVC Hard
+| No. | Questions |
+| --- | --------- |
+| 51  | [How do you implement asynchronous request processing in Spring MVC?](#51-how-do-you-implement-asynchronous-request-processing-in-spring-mvc) |
+| 52  | [Explain the process of configuring Spring MVC with Java-based configuration.](#52-explain-the-process-of-configuring-spring-mvc-with-java-based-configuration) |
+| 53  | [How do you configure a custom message converter in Spring MVC?](#53-how-do-you-configure-a-custom-message-converter-in-spring-mvc) |
+| 54  | [What is the use of @ControllerAdvice annotation?](#54-what-is-the-use-of-controlleradvice-annotation) |
+| 55  | [How do you handle WebSocket communication in a Spring MVC application?](#55-how-do-you-handle-websocket-communication-in-a-spring-mvc-application) |
+| 56  | [How do you configure a custom locale resolver in Spring MVC?](#56-how-do-you-configure-a-custom-locale-resolver-in-spring-mvc) |
+| 57  | [Explain the role of WebApplicationInitializer in Spring MVC.](#57-explain-the-role-of-webapplicationinitializer-in-spring-mvc) |
+| 58  | [How do you implement file download functionality in Spring MVC?](#58-how-do-you-implement-file-download-functionality-in-spring-mvc) |
+| 59  | [How do you configure a custom exception handler in Spring MVC?](#59-how-do-you-configure-a-custom-exception-handler-in-spring-mvc) |
+| 60  | [What is the use of @RestControllerAdvice annotation?](#60-what-is-the-use-of-restcontrolleradvice-annotation) |
+| 61  | [How do you integrate Spring MVC with Hibernate?](#61-how-do-you-integrate-spring-mvc-with-hibernate) |
+| 62  | [Explain the process of handling multipart requests in Spring MVC.](#62-explain-the-process-of-handling-multipart-requests-in-spring-mvc) |
+| 63  | [How do you configure a custom argument resolver in Spring MVC?](#63-how-do-you-configure-a-custom-argument-resolver-in-spring-mvc) |
+| 64  | [What is the role of ContentNegotiationManager in Spring MVC?](#64-what-is-the-role-of-contentnegotiationmanager-in-spring-mvc) |
+| 65  | [How do you implement HATEOAS in a Spring MVC application?](#65-how-do-you-implement-hateoas-in-a-spring-mvc-application) |
+| 66  | [How do you configure a custom handler method return value handler in Spring MVC?](#66-how-do-you-configure-a-custom-handler-method-return-value-handler-in-spring-mvc) |
+| 67  | [Explain the process of configuring Spring MVC with XML-based configuration.](#67-explain-the-process-of-configuring-spring-mvc-with-xml-based-configuration) |
+| 68  | [How do you handle JSONP requests in Spring MVC?](#68-how-do-you-handle-jsonp-requests-in-spring-mvc) |
+| 69  | [How do you configure a custom view in Spring MVC?](#69-how-do-you-configure-a-custom-view-in-spring-mvc) |
+| 70  | [What is the role of HandlerAdapter in Spring MVC?](#70-what-is-the-role-of-handleradapter-in-spring-mvc) |
+| 71  | [How do you configure a custom model attribute in Spring MVC?](#71-how-do-you-configure-a-custom-model-attribute-in-spring-mvc) |
+| 72  | [How do you implement server-sent events (SSE) in a Spring MVC application?](#72-how-do-you-implement-server-sent-events-sse-in-a-spring-mvc-application) |
+| 73  | [How do you configure a custom form handler in Spring MVC?](#73-how-do-you-configure-a-custom-form-handler-in-spring-mvc) |
+| 74  | [What is the use of @JsonView annotation in Spring MVC?](#74-what-is-the-use-of-jsonview-annotation-in-spring-mvc) |
+| 75  | [How do you implement OAuth2 authentication in a Spring MVC application?](#75-how-do-you-implement-oauth2-authentication-in-a-spring-mvc-application) |
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
