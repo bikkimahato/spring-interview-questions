@@ -203,6 +203,37 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 149 | [What is the use of the SessionAttributeStore interface in Spring?](#149-what-is-the-use-of-the-sessionattributestore-interface-in-spring) |
 | 150 | [How do you configure a custom handler interceptor in Spring?](#150-how-do-you-configure-a-custom-handler-interceptor-in-spring) |
 
+## Spring MVC
+### Table of Contents
+### Level : Spring MVC Easy
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is Spring MVC?](#1-what-is-spring-mvc) |
+| 2   | [Explain the architecture of Spring MVC.](#2-explain-the-architecture-of-spring-mvc) |
+| 3   | [What are the main components of Spring MVC?](#3-what-are-the-main-components-of-spring-mvc) |
+| 4   | [How do you configure Spring MVC in a web application?](#4-how-do-you-configure-spring-mvc-in-a-web-application) |
+| 5   | [What is the role of DispatcherServlet in Spring MVC?](#5-what-is-the-role-of-dispatcherservlet-in-spring-mvc) |
+| 6   | [How do you define a controller in Spring MVC?](#6-how-do-you-define-a-controller-in-spring-mvc) |
+| 7   | [What is the use of @RequestMapping annotation?](#7-what-is-the-use-of-requestmapping-annotation) |
+| 8   | [How do you handle form submission in Spring MVC?](#8-how-do-you-handle-form-submission-in-spring-mvc) |
+| 9   | [What is ModelAndView in Spring MVC?](#9-what-is-modelandview-in-spring-mvc) |
+| 10  | [How do you return JSON data from a Spring MVC controller?](#10-how-do-you-return-json-data-from-a-spring-mvc-controller) |
+| 11  | [Explain the difference between @Controller and @RestController.](#11-explain-the-difference-between-controller-and-restcontroller) |
+| 12  | [What is the use of @PathVariable annotation?](#12-what-is-the-use-of-pathvariable-annotation) |
+| 13  | [How do you inject a service into a Spring MVC controller?](#13-how-do-you-inject-a-service-into-a-spring-mvc-controller) |
+| 14  | [What is the role of ViewResolver in Spring MVC?](#14-what-is-the-role-of-viewresolver-in-spring-mvc) |
+| 15  | [How do you handle exceptions in Spring MVC?](#15-how-do-you-handle-exceptions-in-spring-mvc) |
+| 16  | [What is the difference between @RequestParam and @PathVariable?](#16-what-is-the-difference-between-requestparam-and-pathvariable) |
+| 17  | [How do you perform validation in Spring MVC?](#17-how-do-you-perform-validation-in-spring-mvc) |
+| 18  | [What is the use of @ModelAttribute annotation?](#18-what-is-the-use-of-modelattribute-annotation) |
+| 19  | [How do you configure a view resolver in Spring MVC?](#19-how-do-you-configure-a-view-resolver-in-spring-mvc) |
+| 20  | [What is the default scope of a Spring MVC controller?](#20-what-is-the-default-scope-of-a-spring-mvc-controller) |
+| 21  | [How do you handle file uploads in Spring MVC?](#21-how-do-you-handle-file-uploads-in-spring-mvc) |
+| 22  | [What is the difference between @RequestBody and @ResponseBody?](#22-what-is-the-difference-between-requestbody-and-responsebody) |
+| 23  | [How do you configure a multipart resolver in Spring MVC?](#23-how-do-you-configure-a-multipart-resolver-in-spring-mvc) |
+| 24  | [How do you enable Spring MVC annotations?](#24-how-do-you-enable-spring-mvc-annotations) |
+| 25  | [What is the use of @SessionAttributes annotation?](#25-what-is-the-use-of-sessionattributes-annotation) |
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
