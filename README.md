@@ -234,6 +234,35 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 24  | [How do you enable Spring MVC annotations?](#24-how-do-you-enable-spring-mvc-annotations) |
 | 25  | [What is the use of @SessionAttributes annotation?](#25-what-is-the-use-of-sessionattributes-annotation) |
 
+### Level : Spring MVC Medium
+| No. | Questions |
+| --- | --------- |
+| 26  | [How do you manage static resources in Spring MVC?](#26-how-do-you-manage-static-resources-in-spring-mvc) |
+| 27  | [Explain the role of HandlerMapping in Spring MVC.](#27-explain-the-role-of-handlermapping-in-spring-mvc) |
+| 28  | [What is the use of @InitBinder annotation?](#28-what-is-the-use-of-initbinder-annotation) |
+| 29  | [How do you handle cross-origin requests in Spring MVC?](#29-how-do-you-handle-cross-origin-requests-in-spring-mvc) |
+| 30  | [How do you configure internationalization in Spring MVC?](#30-how-do-you-configure-internationalization-in-spring-mvc) |
+| 31  | [What is the role of Interceptor in Spring MVC?](#31-what-is-the-role-of-interceptor-in-spring-mvc) |
+| 32  | [How do you implement security in a Spring MVC application?](#32-how-do-you-implement-security-in-a-spring-mvc-application) |
+| 33  | [What is the difference between Spring MVC and Spring Boot?](#33-what-is-the-difference-between-spring-mvc-and-spring-boot) |
+| 34  | [How do you configure a custom HandlerExceptionResolver in Spring MVC?](#34-how-do-you-configure-a-custom-handlerexceptionresolver-in-spring-mvc) |
+| 35  | [What is the use of @CookieValue annotation?](#35-what-is-the-use-of-cookievalue-annotation) |
+| 36  | [How do you configure message converters in Spring MVC?](#36-how-do-you-configure-message-converters-in-spring-mvc) |
+| 37  | [What is the role of LocaleResolver in Spring MVC?](#37-what-is-the-role-of-localeresolver-in-spring-mvc) |
+| 38  | [How do you enable CORS in Spring MVC?](#38-how-do-you-enable-cors-in-spring-mvc) |
+| 39  | [What is the use of @RequestHeader annotation?](#39-what-is-the-use-of-requestheader-annotation) |
+| 40  | [How do you implement RESTful web services using Spring MVC?](#40-how-do-you-implement-restful-web-services-using-spring-mvc) |
+| 41  | [How do you integrate Spring MVC with Thymeleaf?](#41-how-do-you-integrate-spring-mvc-with-thymeleaf) |
+| 42  | [What is the use of @ResponseStatus annotation?](#42-what-is-the-use-of-responsestatus-annotation) |
+| 43  | [How do you configure a custom view resolver in Spring MVC?](#43-how-do-you-configure-a-custom-view-resolver-in-spring-mvc) |
+| 44  | [What is the role of MultipartResolver in Spring MVC?](#44-what-is-the-role-of-multipartresolver-in-spring-mvc) |
+| 45  | [How do you handle AJAX requests in Spring MVC?](#45-how-do-you-handle-ajax-requests-in-spring-mvc) |
+| 46  | [What is the difference between @RequestMapping and @GetMapping?](#46-what-is-the-difference-between-requestmapping-and-getmapping) |
+| 47  | [How do you configure a custom interceptor in Spring MVC?](#47-how-do-you-configure-a-custom-interceptor-in-spring-mvc) |
+| 48  | [What is the use of @MatrixVariable annotation?](#48-what-is-the-use-of-matrixvariable-annotation) |
+| 49  | [How do you configure a custom validator in Spring MVC?](#49-how-do-you-configure-a-custom-validator-in-spring-mvc) |
+| 50  | [What is the role of FlashMap in Spring MVC?](#50-what-is-the-role-of-flashmap-in-spring-mvc) |
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
