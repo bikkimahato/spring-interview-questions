@@ -3518,3 +3518,429 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 #### **[⬆ Back to Top](#level--spring-core-hard)**
 ---
+
+# Spring MVC Easy Interview Questions and Answers
+### 1. What is Spring MVC?
+Spring MVC (Model-View-Controller) is a web framework from the Spring framework for building web applications. It follows the MVC design pattern, which separates the application into three interconnected components: Model, View, and Controller. This separation facilitates the development, testing, and maintenance of web applications.
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 2. Explain the architecture of Spring MVC.
+Spring MVC architecture is based on the DispatcherServlet that handles all incoming requests. Here's a detailed flow:
+
+1. **DispatcherServlet**: Central dispatcher for HTTP requests.
+2. **Handler Mapping**: Determines the appropriate controller based on the URL.
+3. **Controller**: Business logic execution and returning ModelAndView.
+4. **ModelAndView**: Combines model data and view information.
+5. **ViewResolver**: Resolves the view name to a specific view implementation.
+6. **View**: Renders the model data.
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 3. What are the main components of Spring MVC?
+- **DispatcherServlet**
+- **Handler Mapping**
+- **Controller**
+- **ModelAndView**
+- **ViewResolver**
+- **View**
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 4. How do you configure Spring MVC in a web application?
+
+### XML Configuration
+```xml
+<web-app>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+
+### Java Configuration
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+    // Configuration code
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 5. What is the role of DispatcherServlet in Spring MVC?
+DispatcherServlet is the core component of Spring MVC. It acts as a front controller, handling all incoming HTTP requests and delegating them to the appropriate controller based on the URL.
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 6. How do you define a controller in Spring MVC?
+
+### Example
+```java
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+public class MyController {
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String sayHello() {
+        return "hello"; // View name
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 7. What is the use of @RequestMapping annotation?
+@RequestMapping is used to map web requests to specific handler methods or classes. It can map URLs, request methods, request parameters, headers, and more.
+
+### Example
+```java
+@Controller
+public class MyController {
+    @RequestMapping(value = "/greet", method = RequestMethod.GET)
+    public String greet() {
+        return "greeting"; // View name
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 8. How do you handle form submission in Spring MVC?
+
+### Example
+```java
+@Controller
+public class FormController {
+    @RequestMapping(value = "/submitForm", method = RequestMethod.POST)
+    public String submitForm(@ModelAttribute("formData") FormData formData, Model model) {
+        model.addAttribute("data", formData);
+        return "formResult";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 9. What is ModelAndView in Spring MVC?
+ModelAndView is a holder for both model data and view name. It allows a controller to return both the data and the name of the view to be rendered.
+
+### Example
+```java
+@Controller
+public class MyController {
+    @RequestMapping("/showView")
+    public ModelAndView showView() {
+        ModelAndView mav = new ModelAndView("viewName");
+        mav.addObject("message", "Hello, World!");
+        return mav;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 10. How do you return JSON data from a Spring MVC controller?
+
+### Example
+```java
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class JsonController {
+    @RequestMapping(value = "/data", method = RequestMethod.GET)
+    @ResponseBody
+    public MyData getData() {
+        return new MyData("Hello", 123);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 11. Explain the difference between @Controller and @RestController.
+- **@Controller**: Used for regular controllers. It returns views.
+- **@RestController**: A combination of @Controller and @ResponseBody. It returns data directly, typically in JSON or XML format.
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 12. What is the use of @PathVariable annotation?
+@PathVariable is used to extract values from URI templates.
+
+### Example
+```java
+@Controller
+public class PathVariableController {
+    @RequestMapping("/user/{id}")
+    public String getUser(@PathVariable("id") int id, Model model) {
+        model.addAttribute("userId", id);
+        return "userView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 13. How do you inject a service into a Spring MVC controller?
+
+### Example
+```java
+@Controller
+public class MyController {
+    @Autowired
+    private MyService myService;
+
+    @RequestMapping("/service")
+    public String useService(Model model) {
+        String result = myService.performAction();
+        model.addAttribute("result", result);
+        return "serviceView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 14. What is the role of ViewResolver in Spring MVC?
+ViewResolver resolves view names to actual view implementations. It allows for a flexible view rendering strategy.
+
+### Example
+```java
+@Bean
+public InternalResourceViewResolver viewResolver() {
+    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+    resolver.setPrefix("/WEB-INF/views/");
+    resolver.setSuffix(".jsp");
+    return resolver;
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 15. How do you handle exceptions in Spring MVC?
+
+### Example
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception ex) {
+        ModelAndView mav = new ModelAndView("error");
+        mav.addObject("message", ex.getMessage());
+        return mav;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 16. What is the difference between @RequestParam and @PathVariable?
+- **@RequestParam**: Extracts values from query parameters.
+- **@PathVariable**: Extracts values from URI path segments.
+
+### Example
+```java
+// Using @RequestParam
+@RequestMapping("/search")
+public String search(@RequestParam("query") String query, Model model) {
+    model.addAttribute("query", query);
+    return "searchResult";
+}
+
+// Using @PathVariable
+@RequestMapping("/user/{id}")
+public String getUser(@PathVariable("id") int id, Model model) {
+    model.addAttribute("userId", id);
+    return "userView";
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 17. How do you perform validation in Spring MVC?
+
+### Example
+```java
+@Controller
+public class FormController {
+    @RequestMapping(value = "/submitForm", method = RequestMethod.POST)
+    public String submitForm(@Valid @ModelAttribute("formData") FormData formData, BindingResult result) {
+        if (result.hasErrors()) {
+            return "formView";
+        }
+        return "formResult";
+    }
+}
+
+// FormData class with validation
+public class FormData {
+    @NotEmpty
+    private String name;
+    @Email
+    private String email;
+
+    // Getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 18. What is the use of @ModelAttribute annotation?
+@ModelAttribute is used to bind a method parameter or method return value to a named model attribute.
+
+### Example
+```java
+@Controller
+public class MyController {
+    @ModelAttribute("message")
+    public String message() {
+        return "Hello, World!";
+    }
+
+    @RequestMapping("/showMessage")
+    public String showMessage() {
+        return "messageView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 19. How do you configure a view resolver in Spring MVC?
+
+### Example
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        return resolver;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 20. What is the default scope of a Spring MVC controller?
+The default scope of a Spring MVC controller is singleton.
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 21. How do you handle file uploads in Spring MVC?
+
+### Example
+```java
+@Controller
+public class FileUploadController {
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (!file.isEmpty()) {
+            // Save the file somewhere
+        }
+        return "uploadSuccess";
+    }
+}
+
+// Configuration for multipart resolver
+@Bean
+public MultipartResolver multipartResolver() {
+    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+    resolver.setMaxUploadSize(1000000); // Max upload size in bytes
+    return resolver;
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 22. What is the difference between @RequestBody and @ResponseBody?
+- **@RequestBody**: Binds the HTTP request body to a method parameter.
+- **@ResponseBody**: Indicates that the return value of a method should be used as the response body.
+
+### Example
+```java
+@RestController
+public class MyController {
+    @RequestMapping(value = "/data", method = RequestMethod.POST)
+    public MyData processData(@RequestBody MyData data) {
+        return data;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 23. How do you configure a multipart resolver in Spring MVC?
+
+### Example
+```java
+@Bean
+public MultipartResolver multipartResolver() {
+    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+    resolver.setMaxUploadSize(1000000); // Max upload size in bytes
+    return resolver;
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 24. How do you enable Spring MVC annotations?
+
+### Example
+```java
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "com.example")
+public class WebConfig implements WebMvcConfigurer {
+    // Configuration code
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 25. What is the use of @SessionAttributes annotation?
+@SessionAttributes is used to store model attributes in the session.
+
+### Example
+```java
+@Controller
+@SessionAttributes("user")
+public class SessionController {
+    @ModelAttribute("user")
+    public User createUser() {
+        return new User();
+    }
+
+    @RequestMapping("/userForm")
+    public String userForm() {
+        return "userForm";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
