@@ -3944,3 +3944,669 @@ public class SessionController {
 ```
 #### **[⬆ Back to Top](#level--spring-mvc-easy)**
 ---
+
+### 26. How do you manage static resources in Spring MVC?
+
+Spring MVC provides the `ResourceHandlerRegistry` to manage static resources like images, CSS, and JavaScript files. This is typically done by overriding the `addResourceHandlers` method in a configuration class that implements the `WebMvcConfigurer` interface.
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/public-resources/")
+                .setCachePeriod(3600)
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+In this example, any requests for resources under `/resources/**` will be served from the `/public-resources/` directory.
+
+### 27. Explain the role of HandlerMapping in Spring MVC.
+
+`HandlerMapping` is an interface in Spring MVC that maps web requests to handler objects. These handlers are typically annotated with `@RequestMapping` or its variant annotations. The `HandlerMapping` interface defines a single method, `getHandler`, which returns a handler for a given request.
+
+Example:
+
+```java
+@Controller
+public class MyController {
+    @RequestMapping("/home")
+    public String home() {
+        return "home";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+In this example, the `HandlerMapping` maps the `/home` URL to the `home` method of `MyController`.
+
+### 28. What is the use of @InitBinder annotation?
+
+The `@InitBinder` annotation is used to customize the data binding for a specific controller. It is often used for formatting and validating request parameters.
+
+Example:
+
+```java
+@Controller
+public class MyController {
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+
+    @RequestMapping("/submitDate")
+    public String submitDate(@RequestParam("date") Date date) {
+        // Handle the date
+        return "success";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 29. How do you handle cross-origin requests in Spring MVC?
+
+Cross-Origin Resource Sharing (CORS) can be managed using the `@CrossOrigin` annotation or by overriding the `addCorsMappings` method in a configuration class.
+
+Using `@CrossOrigin`:
+
+```java
+@RestController
+@CrossOrigin(origins = "http://example.com")
+public class MyController {
+    @GetMapping("/greeting")
+    public String greeting() {
+        return "Hello, World!";
+    }
+}
+```
+
+Using `addCorsMappings`:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://example.com")
+                .allowedMethods("GET", "POST");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 30. How do you configure internationalization in Spring MVC?
+
+Internationalization (i18n) in Spring MVC involves configuring a `LocaleResolver` and resource bundles.
+
+Configuration:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.US);
+        return slr;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+}
+```
+
+Resource bundles:
+
+```
+messages_en.properties
+messages_fr.properties
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 31. What is the role of Interceptor in Spring MVC?
+
+Interceptors in Spring MVC are used to process requests before they reach the controller or after the controller has processed the request. They can be used for logging, authentication, and modifying response data.
+
+Example:
+
+```java
+public class MyInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Pre-processing
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // Post-processing
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // After completion
+    }
+}
+```
+
+Configuration:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new MyInterceptor());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 32. How do you implement security in a Spring MVC application?
+
+Security in a Spring MVC application is typically implemented using Spring Security. This involves configuring security rules and authentication mechanisms.
+
+Example configuration:
+
+```java
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/", "/home").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+                .withUser("user").password("{noop}password").roles("USER");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 33. What is the difference between Spring MVC and Spring Boot?
+
+| Feature          | Spring MVC                                    | Spring Boot                                 |
+|------------------|-----------------------------------------------|---------------------------------------------|
+| Setup            | Manual configuration                          | Convention over configuration               |
+| Dependencies     | Manually managed                              | Auto-managed via starters                   |
+| Embedded Server  | Not included                                  | Includes embedded servers like Tomcat       |
+| Configuration    | XML or Java-based                             | Application properties or YAML              |
+| Focus            | Web application framework                     | Rapid application development               |
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 34. How do you configure a custom HandlerExceptionResolver in Spring MVC?
+
+Implement the `HandlerExceptionResolver` interface and override the `resolveException` method.
+
+Example:
+
+```java
+public class MyExceptionResolver implements HandlerExceptionResolver {
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", ex);
+        mav.setViewName("error");
+        return mav;
+    }
+}
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
+        resolvers.add(new MyExceptionResolver());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 35. What is the use of @CookieValue annotation?
+
+The `@CookieValue` annotation is used to bind the value of an HTTP cookie to a method parameter in a controller.
+
+Example:
+
+```java
+@Controller
+public class MyController {
+    @RequestMapping("/showCookie")
+    public String showCookie(@CookieValue("myCookie") String cookieValue) {
+        // Use the cookie value
+        return "showCookie";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 36. How do you configure message converters in Spring MVC?
+
+Message converters in Spring MVC are used to convert HTTP requests and responses. You can customize them by overriding the `configureMessageConverters` method.
+
+Example:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 37. What is the role of LocaleResolver in Spring MVC?
+
+`LocaleResolver` determines the current locale based on the request. It is used for internationalization.
+
+Example:
+
+```java
+@Bean
+public LocaleResolver localeResolver() {
+    SessionLocaleResolver slr = new SessionLocaleResolver();
+    slr.setDefaultLocale(Locale.US);
+    return slr;
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 38. How do you enable CORS in Spring MVC?
+
+CORS can be enabled using the `@CrossOrigin` annotation or by overriding the `addCorsMappings` method in a configuration class.
+
+Using `@CrossOrigin`:
+
+```java
+@RestController
+@CrossOrigin(origins = "http://example.com")
+public class MyController {
+    @GetMapping("/greeting")
+    public String greeting() {
+        return "Hello, World!";
+    }
+}
+```
+
+Using `addCorsMappings`:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://example.com")
+                .allowedMethods("GET", "POST");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 39. What is the use of @RequestHeader annotation?
+
+The `@RequestHeader` annotation is used to bind the value of an HTTP header to a method parameter in a controller.
+
+Example:
+
+```java
+@Controller
+public class MyController {
+    @RequestMapping("/showHeader")
+    public String showHeader(@RequestHeader("User-Agent") String userAgent) {
+        // Use the header value
+        return "showHeader";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 40. How do you implement RESTful web services using Spring MVC?
+
+To implement RESTful web services, use `@RestController` and HTTP method-specific annotations like `@GetMapping`, `@PostMapping`, etc.
+
+Example:
+
+```java
+@RestController
+@RequestMapping("/api")
+public class MyRestController {
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable("id") Long id) {
+        // Retrieve user by ID
+        return new User(id, "John Doe");
+    }
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        // Create new user
+        return user;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 41. How do you integrate Spring MVC with Thymeleaf?
+
+To integrate Thymeleaf with Spring MVC, add the Thymeleaf dependency and configure a `ThymeleafViewResolver`.
+
+Example configuration:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+Configuration class:
+
+```java
+@Configuration
+public class ThymeleafConfig {
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        return templateEngine;
+    }
+
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setPrefix("classpath:/templates/");
+        templateResolver.setSuffix(".html");
+        return templateResolver;
+    }
+
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        return viewResolver;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 42. What is the use of @ResponseStatus annotation?
+
+The `@ResponseStatus` annotation is used to mark a method or exception class with a status code and reason that should be returned.
+
+Example:
+
+```java
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 43. How do you configure a custom view resolver in Spring MVC?
+
+To configure a custom view resolver, create a bean of the `ViewResolver` type in your configuration class.
+
+Example:
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Bean
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        return resolver;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 44. What is the role of MultipartResolver in Spring MVC?
+
+`MultipartResolver` is used to handle file uploads in Spring MVC. It parses multipart requests.
+
+Example:
+
+```java
+@Bean
+public CommonsMultipartResolver multipartResolver() {
+    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+    resolver.setMaxUploadSize(1000000);
+    return resolver;
+}
+```
+
+Controller:
+
+```java
+@Controller
+public class FileUploadController {
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        // Handle file upload
+        return "uploadSuccess";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 45. How do you handle AJAX requests in Spring MVC?
+
+To handle AJAX requests, use `@RestController` or `@ResponseBody` in your controller methods.
+
+Example:
+
+```java
+@RestController
+public class MyController {
+    @GetMapping("/getData")
+    public String getData() {
+        return "Data from server";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 46. What is the difference between @RequestMapping and @GetMapping?
+
+`@RequestMapping` is a general-purpose annotation for mapping HTTP requests, while `@GetMapping` is a shortcut for `@RequestMapping` with the `GET` method.
+
+Example:
+
+```java
+// Using @RequestMapping
+@RequestMapping(value = "/home", method = RequestMethod.GET)
+public String home() {
+    return "home";
+}
+
+// Using @GetMapping
+@GetMapping("/home")
+public String home() {
+    return "home";
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 47. How do you configure a custom interceptor in Spring MVC?
+
+To configure a custom interceptor, implement the `HandlerInterceptor` interface and register it in your configuration class.
+
+Example:
+
+```java
+public class MyInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Pre-processing
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // Post-processing
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // After completion
+    }
+}
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new MyInterceptor());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 48. What is the use of @MatrixVariable annotation?
+
+The `@MatrixVariable` annotation is used to extract matrix variables from the URL.
+
+Example:
+
+```java
+@RestController
+public class MyController {
+    @GetMapping("/cars/{make}")
+    public String getCars(@PathVariable String make, @MatrixVariable int year) {
+        return "Make: " + make + ", Year: " + year;
+    }
+}
+```
+
+URL: `/cars/ford;year=2020`
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 49. How do you configure a custom validator in Spring MVC?
+
+To configure a custom validator, implement the `Validator` interface and register it.
+
+Example:
+
+```java
+public class MyValidator implements Validator {
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return MyModel.class.equals(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        MyModel model = (MyModel) target;
+        if (model.getField() == null) {
+            errors.rejectValue("field", "field.required");
+        }
+    }
+}
+
+@Controller
+public class MyController {
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(new MyValidator());
+    }
+
+    @PostMapping("/submit")
+    public String submit(@Valid MyModel model, BindingResult result) {
+        if (result.hasErrors()) {
+            return "form";
+        }
+        return "success";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 50. What is the role of FlashMap in Spring MVC?
+
+`FlashMap` is used to pass attributes from one request to another, typically after a redirect. It is useful for passing success or error messages.
+
+Example:
+
+```java
+@Controller
+public class MyController {
+    @RequestMapping("/save")
+    public String save(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "Save successful");
+        return "redirect:/result";
+    }
+
+    @RequestMapping("/result")
+    public String result(@ModelAttribute("message") String message) {
+        // Use the flash attribute
+        return "result";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
