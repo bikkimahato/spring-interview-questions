@@ -3945,6 +3945,7 @@ public class SessionController {
 #### **[⬆ Back to Top](#level--spring-mvc-easy)**
 ---
 
+# Spring MVC Medium Interview Questions and Answers
 ### 26. How do you manage static resources in Spring MVC?
 
 Spring MVC provides the `ResourceHandlerRegistry` to manage static resources like images, CSS, and JavaScript files. This is typically done by overriding the `addResourceHandlers` method in a configuration class that implements the `WebMvcConfigurer` interface.
@@ -3963,7 +3964,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 In this example, any requests for resources under `/resources/**` will be served from the `/public-resources/` directory.
@@ -3983,7 +3984,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 In this example, the `HandlerMapping` maps the `/home` URL to the `home` method of `MyController`.
@@ -4012,7 +4013,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 29. How do you handle cross-origin requests in Spring MVC?
@@ -4045,7 +4046,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 30. How do you configure internationalization in Spring MVC?
@@ -4084,7 +4085,7 @@ Resource bundles:
 messages_en.properties
 messages_fr.properties
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 31. What is the role of Interceptor in Spring MVC?
@@ -4124,7 +4125,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 32. How do you implement security in a Spring MVC application?
@@ -4160,7 +4161,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 33. What is the difference between Spring MVC and Spring Boot?
@@ -4173,7 +4174,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 | Configuration    | XML or Java-based                             | Application properties or YAML              |
 | Focus            | Web application framework                     | Rapid application development               |
 
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 34. How do you configure a custom HandlerExceptionResolver in Spring MVC?
@@ -4201,7 +4202,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 35. What is the use of @CookieValue annotation?
@@ -4220,7 +4221,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 36. How do you configure message converters in Spring MVC?
@@ -4238,7 +4239,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 37. What is the role of LocaleResolver in Spring MVC?
@@ -4255,7 +4256,7 @@ public LocaleResolver localeResolver() {
     return slr;
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 38. How do you enable CORS in Spring MVC?
@@ -4288,7 +4289,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 39. What is the use of @RequestHeader annotation?
@@ -4307,7 +4308,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 40. How do you implement RESTful web services using Spring MVC?
@@ -4333,7 +4334,7 @@ public class MyRestController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 41. How do you integrate Spring MVC with Thymeleaf?
@@ -4377,7 +4378,7 @@ public class ThymeleafConfig {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 42. What is the use of @ResponseStatus annotation?
@@ -4394,7 +4395,7 @@ public class ResourceNotFoundException extends RuntimeException {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 43. How do you configure a custom view resolver in Spring MVC?
@@ -4415,7 +4416,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 44. What is the role of MultipartResolver in Spring MVC?
@@ -4445,7 +4446,7 @@ public class FileUploadController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 45. How do you handle AJAX requests in Spring MVC?
@@ -4463,7 +4464,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 46. What is the difference between @RequestMapping and @GetMapping?
@@ -4485,7 +4486,7 @@ public String home() {
     return "home";
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 47. How do you configure a custom interceptor in Spring MVC?
@@ -4521,7 +4522,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 48. What is the use of @MatrixVariable annotation?
@@ -4542,7 +4543,7 @@ public class MyController {
 
 URL: `/cars/ford;year=2020`
 
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 49. How do you configure a custom validator in Spring MVC?
@@ -4583,7 +4584,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
 ### 50. What is the role of FlashMap in Spring MVC?
@@ -4608,9 +4609,10 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-medium)**
 ---
 
+# Spring MVC Hard Interview Questions and Answers
 ### 51. How do you implement asynchronous request processing in Spring MVC?
 
 To implement asynchronous request processing in Spring MVC, you can use the `DeferredResult` or `Callable` classes. This allows you to handle long-running requests without blocking the servlet container.
