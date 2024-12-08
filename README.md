@@ -4654,7 +4654,7 @@ public class AsyncController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 52. Explain the process of configuring Spring MVC with Java-based configuration.
@@ -4701,7 +4701,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 53. How do you configure a custom message converter in Spring MVC?
@@ -4721,7 +4721,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 54. What is the use of `@ControllerAdvice` annotation?
@@ -4740,7 +4740,7 @@ public class GlobalExceptionHandler {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 55. How do you handle WebSocket communication in a Spring MVC application?
@@ -4769,7 +4769,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 56. How do you configure a custom locale resolver in Spring MVC?
@@ -4796,7 +4796,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 57. Explain the role of `WebApplicationInitializer` in Spring MVC.
@@ -4820,7 +4820,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 58. How do you implement file download functionality in Spring MVC?
@@ -4849,7 +4849,7 @@ public class FileDownloadController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 59. How do you configure a custom exception handler in Spring MVC?
@@ -4868,7 +4868,7 @@ public class CustomExceptionHandler {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 60. What is the use of `@RestControllerAdvice` annotation?
@@ -4887,7 +4887,7 @@ public class RestExceptionHandler {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 61. How do you integrate Spring MVC with Hibernate?
@@ -4935,7 +4935,7 @@ public class AppConfig {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 62. Explain the process of handling multipart requests in Spring MVC.
@@ -4978,7 +4978,7 @@ public class FileUploadController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 63. How do you configure a custom argument resolver in Spring MVC?
@@ -5013,7 +5013,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 64. What is the role of `ContentNegotiationManager` in Spring MVC?
@@ -5037,7 +5037,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 65. How do you implement HATEOAS in a Spring MVC application?
@@ -5069,7 +5069,7 @@ class MyResource {
     // getters and setters
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 66. How do you configure a custom handler method return value handler in Spring MVC?
@@ -5104,7 +5104,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 67. Explain the process of configuring Spring MVC with XML-based configuration.
@@ -5154,7 +5154,7 @@ XML-based configuration involves defining beans and settings in an XML file. Thi
 
 </beans>
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 68. How do you handle JSONP requests in Spring MVC?
@@ -5198,7 +5198,7 @@ class MyResource {
     // getters and setters
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 69. How do you configure a custom view in Spring MVC?
@@ -5243,14 +5243,14 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 70. What is the role of `HandlerAdapter` in Spring MVC?
 
 `HandlerAdapter` is an interface that helps to invoke the handler methods based on the type of the handler. It is responsible for executing the handler with the appropriate parameters and returning the `ModelAndView`.
 
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 71. How do you configure a custom model attribute in Spring MVC?
@@ -5274,7 +5274,7 @@ public class MyController {
     }
 }
 ```
-#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
 ---
 
 ### 72. How do you implement server-sent events (SSE) in a Spring MVC application?
@@ -5305,5 +5305,218 @@ public class SseController {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
+---
+
+### 73. How do you configure a custom form handler in Spring MVC?
+
+To configure a custom form handler, use the `@ModelAttribute` annotation and a corresponding handler method.
+
+#### Example
+
+```java
+@Controller
+public class FormController {
+
+    @GetMapping("/form")
+    public String showForm(Model model) {
+        model.addAttribute("formObject", new MyFormObject());
+        return "formView";
+    }
+
+    @PostMapping("/form")
+    public String handleForm(@ModelAttribute("formObject") MyFormObject formObject) {
+        // handle form submission
+        return "resultView";
+    }
+}
+
+class MyFormObject {
+    // form fields
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
+---
+
+### 74. What is the use of @JsonView annotation in Spring MVC?
+
+The `@JsonView` annotation is used in Spring MVC to control the serialization of JSON objects. When a REST API returns a JSON response, there may be scenarios where different clients require different views of the same data object. The `@JsonView` annotation allows you to define multiple views and control which properties of the object are serialized based on the view requested.
+
+#### How it works:
+
+1. **Define Views**: Create interfaces to represent different views.
+2. **Annotate Fields**: Use the `@JsonView` annotation on fields to include them in specific views.
+3. **Specify View in Controller**: Use the `@JsonView` annotation in the controller method to specify which view to use for serialization.
+
+#### Example:
+
+```java
+// Step 1: Define Views
+public class Views {
+    public static class Public {}
+    public static class Internal extends Public {}
+}
+
+// Step 2: Annotate Fields
+public class User {
+    @JsonView(Views.Public.class)
+    public String username;
+
+    @JsonView(Views.Internal.class)
+    public String password;
+}
+
+// Step 3: Specify View in Controller
+@RestController
+public class UserController {
+
+    @GetMapping("/user")
+    @JsonView(Views.Public.class)
+    public User getUserPublicView() {
+        User user = new User();
+        user.username = "john_doe";
+        user.password = "secret";
+        return user;
+    }
+
+    @GetMapping("/user/internal")
+    @JsonView(Views.Internal.class)
+    public User getUserInternalView() {
+        User user = new User();
+        user.username = "john_doe";
+        user.password = "secret";
+        return user;
+    }
+}
+```
+
+#### Explanation:
+
+- **Views**: Define different views using interfaces.
+- **Annotations on Fields**: Annotate fields in the User class to specify which fields belong to which views.
+- **Controller Methods**: In the controller, specify the view to use for serialization using the `@JsonView` annotation.
+
+In this example:
+- A request to `/user` will return only the `username` field.
+- A request to `/user/internal` will return both `username` and `password` fields.
+
+#### **[⬆ Back to Top](#level--spring-mvc-hard)**
+---
+
+### 75. How do you implement OAuth2 authentication in a Spring MVC application?
+
+OAuth2 is a widely-used protocol for authorization that allows third-party applications to access a user's resources without exposing their credentials. Implementing OAuth2 in a Spring MVC application involves configuring Spring Security to handle the OAuth2 flow.
+
+#### Steps to Implement OAuth2 Authentication:
+
+1. **Add Dependencies**: Include the necessary Spring Security OAuth2 dependencies.
+2. **Configure Security**: Configure OAuth2 resources and security.
+3. **Create Security Configuration**: Define security rules and specify the OAuth2 login configurations.
+
+#### Example:
+
+1. **Add Dependencies**:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+```
+
+2. **Configure Security**:
+
+Create a `application.yml` or `application.properties` file with OAuth2 client details:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_CLIENT_ID
+            client-secret: YOUR_CLIENT_SECRET
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-authentication-method: post
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+```
+
+3. **Create Security Configuration**:
+
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests(authorizeRequests ->
+                authorizeRequests
+                    .antMatchers("/", "/login**", "/error**").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .oauth2Login(oauth2Login ->
+                oauth2Login
+                    .loginPage("/login")
+                    .defaultSuccessURL("/home", true)
+            );
+    }
+}
+```
+
+4. **Create Controller**:
+
+```java
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+    @GetMapping("/home")
+    public String home(Model model, @AuthenticationPrincipal OidcUser principal) {
+        model.addAttribute("name", principal.getName());
+        return "home";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+}
+```
+
+#### Explanation:
+
+- **Dependencies**: Add Spring Security and OAuth2 client dependencies.
+- **Configuration**: Set up OAuth2 client details in application properties.
+- **Security Configuration**: Configure HTTP security to allow OAuth2 login.
+- **Controller**: Create a controller to handle login and home page requests.
+
+In this example, the application supports Google OAuth2 login. Users can log in via Google, and after successful authentication, they are redirected to the home page. The logged-in user's details are accessible via the `@AuthenticationPrincipal` annotation.
+
+These steps provide a basic setup for OAuth2 authentication in a Spring MVC application. Depending on your requirements, you may need to customize and extend these configurations.
+
 #### **[⬆ Back to Top](#level--spring-mvc-easy)**
 ---
