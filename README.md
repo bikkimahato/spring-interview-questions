@@ -4610,3 +4610,700 @@ public class MyController {
 ```
 #### **[⬆ Back to Top](#level--spring-mvc-easy)**
 ---
+
+### 51. How do you implement asynchronous request processing in Spring MVC?
+
+To implement asynchronous request processing in Spring MVC, you can use the `DeferredResult` or `Callable` classes. This allows you to handle long-running requests without blocking the servlet container.
+
+#### Example using `Callable`
+
+```java
+@Controller
+public class AsyncController {
+
+    @RequestMapping("/asyncCallable")
+    public @ResponseBody Callable<String> processAsyncCallable() {
+        return () -> {
+            // Simulate a long-running task
+            Thread.sleep(2000);
+            return "Task completed";
+        };
+    }
+}
+```
+
+#### Example using `DeferredResult`
+
+```java
+@Controller
+public class AsyncController {
+
+    @RequestMapping("/asyncDeferred")
+    public @ResponseBody DeferredResult<String> processAsyncDeferred() {
+        DeferredResult<String> deferredResult = new DeferredResult<>();
+        new Thread(() -> {
+            // Simulate a long-running task
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            deferredResult.setResult("Task completed");
+        }).start();
+        return deferredResult;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 52. Explain the process of configuring Spring MVC with Java-based configuration.
+
+Java-based configuration in Spring MVC involves creating a configuration class annotated with `@Configuration` and `@EnableWebMvc`. This class replaces the traditional `web.xml` and Spring XML configuration files.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = "com.example")
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".jsp");
+        return resolver;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
+}
+```
+
+You also need to create an initializer class to replace `web.xml`:
+
+```java
+public class WebAppInitializer implements WebApplicationInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(WebConfig.class);
+        context.setServletContext(servletContext);
+
+        ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
+        servlet.setLoadOnStartup(1);
+        servlet.addMapping("/");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 53. How do you configure a custom message converter in Spring MVC?
+
+To configure a custom message converter, you can override the `configureMessageConverters` method in your configuration class.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 54. What is the use of `@ControllerAdvice` annotation?
+
+The `@ControllerAdvice` annotation is used to define a global exception handler, data binder, and model attribute for all controllers. It helps to separate cross-cutting concerns from individual controllers.
+
+#### Example
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception ex) {
+        return new ResponseEntity<>("Global Exception Handler: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 55. How do you handle WebSocket communication in a Spring MVC application?
+
+To handle WebSocket communication, you need to configure a `WebSocketConfig` class and use `@EnableWebSocket` annotation.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebSocket
+public class WebSocketConfig implements WebSocketConfigurer {
+
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(new MyWebSocketHandler(), "/websocket");
+    }
+}
+
+public class MyWebSocketHandler extends TextWebSocketHandler {
+
+    @Override
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        String payload = message.getPayload();
+        session.sendMessage(new TextMessage("Received: " + payload));
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 56. How do you configure a custom locale resolver in Spring MVC?
+
+You can configure a custom locale resolver by implementing the `LocaleResolver` interface and then defining it as a bean in your configuration.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.US);
+        return localeResolver;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LocaleChangeInterceptor());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 57. Explain the role of `WebApplicationInitializer` in Spring MVC.
+
+`WebApplicationInitializer` is an interface provided by Spring that allows you to configure the `ServletContext` programmatically. It replaces the traditional `web.xml` file.
+
+#### Example
+
+```java
+public class WebAppInitializer implements WebApplicationInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(WebConfig.class);
+        context.setServletContext(servletContext);
+
+        ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
+        servlet.setLoadOnStartup(1);
+        servlet.addMapping("/");
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 58. How do you implement file download functionality in Spring MVC?
+
+To implement file download functionality, you can use `ResponseEntity` to set the headers and content.
+
+#### Example
+
+```java
+@Controller
+public class FileDownloadController {
+
+    @RequestMapping("/download")
+    public ResponseEntity<Resource> downloadFile() {
+        Path path = Paths.get("path/to/file.txt");
+        Resource resource = new FileSystemResource(path.toFile());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=file.txt");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(path.toFile().length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 59. How do you configure a custom exception handler in Spring MVC?
+
+You can configure a custom exception handler using the `@ExceptionHandler` annotation within a `@ControllerAdvice` class.
+
+#### Example
+
+```java
+@ControllerAdvice
+public class CustomExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>("Resource not found: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 60. What is the use of `@RestControllerAdvice` annotation?
+
+`@RestControllerAdvice` is a specialized version of `@ControllerAdvice` that is used to handle exceptions and provide custom responses for RESTful web services. It combines `@ControllerAdvice` and `@ResponseBody`.
+
+#### Example
+
+```java
+@RestControllerAdvice
+public class RestExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>("Resource not found: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 61. How do you integrate Spring MVC with Hibernate?
+
+To integrate Spring MVC with Hibernate, you need to configure a `DataSource`, `SessionFactory`, and transaction management.
+
+#### Example
+
+```java
+@Configuration
+@EnableTransactionManagement
+public class AppConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
+        dataSource.setUsername("root");
+        dataSource.setPassword("password");
+        return dataSource;
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("com.example.model");
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        return sessionFactory;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.put("hibernate.show_sql", "true");
+        return properties;
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 62. Explain the process of handling multipart requests in Spring MVC.
+
+To handle multipart requests, you need to configure a `MultipartResolver` bean in your configuration class.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(5000000);
+        return multipartResolver;
+    }
+}
+
+@Controller
+public class FileUploadController {
+
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get("/uploads/" + file.getOriginalFilename());
+                Files.write(path, bytes);
+                return "File uploaded successfully";
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "File upload failed";
+            }
+        } else {
+            return "File is empty";
+        }
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 63. How do you configure a custom argument resolver in Spring MVC?
+
+To configure a custom argument resolver, implement the `HandlerMethodArgumentResolver` interface and register it in your configuration class.
+
+#### Example
+
+```java
+public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
+
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return parameter.getParameterType().equals(MyCustomObject.class);
+    }
+
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        // Custom logic to resolve the argument
+        return new MyCustomObject();
+    }
+}
+
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new CustomArgumentResolver());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 64. What is the role of `ContentNegotiationManager` in Spring MVC?
+
+`ContentNegotiationManager` is responsible for determining the content type of the response based on the request. It uses various strategies like path extension, query parameter, and `Accept` header.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        configurer.favorPathExtension(true)
+                  .favorParameter(false)
+                  .ignoreAcceptHeader(false)
+                  .useRegisteredExtensionsOnly(false)
+                  .defaultContentType(MediaType.APPLICATION_JSON);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 65. How do you implement HATEOAS in a Spring MVC application?
+
+To implement HATEOAS, use Spring HATEOAS library to add hypermedia links to your resources.
+
+#### Example
+
+```java
+@RestController
+public class MyController {
+
+    @GetMapping("/resource")
+    public Resource<MyResource> getResource() {
+        MyResource resource = new MyResource("data");
+        Resource<MyResource> resourceWithLinks = new Resource<>(resource);
+        resourceWithLinks.add(linkTo(methodOn(MyController.class).getResource()).withSelfRel());
+        return resourceWithLinks;
+    }
+}
+
+class MyResource {
+    private String data;
+
+    public MyResource(String data) {
+        this.data = data;
+    }
+
+    // getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 66. How do you configure a custom handler method return value handler in Spring MVC?
+
+To configure a custom handler method return value handler, implement the `HandlerMethodReturnValueHandler` interface and register it in your configuration class.
+
+#### Example
+
+```java
+public class CustomReturnValueHandler implements HandlerMethodReturnValueHandler {
+
+    @Override
+    public boolean supportsReturnType(MethodParameter returnType) {
+        return returnType.getParameterType().equals(MyCustomObject.class);
+    }
+
+    @Override
+    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest) throws Exception {
+        // Custom logic to handle the return value
+        mavContainer.setRequestHandled(true);
+    }
+}
+
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
+        returnValueHandlers.add(new CustomReturnValueHandler());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 67. Explain the process of configuring Spring MVC with XML-based configuration.
+
+XML-based configuration involves defining beans and settings in an XML file. This approach is less common but still supported.
+
+#### Example
+
+`web.xml`
+
+```xml
+<web-app>
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+
+`dispatcher-servlet.xml`
+
+```xml
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/mvc 
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.example"/>
+
+    <mvc:annotation-driven/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 68. How do you handle JSONP requests in Spring MVC?
+
+To handle JSONP requests, you can use the `MappingJackson2JsonView` with a `JsonpCallbackFilter`.
+
+#### Example
+
+```java
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public FilterRegistrationBean<JsonpCallbackFilter> jsonpCallbackFilter() {
+        FilterRegistrationBean<JsonpCallbackFilter> filterRegistrationBean = new FilterRegistrationBean<>(new JsonpCallbackFilter());
+        filterRegistrationBean.addUrlPatterns("/jsonp/*");
+        return filterRegistrationBean;
+    }
+}
+
+@RestController
+public class JsonpController {
+
+    @GetMapping("/jsonp/resource")
+    public MappingJacksonValue getJsonpResource(@RequestParam("callback") String callback) {
+        MyResource resource = new MyResource("data");
+        MappingJacksonValue value = new MappingJacksonValue(resource);
+        value.setJsonpFunction(callback);
+        return value;
+    }
+}
+
+class MyResource {
+    private String data;
+
+    public MyResource(String data) {
+        this.data = data;
+    }
+
+    // getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 69. How do you configure a custom view in Spring MVC?
+
+To configure a custom view, you can extend the `AbstractView` class and define it as a bean in your configuration class.
+
+#### Example
+
+```java
+public class MyCustomView extends AbstractView {
+
+    @Override
+    protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
+                                           HttpServletResponse response) throws Exception {
+        response.setContentType("text/plain");
+        PrintWriter writer = response.getWriter();
+        writer.write("Custom View Content");
+    }
+}
+
+@Configuration
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public ViewResolver viewResolver() {
+        return new BeanNameViewResolver();
+    }
+
+    @Bean
+    public View myCustomView() {
+        return new MyCustomView();
+    }
+}
+
+@Controller
+public class MyController {
+
+    @GetMapping("/customView")
+    public String getCustomView() {
+        return "myCustomView";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 70. What is the role of `HandlerAdapter` in Spring MVC?
+
+`HandlerAdapter` is an interface that helps to invoke the handler methods based on the type of the handler. It is responsible for executing the handler with the appropriate parameters and returning the `ModelAndView`.
+
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 71. How do you configure a custom model attribute in Spring MVC?
+
+To configure a custom model attribute, use the `@ModelAttribute` annotation in your controller methods.
+
+#### Example
+
+```java
+@Controller
+public class MyController {
+
+    @ModelAttribute("myAttribute")
+    public MyCustomObject populateModel() {
+        return new MyCustomObject();
+    }
+
+    @GetMapping("/modelAttribute")
+    public String handleRequest() {
+        return "viewName";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
+
+### 72. How do you implement server-sent events (SSE) in a Spring MVC application?
+
+To implement SSE, you can use the `SseEmitter` class.
+
+#### Example
+
+```java
+@RestController
+public class SseController {
+
+    @GetMapping("/sse")
+    public SseEmitter handleSse() {
+        SseEmitter emitter = new SseEmitter();
+        new Thread(() -> {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    emitter.send("SSE event " + i);
+                    Thread.sleep(1000);
+                }
+                emitter.complete();
+            } catch (Exception e) {
+                emitter.completeWithError(e);
+            }
+        }).start();
+        return emitter;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-mvc-easy)**
+---
