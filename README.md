@@ -10,9 +10,9 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 
 ## Topics Covered
 
-- Spring Core
-- Spring MVC
-- Spring Data JPA
+- [Spring Core](#spring-core)
+- [Spring MVC](#spring-mvc)
+- [Spring Data JPA](#spring-data-jpa)
 - Spring Security
 - Spring AOP
 - Spring Cloud
@@ -291,6 +291,47 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 73  | [How do you configure a custom form handler in Spring MVC?](#73-how-do-you-configure-a-custom-form-handler-in-spring-mvc) |
 | 74  | [What is the use of @JsonView annotation in Spring MVC?](#74-what-is-the-use-of-jsonview-annotation-in-spring-mvc) |
 | 75  | [How do you implement OAuth2 authentication in a Spring MVC application?](#75-how-do-you-implement-oauth2-authentication-in-a-spring-mvc-application) |
+
+## Spring Data JPA
+### Table of Contents
+### Level : Spring Data JPA Easy
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is Spring Data JPA?](#1-what-is-spring-data-jpa) |
+| 2   | [What is the purpose of the `@Entity` annotation in JPA?](#2-what-is-the-purpose-of-the-entity-annotation-in-jpa) |
+| 3   | [What is an EntityManager in JPA?](#3-what-is-an-entitymanager-in-jpa) |
+| 4   | [What is the role of the `@Id` annotation in JPA?](#4-what-is-the-role-of-the-id-annotation-in-jpa) |
+| 5   | [How do you define a primary key in a JPA entity?](#5-how-do-you-define-a-primary-key-in-a-jpa-entity) |
+| 6   | [What is the difference between `findById` and `getOne` methods in JPA?](#6-what-is-the-difference-between-findbyid-and-getone-methods-in-jpa) |
+| 7   | [What is the purpose of the `@Table` annotation in JPA?](#7-what-is-the-purpose-of-the-table-annotation-in-jpa) |
+| 8   | [Explain the difference between `@Column` and `@JoinColumn`.](#8-explain-the-difference-between-column-and-joincolumn) |
+| 9   | [What is the role of the `@GeneratedValue` annotation in JPA?](#9-what-is-the-role-of-the-generatedvalue-annotation-in-jpa) |
+| 10  | [What is the default fetch type for `@OneToMany` and `@ManyToOne` relationships in JPA?](#10-what-is-the-default-fetch-type-for-onetomany-and-manytoone-relationships-in-jpa) |
+| 11  | [How do you define a one-to-many relationship in JPA?](#11-how-do-you-define-a-one-to-many-relationship-in-jpa) |
+| 12  | [What is a repository in Spring Data JPA?](#12-what-is-a-repository-in-spring-data-jpa) |
+| 13  | [What is the purpose of the `@Repository` annotation in Spring Data JPA?](#13-what-is-the-purpose-of-the-repository-annotation-in-spring-data-jpa) |
+| 14  | [How do you create a custom query in Spring Data JPA?](#14-how-do-you-create-a-custom-query-in-spring-data-jpa) |
+| 15  | [What is the purpose of the `@Query` annotation in Spring Data JPA?](#15-what-is-the-purpose-of-the-query-annotation-in-spring-data-jpa) |
+| 16  | [What is a JPQL?](#16-what-is-a-jpql) |
+| 17  | [What is the difference between JPQL and SQL?](#17-what-is-the-difference-between-jpql-and-sql) |
+| 18  | [What is the purpose of the `@Modifying` annotation in Spring Data JPA?](#18-what-is-the-purpose-of-the-modifying-annotation-in-spring-data-jpa) |
+| 19  | [How do you handle transactions in Spring Data JPA?](#19-how-do-you-handle-transactions-in-spring-data-jpa) |
+| 20  | [What is the `@Transactional` annotation used for in Spring Data JPA?](#20-what-is-the-transactional-annotation-used-for-in-spring-data-jpa) |
+| 21  | [How do you paginate results in Spring Data JPA?](#21-how-do-you-paginate-results-in-spring-data-jpa) |
+| 22  | [What is the `Pageable` interface in Spring Data JPA?](#22-what-is-the-pageable-interface-in-spring-data-jpa) |
+| 23  | [What is the `Page` interface in Spring Data JPA?](#23-what-is-the-page-interface-in-spring-data-jpa) |
+| 24  | [How do you sort results in Spring Data JPA?](#24-how-do-you-sort-results-in-spring-data-jpa) |
+| 25  | [What is a derived query method in Spring Data JPA?](#25-what-is-a-derived-query-method-in-spring-data-jpa) |
+| 26  | [What is the purpose of the `@NamedQuery` annotation in JPA?](#26-what-is-the-purpose-of-the-namedquery-annotation-in-jpa) |
+| 27  | [What is an entity lifecycle in JPA?](#27-what-is-an-entity-lifecycle-in-jpa) |
+| 28  | [What are the different states of an entity in JPA?](#28-what-are-the-different-states-of-an-entity-in-jpa) |
+| 29  | [What is the purpose of the `@PrePersist` annotation in JPA?](#29-what-is-the-purpose-of-the-prepersist-annotation-in-jpa) |
+| 30  | [What is the purpose of the `@PostPersist` annotation in JPA?](#30-what-is-the-purpose-of-the-postpersist-annotation-in-jpa) |
+| 31  | [What is the purpose of the `@PreUpdate` annotation in JPA?](#31-what-is-the-purpose-of-the-preupdate-annotation-in-jpa) |
+| 32  | [What is the purpose of the `@PostUpdate` annotation in JPA?](#32-what-is-the-purpose-of-the-postupdate-annotation-in-jpa) |
+| 33  | [What is the purpose of the `@PreRemove` annotation in JPA?](#33-what-is-the-purpose-of-the-preremove-annotation-in-jpa) |
+| 34  | [What is the purpose of the `@PostRemove` annotation in JPA?](#34-what-is-the-purpose-of-the-postremove-annotation-in-jpa) |
+| 35  | [What is the purpose of the `@PostLoad` annotation in JPA?](#35-what-is-the-purpose-of-the-postload-annotation-in-jpa) |
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
