@@ -333,6 +333,40 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 34  | [What is the purpose of the `@PostRemove` annotation in JPA?](#34-what-is-the-purpose-of-the-postremove-annotation-in-jpa) |
 | 35  | [What is the purpose of the `@PostLoad` annotation in JPA?](#35-what-is-the-purpose-of-the-postload-annotation-in-jpa) |
 
+### Level : Spring Data JPA Medium
+| No. | Questions |
+| --- | --------- |
+| 36  | [Explain the different types of primary key generation strategies in JPA.](#36-explain-the-different-types-of-primary-key-generation-strategies-in-jpa) |
+| 37  | [What is the difference between `@OneToMany` and `@ManyToMany` relationships in JPA?](#37-what-is-the-difference-between-onetomany-and-manytomany-relationships-in-jpa) |
+| 38  | [How do you handle bi-directional relationships in JPA?](#38-how-do-you-handle-bi-directional-relationships-in-jpa) |
+| 39  | [What is the `@MappedBy` attribute used for in JPA?](#39-what-is-the-mappedby-attribute-used-for-in-jpa) |
+| 40  | [What is the purpose of the `@ElementCollection` annotation in JPA?](#40-what-is-the-purpose-of-the-elementcollection-annotation-in-jpa) |
+| 41  | [How do you handle composite keys in JPA?](#41-how-do-you-handle-composite-keys-in-jpa) |
+| 42  | [What is the `@Embeddable` annotation used for in JPA?](#42-what-is-the-embeddable-annotation-used-for-in-jpa) |
+| 43  | [What is the purpose of the `@EmbeddedId` annotation in JPA?](#43-what-is-the-purpose-of-the-embeddedid-annotation-in-jpa) |
+| 44  | [What is the role of the `@Inheritance` annotation in JPA?](#44-what-is-the-role-of-the-inheritance-annotation-in-jpa) |
+| 45  | [Explain the different inheritance strategies in JPA.](#45-explain-the-different-inheritance-strategies-in-jpa) |
+| 46  | [What is the purpose of the `@DiscriminatorColumn` annotation in JPA?](#46-what-is-the-purpose-of-the-discriminatorcolumn-annotation-in-jpa) |
+| 47  | [What is the purpose of the `@DiscriminatorValue` annotation in JPA?](#47-what-is-the-purpose-of-the-discriminatorvalue-annotation-in-jpa) |
+| 48  | [What is the purpose of the `@SecondaryTable` annotation in JPA?](#48-what-is-the-purpose-of-the-secondarytable-annotation-in-jpa) |
+| 49  | [How do you define a native query in Spring Data JPA?](#49-how-do-you-define-a-native-query-in-spring-data-jpa) |
+| 50  | [What is the purpose of the `@NamedNativeQuery` annotation in JPA?](#50-what-is-the-purpose-of-the-namednativequery-annotation-in-jpa) |
+| 51  | [How do you handle optimistic locking in JPA?](#51-how-do-you-handle-optimistic-locking-in-jpa) |
+| 52  | [What is the purpose of the `@Version` annotation in JPA?](#52-what-is-the-purpose-of-the-version-annotation-in-jpa) |
+| 53  | [How do you handle pessimistic locking in JPA?](#53-how-do-you-handle-pessimistic-locking-in-jpa) |
+| 54  | [What is the `EntityGraph` in JPA and how is it used?](#54-what-is-the-entitygraph-in-jpa-and-how-is-it-used) |
+| 55  | [What are the different types of fetching strategies in JPA?](#55-what-are-the-different-types-of-fetching-strategies-in-jpa) |
+| 56  | [What is the difference between eager and lazy loading in JPA?](#56-what-is-the-difference-between-eager-and-lazy-loading-in-jpa) |
+| 57  | [How do you handle batch processing in Spring Data JPA?](#57-how-do-you-handle-batch-processing-in-spring-data-jpa) |
+| 58  | [What is the purpose of the `@BatchSize` annotation in JPA?](#58-what-is-the-purpose-of-the-batchsize-annotation-in-jpa) |
+| 59  | [How do you handle native SQL queries in Spring Data JPA?](#59-how-do-you-handle-native-sql-queries-in-spring-data-jpa) |
+| 60  | [What is the purpose of the `@SqlResultSetMapping` annotation in JPA?](#60-what-is-the-purpose-of-the-sqlresultsetmapping-annotation-in-jpa) |
+| 61  | [How do you handle auditing in Spring Data JPA?](#61-how-do-you-handle-auditing-in-spring-data-jpa) |
+| 62  | [What is the purpose of the `@CreatedDate` annotation in JPA?](#62-what-is-the-purpose-of-the-createddate-annotation-in-jpa) |
+| 63  | [What is the purpose of the `@LastModifiedDate` annotation in JPA?](#63-what-is-the-purpose-of-the-lastmodifieddate-annotation-in-jpa) |
+| 64  | [What is the purpose of the `@CreatedBy` annotation in JPA?](#64-what-is-the-purpose-of-the-createdby-annotation-in-jpa) |
+| 65  | [What is the purpose of the `@LastModifiedBy` annotation in JPA?](#65-what-is-the-purpose-of-the-lastmodifiedby-annotation-in-jpa) |
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
