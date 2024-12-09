@@ -333,6 +333,45 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 34  | [What is the purpose of the `@PostRemove` annotation in JPA?](#34-what-is-the-purpose-of-the-postremove-annotation-in-jpa) |
 | 35  | [What is the purpose of the `@PostLoad` annotation in JPA?](#35-what-is-the-purpose-of-the-postload-annotation-in-jpa) |
 
+### Level : Spring Data JPA Hard
+| No. | Questions |
+| --- | --------- |
+| 66  | [Explain the concept of entity graph in JPA and how it can be used to optimize performance.](#66-explain-the-concept-of-entity-graph-in-jpa-and-how-it-can-be-used-to-optimize-performance) |
+| 67  | [How do you handle dynamic queries in Spring Data JPA?](#67-how-do-you-handle-dynamic-queries-in-spring-data-jpa) |
+| 68  | [What is the role of the `Criteria API` in JPA?](#68-what-is-the-role-of-the-criteria-api-in-jpa) |
+| 69  | [How do you use the `Criteria API` to create dynamic queries in JPA?](#69-how-do-you-use-the-criteria-api-to-create-dynamic-queries-in-jpa) |
+| 70  | [What is the purpose of the `Specification` interface in Spring Data JPA?](#70-what-is-the-purpose-of-the-specification-interface-in-spring-data-jpa) |
+| 71  | [How do you use the `Specification` interface to create dynamic queries in JPA?](#71-how-do-you-use-the-specification-interface-to-create-dynamic-queries-in-jpa) |
+| 72  | [What is the purpose of the `@Cacheable` annotation in JPA?](#72-what-is-the-purpose-of-the-cacheable-annotation-in-jpa) |
+| 73  | [How do you configure second-level cache in JPA?](#73-how-do-you-configure-second-level-cache-in-jpa) |
+| 74  | [What is the difference between first-level and second-level cache in JPA?](#74-what-is-the-difference-between-first-level-and-second-level-cache-in-jpa) |
+| 75  | [Explain the concept of dirty checking in JPA and how it works.](#75-explain-the-concept-of-dirty-checking-in-jpa-and-how-it-works) |
+| 76  | [Explain the concept of cascade types in JPA and how they affect entity relationships.](#76-explain-the-concept-of-cascade-types-in-jpa-and-how-they-affect-entity-relationships) |
+| 77  | [What are the different cascade types available in JPA and when would you use each?](#77-what-are-the-different-cascade-types-available-in-jpa-and-when-would-you-use-each) |
+| 78  | [How do you handle orphan removal in JPA and what is the purpose of the `@OneToMany(orphanRemoval = true)` annotation?](#78-how-do-you-handle-orphan-removal-in-jpa-and-what-is-the-purpose-of-the-onetomanyorphanremoval--true-annotation) |
+| 79  | [What are the different types of entity graphs (attribute node, subgraph) in JPA and how are they used?](#79-what-are-the-different-types-of-entity-graphs-attribute-node-subgraph-in-jpa-and-how-are-they-used) |
+| 80  | [How do you optimize performance using Fetch Joins in JPQL?](#80-how-do-you-optimize-performance-using-fetch-joins-in-jpql) |
+| 81  | [What is the N+1 select problem in JPA and how can it be mitigated?](#81-what-is-the-n1-select-problem-in-jpa-and-how-can-it-be-mitigated) |
+| 82  | [Explain the purpose of the `@EntityListeners` annotation and how it is used in auditing.](#82-explain-the-purpose-of-the-entitylisteners-annotation-and-how-it-is-used-in-auditing) |
+| 83  | [How do you handle multi-tenancy in JPA and what are the different strategies available?](#83-how-do-you-handle-multi-tenancy-in-jpa-and-what-are-the-different-strategies-available) |
+| 84  | [How do you configure and use the `@SequenceGenerator` and `@TableGenerator` annotations in JPA?](#84-how-do-you-configure-and-use-the-sequencegenerator-and-tablegenerator-annotations-in-jpa) |
+| 85  | [What is the purpose of the `@Converter` annotation in JPA and how do you use it to create custom converters?](#85-what-is-the-purpose-of-the-converter-annotation-in-jpa-and-how-do-you-use-it-to-create-custom-converters) |
+| 86  | [How do you handle database migrations in a Spring Data JPA application?](#86-how-do-you-handle-database-migrations-in-a-spring-data-jpa-application) |
+| 87  | [What are the key considerations when implementing a custom repository in Spring Data JPA?](#87-what-are-the-key-considerations-when-implementing-a-custom-repository-in-spring-data-jpa) |
+| 88  | [How do you manage database connection pooling in a Spring Data JPA application?](#88-how-do-you-manage-database-connection-pooling-in-a-spring-data-jpa-application) |
+| 89  | [What is the role of the `@SecondaryTable` annotation in JPA and how do you use it to map an entity to multiple tables?](#89-what-is-the-role-of-the-secondarytable-annotation-in-jpa-and-how-do-you-use-it-to-map-an-entity-to-multiple-tables) |
+| 90  | [Explain the concept of `Entity Detachment` in JPA and how it affects the persistence context.](#90-explain-the-concept-of-entity-detachment-in-jpa-and-how-it-affects-the-persistence-context) |
+| 91  | [How do you implement soft deletes in a Spring Data JPA application?](#91-how-do-you-implement-soft-deletes-in-a-spring-data-jpa-application) |
+| 92  | [What are the pros and cons of using `EntityManager` directly versus using Spring Data JPA repositories?](#92-what-are-the-pros-and-cons-of-using-entitymanager-directly-versus-using-spring-data-jpa-repositories) |
+| 93  | [How do you handle hierarchical data structures (e.g., trees, graphs) in JPA?](#93-how-do-you-handle-hierarchical-data-structures-eg-trees-graphs-in-jpa) |
+| 94  | [Explain the concept of database sharding and how it can be implemented in a Spring Data JPA application.](#94-explain-the-concept-of-database-sharding-and-how-it-can-be-implemented-in-a-spring-data-jpa-application) |
+| 95  | [What are the best practices for managing entity relationships and avoiding circular dependencies in JPA?](#95-what-are-the-best-practices-for-managing-entity-relationships-and-avoiding-circular-dependencies-in-jpa) |
+| 96  | [How do you handle large data sets and pagination efficiently in a Spring Data JPA application?](#96-how-do-you-handle-large-data-sets-and-pagination-efficiently-in-a-spring-data-jpa-application) |
+| 97  | [Explain the different types of joins (inner, outer, cross) in JPQL and provide examples of when to use each.](#97-explain-the-different-types-of-joins-inner-outer-cross-in-jpql-and-provide-examples-of-when-to-use-each) |
+| 98  | [How do you handle custom exception handling and error codes in a Spring Data JPA application?](#98-how-do-you-handle-custom-exception-handling-and-error-codes-in-a-spring-data-jpa-application) |
+| 99  | [What are the key differences between Hibernate and other JPA implementations like EclipseLink?](#99-what-are-the-key-differences-between-hibernate-and-other-jpa-implementations-like-eclipselink) |
+| 100 | [How do you integrate Spring Data JPA with other Spring projects like Spring Batch or Spring Integration?](#100-how-do-you-integrate-spring-data-jpa-with-other-spring-projects-like-spring-batch-or-spring-integration) |
+
 ### Level : Spring Data JPA Medium
 | No. | Questions |
 | --- | --------- |
