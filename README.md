@@ -6046,3 +6046,188 @@ List<User> users = query.getResultList();
 ```
 #### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
 ---
+
+### 27. What is an entity lifecycle in JPA?
+
+In Java Persistence API (JPA), the entity lifecycle refers to the different states an entity can go through during its existence in a persistence context. The main stages of an entity lifecycle are:
+
+1. **New (Transient)**: The entity is created but not associated with a persistence context.
+2. **Managed (Persistent)**: The entity is associated with a persistence context and synchronized with the database.
+3. **Detached**: The entity is no longer associated with a persistence context but still exists in memory.
+4. **Removed**: The entity is marked for removal from the database.
+
+These stages allow JPA to manage the state transitions of entities and ensure data consistency.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 28. What are the different states of an entity in JPA?
+
+The different states of an entity in JPA are:
+
+1. **New (Transient)**: An entity is new and not yet persisted.
+2. **Managed (Persistent)**: The entity is associated with an active EntityManager and synchronized with the database.
+3. **Detached**: The entity is no longer associated with an EntityManager but still exists in memory.
+4. **Removed**: The entity is marked for deletion and will be removed from the database upon transaction commit.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 29. What is the purpose of the `@PrePersist` annotation in JPA?
+
+The `@PrePersist` annotation is used to specify a callback method that is invoked before an entity is persisted (inserted into the database). This is useful for setting default values or performing validation checks.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.name == null) {
+            this.name = "Unknown";
+        }
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 30. What is the purpose of the `@PostPersist` annotation in JPA?
+
+The `@PostPersist` annotation specifies a callback method that is invoked after an entity has been persisted (inserted into the database). It is useful for performing actions that need to be executed after the entity is saved.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @PostPersist
+    protected void onPostPersist() {
+        System.out.println("User persisted with ID: " + id);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 31. What is the purpose of the `@PreUpdate` annotation in JPA?
+
+The `@PreUpdate` annotation is used to specify a callback method that is invoked before an entity is updated in the database. This is useful for updating timestamps or performing validation checks.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @PreUpdate
+    protected void onUpdate() {
+        System.out.println("Updating user with ID: " + id);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 32. What is the purpose of the `@PostUpdate` annotation in JPA?
+
+The `@PostUpdate` annotation specifies a callback method that is invoked after an entity has been updated in the database. It is useful for performing actions that need to be executed after the entity is updated.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @PostUpdate
+    protected void onPostUpdate() {
+        System.out.println("Updated user with ID: " + id);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 33. What is the purpose of the `@PreRemove` annotation in JPA?
+
+The `@PreRemove` annotation is used to specify a callback method that is invoked before an entity is removed from the database. This is useful for performing cleanup operations or logging.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @PreRemove
+    protected void onRemove() {
+        System.out.println("Removing user with ID: " + id);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 34. What is the purpose of the `@PostRemove` annotation in JPA?
+
+The `@PostRemove` annotation specifies a callback method that is invoked after an entity has been removed from the database. It is useful for performing actions that need to be executed after the entity is deleted.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @PostRemove
+    protected void onPostRemove() {
+        System.out.println("Removed user with ID: " + id);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
+
+### 35. What is the purpose of the `@PostLoad` annotation in JPA?
+
+The `@PostLoad` annotation specifies a callback method that is invoked after an entity has been loaded from the database. It is useful for initializing transient fields or performing additional setup.
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @Transient
+    private String displayName;
+
+    @PostLoad
+    protected void onLoad() {
+        this.displayName = "User: " + name;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+---
