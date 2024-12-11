@@ -6232,6 +6232,7 @@ public class User {
 #### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
 ---
 
+# Spring Data JPA Easy Interview Questions and Answers
 ### 36. Explain the different types of primary key generation strategies in JPA.
 
 JPA provides several strategies for generating primary keys for entities. These strategies are specified using the `@GeneratedValue` annotation along with the `GenerationType` enumeration. The primary key generation strategies are:
@@ -6339,7 +6340,7 @@ JPA provides several strategies for generating primary keys for entities. These 
        private List<Student> students;
    }
    ```
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 38. How do you handle bi-directional relationships in JPA?
@@ -6368,7 +6369,7 @@ public class Employee {
     private Department department;
 }
 ```
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 39. What is the `@MappedBy` attribute used for in JPA?
@@ -6400,7 +6401,7 @@ public class Employee {
 
 In this example, the `Department` entity has a `@OneToMany` relationship with the `Employee` entity, and the `Employee` entity has a `@ManyToOne` relationship with the `Department` entity. The `mappedBy` attribute on the `Department` entity specifies that the `department` field in the `Employee` entity owns the relationship.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 40. What is the purpose of the `@ElementCollection` annotation in JPA?
@@ -6423,7 +6424,7 @@ public class User {
 
 In this example, the `User` entity has a collection of phone numbers, which are stored in a separate table `user_phone_numbers`.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 41. How do you handle composite keys in JPA?
@@ -6472,7 +6473,7 @@ JPA provides two ways to handle composite keys:
         // getters, setters, equals, and hashCode
     }
     ```
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 42. What is the `@Embeddable` annotation used for in JPA?
@@ -6505,7 +6506,7 @@ public class User {
 
 In this example, the `Address` class is marked as `@Embeddable`, and an instance of `Address` is embedded in the `User` entity.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 43. What is the purpose of the `@EmbeddedId` annotation in JPA?
@@ -6532,7 +6533,7 @@ public class User {
 
 In this example, the `UserId` class is marked as `@Embeddable`, and an instance of `UserId` is used as the primary key for the `User` entity.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 44. What is the role of the `@Inheritance` annotation in JPA?
@@ -6567,7 +6568,7 @@ public class Truck extends Vehicle {
     private int payloadCapacity;
 }
 ```
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 In this example, the `Vehicle` class is the root entity, and the inheritance strategy is `SINGLE_TABLE`.
@@ -6650,7 +6651,7 @@ JPA provides three inheritance strategies to map an inheritance hierarchy to the
         private int payloadCapacity;
     }
     ```
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 46. What is the purpose of the `@DiscriminatorColumn` annotation in JPA?
@@ -6684,7 +6685,7 @@ public class Truck extends Vehicle {
 
 In this example, the `@DiscriminatorColumn` annotation specifies that the `type` column will be used to distinguish between `Car` and `Truck` entities.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 47. What is the purpose of the `@DiscriminatorValue` annotation in JPA?
@@ -6718,7 +6719,7 @@ public class Truck extends Vehicle {
 
 In this example, the `@DiscriminatorValue` annotation specifies that the value `CAR` will be stored in the `type` column for `Car` entities, and the value `TRUCK` will be stored for `Truck` entities.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 48. What is the purpose of the `@SecondaryTable` annotation in JPA?
@@ -6745,7 +6746,7 @@ public class User {
 
 In this example, the `User` entity's `id` and `name` are stored in the `User` table, while `address` and `phoneNumber` are stored in the `user_details` table.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 49. How do you define a native query in Spring Data JPA?
@@ -6761,7 +6762,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 In this example, the `findByName` method uses a native SQL query to find users by their name.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
 
 ### 50. What is the purpose of the `@NamedNativeQuery` annotation in JPA?
@@ -6793,5 +6794,471 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 In this example, the `User.findByName` named native query is defined at the entity level and used in the repository.
 
-#### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 51. How do you handle optimistic locking in JPA?
+
+Optimistic locking in JPA is a mechanism used to ensure that data integrity is maintained during concurrent data access. It relies on versioning to detect conflicts and prevent lost updates. This is useful when there are multiple transactions that might update the same record concurrently.
+
+#### Example:
+
+To implement optimistic locking, you need to use the `@Version` annotation in your JPA entity class:
+
+```java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private Double price;
+
+    @Version
+    private Long version;
+
+    // getters and setters
+}
+```
+
+In the above example, the `version` field will be automatically incremented by the JPA provider each time the entity is updated. When a transaction attempts to update an entity, the JPA provider checks the current version against the version in the database. If they don't match, an `OptimisticLockException` is thrown, indicating that another transaction has modified the entity.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 52. What is the purpose of the `@Version` annotation in JPA?
+
+The `@Version` annotation is used to implement optimistic locking in JPA. It specifies the field in the entity that will be used for version control. The version field is automatically managed by the JPA provider and is incremented each time the entity is updated. This helps to detect concurrent modifications and prevent lost updates.
+
+#### Example:
+
+```java
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String department;
+
+    @Version
+    private Integer version;
+
+    // getters and setters
+}
+```
+
+In this example, the `version` field will be used to manage the version of the `Employee` entity and will be incremented with each update.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 53. How do you handle pessimistic locking in JPA?
+
+Pessimistic locking in JPA is used to prevent concurrent transactions from modifying the same data simultaneously. This is achieved by locking the database rows that are being read or updated. Pessimistic locking can be implemented using `LockModeType.PESSIMISTIC_READ` or `LockModeType.PESSIMISTIC_WRITE`.
+
+#### Example:
+
+```java
+EntityManager entityManager = entityManagerFactory.createEntityManager();
+entityManager.getTransaction().begin();
+
+Product product = entityManager.find(Product.class, 1L, LockModeType.PESSIMISTIC_WRITE);
+product.setPrice(product.getPrice() + 10);
+
+entityManager.getTransaction().commit();
+entityManager.close();
+```
+
+In this example, the `Product` entity with ID 1 is locked using `LockModeType.PESSIMISTIC_WRITE`, which means no other transaction can read or write to this row until the current transaction is committed.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 54. What is the `EntityGraph` in JPA and how is it used?
+
+`EntityGraph` in JPA is a mechanism to define and customize the graph of entities that should be fetched from the database. It allows you to specify which related entities should be loaded eagerly. This can help optimize the performance by reducing the number of SQL queries.
+
+#### Example:
+
+```java
+@Entity
+@NamedEntityGraph(name = "Product.detail",
+        attributeNodes = @NamedAttributeNode("category"))
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private Double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
+
+    // getters and setters
+}
+```
+
+To use the defined `EntityGraph`:
+
+```java
+EntityManager entityManager = entityManagerFactory.createEntityManager();
+EntityGraph<?> graph = entityManager.getEntityGraph("Product.detail");
+
+Map<String, Object> properties = new HashMap<>();
+properties.put("javax.persistence.fetchgraph", graph);
+
+Product product = entityManager.find(Product.class, 1L, properties);
+```
+
+In this example, the `Product` entity and its `category` relationship are fetched eagerly using the `Product.detail` entity graph.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 55. What are the different types of fetching strategies in JPA?
+
+JPA defines two fetching strategies:
+
+1. **Eager Loading**: Entities and their relationships are loaded immediately.
+2. **Lazy Loading**: Entities and their relationships are loaded on-demand, i.e., when they are accessed for the first time.
+
+#### Example:
+
+```java
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+    private List<OrderItem> items;
+
+    // getters and setters
+}
+```
+
+In this example, the `items` collection in the `Order` entity will be loaded lazily, meaning it will be fetched from the database only when accessed.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 56. What is the difference between eager and lazy loading in JPA?
+
+**Eager Loading**:
+- Loads related entities immediately.
+- Uses `FetchType.EAGER`.
+
+**Lazy Loading**:
+- Loads related entities on demand.
+- Uses `FetchType.LAZY`.
+
+#### Example:
+
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Post> posts;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Comment> comments;
+
+    // getters and setters
+}
+```
+
+In this example, the `posts` collection will be loaded eagerly while the `comments` collection will be loaded lazily.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 57. How do you handle batch processing in Spring Data JPA?
+
+Batch processing in Spring Data JPA can be handled using the `JpaItemWriter` and `JpaItemReader` components provided by Spring Batch. Batch processing involves reading a large set of data, processing it, and writing the results in bulk to improve performance.
+
+#### Example:
+
+```java
+@Bean
+public JpaItemWriter<Product> writer(EntityManagerFactory entityManagerFactory) {
+    JpaItemWriter<Product> writer = new JpaItemWriter<>();
+    writer.setEntityManagerFactory(entityManagerFactory);
+    return writer;
+}
+
+@Bean
+public JpaItemReader<Product> reader(EntityManagerFactory entityManagerFactory) {
+    JpaItemReader<Product> reader = new JpaItemReader<>();
+    reader.setQueryString("SELECT p FROM Product p");
+    reader.setEntityManagerFactory(entityManagerFactory);
+    return reader;
+}
+
+@Bean
+public Step step1(StepBuilderFactory stepBuilderFactory, JpaItemReader<Product> reader, JpaItemWriter<Product> writer) {
+    return stepBuilderFactory.get("step1")
+            .<Product, Product>chunk(10)
+            .reader(reader)
+            .writer(writer)
+            .build();
+}
+```
+
+In this example, the `JpaItemReader` reads data from the `Product` entity, and the `JpaItemWriter` writes the processed data back to the database in chunks of 10.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 58. What is the purpose of the `@BatchSize` annotation in JPA?
+
+The `@BatchSize` annotation in JPA is used to specify the size of the batch when fetching collections or instances of entities. This helps optimize performance by reducing the number of SQL queries executed.
+
+#### Example:
+
+```java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private Double price;
+
+    @OneToMany(mappedBy = "product")
+    @BatchSize(size = 10)
+    private List<Review> reviews;
+
+    // getters and setters
+}
+```
+
+In this example, the `reviews` collection will be fetched in batches of 10.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 59. How do you handle native SQL queries in Spring Data JPA?
+
+Native SQL queries in Spring Data JPA can be handled using the `@Query` annotation with the `nativeQuery` attribute set to `true`.
+
+#### Example:
+
+```java
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    @Query(value = "SELECT * FROM products WHERE price > ?1", nativeQuery = true)
+    List<Product> findProductsByPriceGreaterThan(Double price);
+}
+```
+
+In this example, a native SQL query is used to fetch products with a price greater than a specified value.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 60. What is the purpose of the `@SqlResultSetMapping` annotation in JPA?
+
+The `@SqlResultSetMapping` annotation is used to map the result set of a native SQL query to a JPA entity or a DTO (Data Transfer Object).
+
+#### Example:
+
+```java
+@SqlResultSetMapping(
+    name = "ProductMapping",
+    entities = @EntityResult(
+        entityClass = Product.class,
+        fields = {
+            @FieldResult(name = "id", column = "id"),
+            @FieldResult(name = "name", column = "name"),
+            @FieldResult(name = "price", column = "price")
+        }
+    )
+)
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private Double price;
+
+    // getters and setters
+}
+```
+
+To use the mapping:
+
+```java
+@Entity
+@NamedNativeQuery(
+    name = "findProducts",
+    query = "SELECT id, name, price FROM products",
+    resultSetMapping = "ProductMapping"
+)
+public class Product {
+    // fields, getters, and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 61. How do you handle auditing in Spring Data JPA?
+
+Auditing in Spring Data JPA involves automatically populating fields such as created date, last modified date, created by, and last modified by. This is achieved using annotations like `@CreatedDate`, `@LastModifiedDate`, `@CreatedBy`, and `@LastModifiedBy`.
+
+#### Example:
+
+```java
+@Configuration
+@EnableJpaAuditing
+public class JpaConfig {
+}
+
+@EntityListeners(AuditingEntityListener.class)
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
+
+    @CreatedBy
+    private String createdBy;
+
+    @LastModifiedBy
+    private String lastModifiedBy;
+
+    // getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 62. What is the purpose of the `@CreatedDate` annotation in JPA?
+
+The `@CreatedDate` annotation is used to automatically populate the creation date of an entity when it is persisted. It works in conjunction with Spring Data JPA's auditing feature.
+
+#### Example:
+
+```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    // getters and setters
+}
+```
+
+In this example, the `createdDate` field will be automatically populated with the current date and time when the `Product` entity is created.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 63. What is the purpose of the `@LastModifiedDate` annotation in JPA?
+
+The `@LastModifiedDate` annotation is used to automatically populate the last modified date of an entity when it is updated. It is part of Spring Data JPA's auditing feature.
+
+#### Example:
+
+```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
+
+    // getters and setters
+}
+```
+
+In this example, the `lastModifiedDate` field will be automatically updated with the current date and time whenever the `Product` entity is updated.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 64. What is the purpose of the `@CreatedBy` annotation in JPA?
+
+The `@CreatedBy` annotation is used to automatically populate the field that stores the user who created the entity. It works in conjunction with Spring Data JPA's auditing feature.
+
+#### Example:
+
+```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @CreatedBy
+    private String createdBy;
+
+    // getters and setters
+}
+```
+
+In this example, the `createdBy` field will be automatically populated with the username of the user who created the `Product` entity.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+### 65. What is the purpose of the `@LastModifiedBy` annotation in JPA?
+
+The `@LastModifiedBy` annotation is used to automatically populate the field that stores the user who last modified the entity. It is part of Spring Data JPA's auditing feature.
+
+#### Example:
+
+```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @LastModifiedBy
+    private String lastModifiedBy;
+
+    // getters and setters
+}
+```
+
+In this example, the `lastModifiedBy` field will be automatically updated with the username of the user who last modified the `Product` entity.
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
 ---
