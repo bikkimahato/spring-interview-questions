@@ -7708,3 +7708,659 @@ Author author = query.getSingleResult();
 ```
 #### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
 ---
+
+### 81. What is the N+1 select problem in JPA and how can it be mitigated?
+
+#### The N+1 Select Problem
+
+The N+1 select problem occurs when an application executes N+1 database queries to retrieve data that could have been fetched with a single query. This problem is common in JPA when dealing with lazy-loaded associations.
+
+For instance, consider an entity `Author` with a `OneToMany` relationship to `Book`:
+
+```java
+@Entity
+public class Author {
+    @Id
+    private Long id;
+    
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Book> books;
+    
+    // getters and setters
+}
+
+@Entity
+public class Book {
+    @Id
+    private Long id;
+    
+    @ManyToOne
+    private Author author;
+    
+    // getters and setters
+}
+```
+
+Fetching a list of authors and their books might look like this:
+
+```java
+List<Author> authors = em.createQuery("SELECT a FROM Author a", Author.class).getResultList();
+for (Author author : authors) {
+    System.out.println(author.getBooks());
+}
+```
+
+This code will execute one query to fetch all authors and N additional queries to fetch books for each author, leading to performance issues.
+
+#### Mitigation Strategies
+
+1. **Using `JOIN FETCH`**
+
+   Modify the query to fetch authors and their books in a single query:
+
+   ```java
+   List<Author> authors = em.createQuery(
+       "SELECT a FROM Author a JOIN FETCH a.books", Author.class).getResultList();
+   ```
+
+2. **Entity Graphs**
+
+   Define an entity graph to specify the associations to be fetched eagerly:
+
+   ```java
+   @NamedEntityGraph(name = "author-books-graph",
+       attributeNodes = @NamedAttributeNode("books"))
+   @Entity
+   public class Author {
+       // ...
+   }
+
+   EntityGraph<?> entityGraph = em.getEntityGraph("author-books-graph");
+   List<Author> authors = em.createQuery("SELECT a FROM Author a", Author.class)
+       .setHint("javax.persistence.loadgraph", entityGraph)
+       .getResultList();
+   ```
+
+3. **Batch Fetching**
+
+   Configure batch fetching in the JPA provider (e.g., Hibernate):
+
+   ```java
+   @Entity
+   @BatchSize(size = 10)
+   public class Author {
+       // ...
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 82. Explain the purpose of the `@EntityListeners` annotation and how it is used in auditing.
+
+#### Purpose of `@EntityListeners`
+
+The `@EntityListeners` annotation is used to specify callback listeners for an entity. These listeners can intercept entity lifecycle events such as pre-persist, post-persist, pre-update, post-update, pre-remove, and post-remove. This is particularly useful for auditing purposes.
+
+#### Usage in Auditing
+
+To implement auditing, define a listener class that handles the lifecycle events:
+
+```java
+public class AuditListener {
+
+    @PrePersist
+    public void prePersist(Object object) {
+        if (object instanceof Auditable) {
+            Auditable auditable = (Auditable) object;
+            Audit audit = auditable.getAudit();
+            audit.setCreatedDate(new Date());
+            // Set other audit fields as needed
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate(Object object) {
+        if (object instanceof Auditable) {
+            Auditable auditable = (Auditable) object;
+            Audit audit = auditable.getAudit();
+            audit.setLastModifiedDate(new Date());
+            // Set other audit fields as needed
+        }
+    }
+}
+```
+
+Annotate the entity with `@EntityListeners` and implement an `Auditable` interface:
+
+```java
+@Entity
+@EntityListeners(AuditListener.class)
+public class SomeEntity implements Auditable {
+
+    @Embedded
+    private Audit audit = new Audit();
+
+    // getters and setters for audit
+}
+
+@Embeddable
+public class Audit {
+
+    private Date createdDate;
+    private Date lastModifiedDate;
+    // other audit fields
+
+    // getters and setters
+}
+
+public interface Auditable {
+    Audit getAudit();
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 83. How do you handle multi-tenancy in JPA and what are the different strategies available?
+
+#### Multi-Tenancy Strategies
+
+1. **Database per Tenant**
+
+   Each tenant has its own database. The application switches between databases based on the tenant context.
+
+   ```java
+   @Bean
+   public DataSource dataSource(TenantContext tenantContext) {
+       return DataSourceBuilder.create()
+           .url("jdbc:mysql://localhost:3306/" + tenantContext.getTenantId())
+           .username("user")
+           .password("password")
+           .build();
+   }
+   ```
+
+2. **Schema per Tenant**
+
+   Each tenant has its own schema within the same database. The application switches schemas based on the tenant context.
+
+   ```java
+   @Bean
+   public LocalContainerEntityManagerFactoryBean entityManagerFactory(TenantContext tenantContext) {
+       LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+       em.setDataSource(dataSource);
+       em.setPackagesToScan("com.example");
+       em.setJpaPropertyMap(Map.of(
+           "hibernate.default_schema", tenantContext.getTenantId()
+       ));
+       return em;
+   }
+   ```
+
+3. **Table per Tenant**
+
+   All tenants share the same schema and tables, with a tenant identifier column used to segregate data.
+
+   ```java
+   @Entity
+   public class Customer {
+       @Id
+       private Long id;
+       
+       @Column(name = "tenant_id")
+       private String tenantId;
+
+       // other fields
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 84. How do you configure and use the `@SequenceGenerator` and `@TableGenerator` annotations in JPA?
+
+#### `@SequenceGenerator`
+
+Used to generate primary key values based on a database sequence.
+
+```java
+@Entity
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
+    @SequenceGenerator(name = "employee_seq", sequenceName = "employee_seq", allocationSize = 1)
+    private Long id;
+
+    private String name;
+
+    // getters and setters
+}
+```
+
+#### `@TableGenerator`
+
+Used to generate primary key values based on a table that stores sequence values.
+
+```java
+@Entity
+public class Department {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "dept_gen")
+    @TableGenerator(name = "dept_gen", table = "id_gen", pkColumnName = "gen_name", valueColumnName = "gen_val", pkColumnValue = "dept_id", allocationSize = 1)
+    private Long id;
+
+    private String name;
+
+    // getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 85. What is the purpose of the `@Converter` annotation in JPA and how do you use it to create custom converters?
+
+#### Purpose of `@Converter`
+
+The `@Converter` annotation is used to define custom converters that transform an entity attribute to and from its database representation.
+
+#### Creating Custom Converters
+
+1. **Define the Converter**
+
+   ```java
+   @Converter(autoApply = true)
+   public class BooleanToStringConverter implements AttributeConverter<Boolean, String> {
+
+       @Override
+       public String convertToDatabaseColumn(Boolean attribute) {
+           return attribute ? "Y" : "N";
+       }
+
+       @Override
+       public Boolean convertToEntityAttribute(String dbData) {
+           return "Y".equals(dbData);
+       }
+   }
+   ```
+
+2. **Apply the Converter**
+
+   ```java
+   @Entity
+   public class User {
+
+       @Id
+       private Long id;
+       
+       @Convert(converter = BooleanToStringConverter.class)
+       private Boolean active;
+
+       // getters and setters
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 86. How do you handle database migrations in a Spring Data JPA application?
+
+#### Database Migrations
+
+1. **Using Flyway**
+
+   Add Flyway dependency:
+
+   ```xml
+   <dependency>
+       <groupId>org.flywaydb</groupId>
+       <artifactId>flyway-core</artifactId>
+   </dependency>
+   ```
+
+   Configure Flyway properties in `application.properties`:
+
+   ```properties
+   spring.flyway.url=jdbc:mysql://localhost:3306/mydb
+   spring.flyway.user=root
+   spring.flyway.password=password
+   spring.flyway.locations=classpath:db/migration
+   ```
+
+   Create migration scripts in `src/main/resources/db/migration`:
+
+   ```sql
+   -- V1__create_user_table.sql
+   CREATE TABLE user (
+       id BIGINT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(255) NOT NULL
+   );
+   ```
+
+2. **Using Liquibase**
+
+   Add Liquibase dependency:
+
+   ```xml
+   <dependency>
+       <groupId>org.liquibase</groupId>
+       <artifactId>liquibase-core</artifactId>
+   </dependency>
+   ```
+
+   Configure Liquibase properties in `application.properties`:
+
+   ```properties
+   spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
+   ```
+
+   Create changelog file `src/main/resources/db/changelog/db.changelog-master.xml`:
+
+   ```xml
+   <databaseChangeLog
+       xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+       <changeSet id="1" author="author">
+           <createTable tableName="user">
+               <column name="id" type="BIGINT" autoIncrement="true">
+                   <constraints primaryKey="true"/>
+               </column>
+               <column name="name" type="VARCHAR(255)"/>
+           </createTable>
+       </changeSet>
+   </databaseChangeLog>
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 87. What are the key considerations when implementing a custom repository in Spring Data JPA?
+
+#### Key Considerations
+
+1. **Interface Definition**
+
+   Define a custom repository interface:
+
+   ```java
+   public interface CustomRepository {
+       List<CustomEntity> customQueryMethod();
+   }
+   ```
+
+2. **Implementation**
+
+   Implement the custom repository interface:
+
+   ```java
+   public class CustomRepositoryImpl implements CustomRepository {
+       
+       @PersistenceContext
+       private EntityManager em;
+
+       @Override
+       public List<CustomEntity> customQueryMethod() {
+           return em.createQuery("SELECT c FROM CustomEntity c WHERE c.someField = :value", CustomEntity.class)
+                    .setParameter("value", "someValue")
+                    .getResultList();
+       }
+   }
+   ```
+
+3. **Extend Custom Repository**
+
+   Extend the custom repository in the main repository:
+
+   ```java
+   public interface MainRepository extends JpaRepository<CustomEntity, Long>, CustomRepository {
+   }
+   ```
+
+4. **Configuration**
+
+   Ensure Spring Data JPA is aware of the custom implementation:
+
+   ```java
+   @Configuration
+   public class RepositoryConfig {
+       @Bean
+       public CustomRepository customRepository(EntityManager em) {
+           return new CustomRepositoryImpl(em);
+       }
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 88. How do you manage database connection pooling in a Spring Data JPA application?
+
+#### Database Connection Pooling
+
+1. **Using HikariCP (Default in Spring Boot)**
+
+   Configure HikariCP properties in `application.properties`:
+
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+   spring.datasource.username=root
+   spring.datasource.password=password
+   spring.datasource.hikari.maximum-pool-size=10
+   spring.datasource.hikari.minimum-idle=2
+   spring.datasource.hikari.idle-timeout=30000
+   spring.datasource.hikari.max-lifetime=1800000
+   ```
+
+2. **Using DBCP2**
+
+   Add DBCP2 dependency:
+
+   ```xml
+   <dependency>
+       <groupId>org.apache.commons</groupId>
+       <artifactId>commons-dbcp2</artifactId>
+   </dependency>
+   ```
+
+   Configure DBCP2 properties in `application.properties`:
+
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+   spring.datasource.username=root
+   spring.datasource.password=password
+   spring.datasource.type=org.apache.commons.dbcp2.BasicDataSource
+   spring.datasource.dbcp2.initial-size=5
+   spring.datasource.dbcp2.max-total=10
+   spring.datasource.dbcp2.max-idle=5
+   spring.datasource.dbcp2.min-idle=2
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 89. What is the role of the `@SecondaryTable` annotation in JPA and how do you use it to map an entity to multiple tables?
+
+#### Role of `@SecondaryTable`
+
+The `@SecondaryTable` annotation is used to map an entity to multiple tables. It is useful when an entity's attributes are spread across multiple tables.
+
+#### Usage
+
+1. **Define the Entity**
+
+   ```java
+   @Entity
+   @Table(name = "primary_table")
+   @SecondaryTable(name = "secondary_table", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+   public class MyEntity {
+
+       @Id
+       private Long id;
+
+       @Column(table = "primary_table")
+       private String primaryField;
+
+       @Column(table = "secondary_table")
+       private String secondaryField;
+
+       // getters and setters
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 90. Explain the concept of `Entity Detachment` in JPA and how it affects the persistence context.
+
+#### Entity Detachment
+
+Entity detachment occurs when an entity instance is no longer associated with a persistence context. Detached entities are not managed by the persistence context, and changes made to them are not automatically synchronized with the database.
+
+#### Effects on Persistence Context
+
+1. **Detached Entity**
+
+   ```java
+   EntityManager em = ...;
+   MyEntity entity = em.find(MyEntity.class, 1L);
+   em.detach(entity);
+   ```
+
+   The `entity` is now detached. Changes to this entity will not be persisted unless it is merged back into the persistence context.
+
+2. **Merging Detached Entities**
+
+   ```java
+   entity.setField("newValue");
+   em.merge(entity);
+   ```
+
+   The `merge` method re-attaches the entity to the persistence context, and changes are persisted.
+
+### 91. How do you implement soft deletes in a Spring Data JPA application?
+
+#### Soft Deletes
+
+1. **Add a Boolean Field**
+
+   Add a `deleted` field to the entity:
+
+   ```java
+   @Entity
+   public class MyEntity {
+
+       @Id
+       private Long id;
+
+       private Boolean deleted = false;
+
+       // other fields and methods
+   }
+   ```
+
+2. **Override Repository Methods**
+
+   Override repository methods to filter out deleted records:
+
+   ```java
+   public interface MyEntityRepository extends JpaRepository<MyEntity, Long> {
+
+       @Query("SELECT e FROM MyEntity e WHERE e.deleted = false")
+       List<MyEntity> findAllNotDeleted();
+   }
+   ```
+
+3. **Modify Delete Methods**
+
+   Modify delete methods to set the `deleted` flag:
+
+   ```java
+   @Transactional
+   public void softDelete(Long id) {
+       MyEntity entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+       entity.setDeleted(true);
+       repository.save(entity);
+   }
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 92. What are the pros and cons of using `EntityManager` directly versus using Spring Data JPA repositories?
+
+#### Pros and Cons
+
+| Aspect                                | `EntityManager`                                           | Spring Data JPA Repositories                              |
+|---------------------------------------|----------------------------------------------------------|----------------------------------------------------------|
+| **Pros**                              |                                                          |                                                          |
+| Flexibility                           | Full control over queries and transactions               | Simplified CRUD operations, less boilerplate code        |
+| Custom Queries                        | Easier to write complex, custom queries                  | Supports derived queries, query methods                  |
+| Transaction Management                | Direct control over transaction boundaries               | Built-in transaction management                          |
+| **Cons**                              |                                                          |                                                          |
+| Boilerplate Code                      | More boilerplate code for CRUD operations                | Limited flexibility for complex queries                  |
+| Learning Curve                        | Steeper learning curve for beginners                     | Easier for beginners                                     |
+| Performance Optimization              | Requires manual optimization                             | Automatic optimizations, but less control                |
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 93. How do you handle hierarchical data structures (e.g., trees, graphs) in JPA?
+
+#### Handling Hierarchical Data
+
+1. **Self-Referencing Entity**
+
+   Define an entity with a self-referencing relationship:
+
+   ```java
+   @Entity
+   public class Category {
+
+       @Id
+       private Long id;
+
+       private String name;
+
+       @ManyToOne
+       @JoinColumn(name = "parent_id")
+       private Category parent;
+
+       @OneToMany(mappedBy = "parent")
+       private List<Category> children = new ArrayList<>();
+
+       // getters and setters
+   }
+   ```
+
+2. **Queries for Hierarchical Data**
+
+   ```java
+   // Fetch root categories
+   List<Category> rootCategories = em.createQuery("SELECT c FROM Category c WHERE c.parent IS NULL", Category.class).getResultList();
+
+   // Fetch children of a category
+   List<Category> children = em.createQuery("SELECT c FROM Category c WHERE c.parent = :parent", Category.class)
+                               .setParameter("parent", parentCategory)
+                               .getResultList();
+   ```
+
+3. **Persisting Hierarchical Data**
+
+   ```java
+   Category parent = new Category();
+   parent.setName("Parent Category");
+
+   Category child = new Category();
+   child.setName("Child Category");
+   child.setParent(parent);
+
+   em.persist(parent);
+   em.persist(child);
+   ```
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
