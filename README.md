@@ -6232,7 +6232,7 @@ public class User {
 #### **[⬆ Back to Top](#level--spring-data-jpa-easy)**
 ---
 
-# Spring Data JPA Easy Interview Questions and Answers
+# Spring Data JPA Medium Interview Questions and Answers
 ### 36. Explain the different types of primary key generation strategies in JPA.
 
 JPA provides several strategies for generating primary keys for entities. These strategies are specified using the `@GeneratedValue` annotation along with the `GenerationType` enumeration. The primary key generation strategies are:
@@ -7261,4 +7261,450 @@ public class Product {
 In this example, the `lastModifiedBy` field will be automatically updated with the username of the user who last modified the `Product` entity.
 
 #### **[⬆ Back to Top](#level--spring-data-jpa-medium)**
+---
+
+# Spring Data JPA Medium Interview Questions and Answers
+### 66. Explain the concept of entity graph in JPA and how it can be used to optimize performance.
+
+Entity graphs in JPA are a way to define which related entities should be loaded along with a given entity. This can optimize performance by reducing the number of database queries required to fetch related data. Entity graphs can be defined statically using annotations or dynamically at runtime.
+
+**Static Entity Graph:**
+
+```java
+@Entity
+@NamedEntityGraph(
+  name = "author-books-entity-graph",
+  attributeNodes = {
+    @NamedAttributeNode("books")
+  }
+)
+public class Author {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  @OneToMany(mappedBy = "author")
+  private List<Book> books;
+  
+  // Getters and setters
+}
+```
+
+**Dynamic Entity Graph:**
+
+```java
+EntityManager em = ...;
+EntityGraph<Author> graph = em.createEntityGraph(Author.class);
+graph.addAttributeNodes("books");
+
+Map<String, Object> properties = new HashMap<>();
+properties.put("javax.persistence.fetchgraph", graph);
+
+Author author = em.find(Author.class, authorId, properties);
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 67. How do you handle dynamic queries in Spring Data JPA?
+
+Dynamic queries in Spring Data JPA can be handled using several approaches including the `@Query` annotation, `Querydsl`, and the `Criteria API`.
+
+**Using `@Query` annotation:**
+
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+  
+  @Query("SELECT u FROM User u WHERE u.name = ?1")
+  List<User> findByName(String name);
+}
+```
+
+**Using `Specification` interface:**
+
+```java
+public class UserSpecification implements Specification<User> {
+
+  private String name;
+
+  public UserSpecification(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    if (name == null) {
+      return criteriaBuilder.isTrue(criteriaBuilder.literal(true)); // always true
+    }
+    return criteriaBuilder.equal(root.get("name"), this.name);
+  }
+}
+```
+
+**Using `Querydsl`:**
+
+```java
+public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredicateExecutor<User> {
+}
+
+// Usage
+QUser user = QUser.user;
+Predicate predicate = user.name.eq("John");
+repository.findAll(predicate);
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 68. What is the role of the `Criteria API` in JPA?
+
+The `Criteria API` in JPA is used to create dynamic, type-safe queries. It allows developers to build queries programmatically rather than using JPQL strings. This approach ensures compile-time checking of the queries.
+
+**Example:**
+
+```java
+CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+CriteriaQuery<User> cq = cb.createQuery(User.class);
+Root<User> user = cq.from(User.class);
+cq.select(user).where(cb.equal(user.get("name"), "John"));
+
+TypedQuery<User> query = entityManager.createQuery(cq);
+List<User> results = query.getResultList();
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 69. How do you use the `Criteria API` to create dynamic queries in JPA?
+
+To create dynamic queries using the `Criteria API`, you build the query programmatically using various criteria and conditions based on your requirements.
+
+**Example:**
+
+```java
+CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+CriteriaQuery<User> cq = cb.createQuery(User.class);
+Root<User> user = cq.from(User.class);
+
+List<Predicate> predicates = new ArrayList<>();
+if (name != null) {
+  predicates.add(cb.equal(user.get("name"), name));
+}
+if (age != null) {
+  predicates.add(cb.equal(user.get("age"), age));
+}
+
+cq.where(predicates.toArray(new Predicate[0]));
+
+TypedQuery<User> query = entityManager.createQuery(cq);
+List<User> results = query.getResultList();
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 70. What is the purpose of the `Specification` interface in Spring Data JPA?
+
+The `Specification` interface in Spring Data JPA is used to create dynamic queries. It provides a way to encapsulate the query logic and allows for combining multiple specifications using logical operators.
+
+**Example:**
+
+```java
+public class UserSpecification implements Specification<User> {
+
+  private String name;
+
+  public UserSpecification(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    if (name == null) {
+      return criteriaBuilder.isTrue(criteriaBuilder.literal(true)); // always true
+    }
+    return criteriaBuilder.equal(root.get("name"), this.name);
+  }
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 71. How do you use the `Specification` interface to create dynamic queries in JPA?
+
+To use the `Specification` interface for creating dynamic queries, you implement the interface and override the `toPredicate` method. You can then combine different specifications using logical operators.
+
+**Example:**
+
+```java
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+}
+
+// Usage
+Specification<User> nameSpec = new UserSpecification("John");
+Specification<User> ageSpec = (root, query, cb) -> cb.equal(root.get("age"), 30);
+
+List<User> users = userRepository.findAll(Specification.where(nameSpec).and(ageSpec));
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 72. What is the purpose of the `@Cacheable` annotation in JPA?
+
+The `@Cacheable` annotation in JPA is used to mark an entity as cacheable. This means that the entity will be stored in the second-level cache, which can improve performance by reducing the number of database queries.
+
+**Example:**
+
+```java
+@Entity
+@Cacheable
+public class User {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  // Getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 73. How do you configure second-level cache in JPA?
+
+To configure the second-level cache in JPA, you need to set up a cache provider (e.g., Ehcache or Hazelcast) and then enable caching in your JPA configuration.
+
+**Ehcache Configuration:**
+
+1. Add dependencies:
+
+```xml
+<dependency>
+  <groupId>org.hibernate</groupId>
+  <artifactId>hibernate-ehcache</artifactId>
+  <version>5.3.6.Final</version>
+</dependency>
+<dependency>
+  <groupId>org.ehcache</groupId>
+  <artifactId>ehcache</artifactId>
+  <version>3.8.1</version>
+</dependency>
+```
+
+2. Configure the cache provider in `persistence.xml`:
+
+```xml
+<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.jcache.JCacheRegionFactory"/>
+<property name="hibernate.javax.cache.provider" value="org.ehcache.jsr107.EhcacheCachingProvider"/>
+<property name="hibernate.javax.cache.uri" value="/ehcache.xml"/>
+```
+
+3. Define `ehcache.xml`:
+
+```xml
+<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'>
+    <cache alias="user">
+        <key-type>java.lang.Long</key-type>
+        <value-type>com.example.User</value-type>
+        <expiry>
+            <ttl unit="seconds">60</ttl>
+        </expiry>
+        <resources>
+            <heap unit="entries">100</heap>
+            <offheap unit="mb">10</offheap>
+        </resources>
+    </cache>
+</config>
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 74. What is the difference between first-level and second-level cache in JPA?
+
+| Feature              | First-Level Cache                                      | Second-Level Cache                                      |
+|----------------------|-------------------------------------------------------|--------------------------------------------------------|
+| Scope                | Entity Manager (transactional)                        | Session Factory (shared across sessions)               |
+| Default              | Enabled by default                                     | Requires explicit configuration                         |
+| Lifetime             | Lifetime of the EntityManager                         | Configurable lifetime (e.g., time-to-live)              |
+| Usage                | Specific to a particular EntityManager session         | Shared across multiple EntityManager sessions           |
+| Implementation       | Part of JPA specification                             | Part of the JPA provider (e.g., Hibernate)              |
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 75. Explain the concept of dirty checking in JPA and how it works.
+
+Dirty checking in JPA is a mechanism that automatically detects changes made to persistent entities and synchronizes them with the database. When an entity is modified, JPA keeps track of the original state and the new state. During the transaction commit, it compares the two states and updates the database accordingly.
+
+**Example:**
+
+```java
+@Entity
+public class User {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  // Getters and setters
+}
+
+// Usage
+EntityManager em = ...;
+em.getTransaction().begin();
+
+User user = em.find(User.class, 1L);
+user.setName("New Name");
+
+em.getTransaction().commit(); // Dirty checking triggers update query
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 76. Explain the concept of cascade types in JPA and how they affect entity relationships.
+
+Cascade types in JPA define the actions that should be propagated from a parent entity to its associated child entities. This helps in managing the lifecycle of related entities.
+
+**Cascade Types:**
+
+- `PERSIST`: Propagate persist operation
+- `MERGE`: Propagate merge operation
+- `REMOVE`: Propagate remove operation
+- `REFRESH`: Propagate refresh operation
+- `DETACH`: Propagate detach operation
+- `ALL`: Propagate all operations
+
+**Example:**
+
+```java
+@Entity
+public class Author {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+  private List<Book> books;
+  
+  // Getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 77. What are the different cascade types available in JPA and when would you use each?
+
+| Cascade Type      | Description                                                                                                  | Usage Scenario                                                                                 |
+|-------------------|--------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| `PERSIST`         | Propagates persist operation to child entities                                                               | When saving a new entity along with its related entities                                       |
+| `MERGE`           | Propagates merge operation to child entities                                                                 | When updating an entity along with its related entities                                        |
+| `REMOVE`          | Propagates remove operation to child entities                                                                | When deleting an entity along with its related entities                                        |
+| `REFRESH`         | Propagates refresh operation to child entities                                                               | When reloading an entity along with its related entities from the database                     |
+| `DETACH`          | Propagates detach operation to child entities                                                                | When detaching an entity along with its related entities from the persistence context          |
+| `ALL`             | Propagates all operations (persist, merge, remove, refresh, detach)                                          | When you want all operations to be cascaded to the related entities                            |
+
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 78. How do you handle orphan removal in JPA and what is the purpose of the `@OneToMany(orphanRemoval = true)` annotation?
+
+Orphan removal in JPA is used to automatically delete child entities when they are removed from the parent entity's collection. This ensures that there are no orphaned records in the database.
+
+**Example:**
+
+```java
+@Entity
+public class Author {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  @OneToMany(mappedBy = "author", orphanRemoval = true)
+  private List<Book> books;
+  
+  // Getters and setters
+}
+
+// Usage
+Author author = em.find(Author.class, authorId);
+author.getBooks().remove(0); // The removed book will be deleted from the database
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 79. What are the different types of entity graphs (attribute node, subgraph) in JPA and how are they used?
+
+Entity graphs in JPA can be composed of attribute nodes and subgraphs. Attribute nodes specify which attributes to fetch, while subgraphs define nested entity graphs for related entities.
+
+**Attribute Node:**
+
+```java
+@NamedEntityGraph(
+  name = "author-books-entity-graph",
+  attributeNodes = {
+    @NamedAttributeNode("books")
+  }
+)
+@Entity
+public class Author {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  @OneToMany(mappedBy = "author")
+  private List<Book> books;
+  
+  // Getters and setters
+}
+```
+
+**Subgraph:**
+
+```java
+@NamedEntityGraph(
+  name = "author-books-publisher-entity-graph",
+  attributeNodes = {
+    @NamedAttributeNode(value = "books", subgraph = "books-subgraph")
+  },
+  subgraphs = {
+    @NamedSubgraph(
+      name = "books-subgraph",
+      attributeNodes = {
+        @NamedAttributeNode("publisher")
+      }
+    )
+  }
+)
+@Entity
+public class Author {
+  @Id
+  private Long id;
+  
+  private String name;
+  
+  @OneToMany(mappedBy = "author")
+  private List<Book> books;
+  
+  // Getters and setters
+}
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
+---
+
+### 80. How do you optimize performance using Fetch Joins in JPQL?
+
+Fetch joins in JPQL are used to fetch related entities along with the main entity in a single query, reducing the number of database queries and improving performance.
+
+**Example:**
+
+```java
+// JPQL Query
+String jpql = "SELECT a FROM Author a JOIN FETCH a.books WHERE a.id = :id";
+TypedQuery<Author> query = em.createQuery(jpql, Author.class);
+query.setParameter("id", authorId);
+
+Author author = query.getSingleResult();
+```
+#### **[⬆ Back to Top](#level--spring-data-jpa-hard)**
 ---
