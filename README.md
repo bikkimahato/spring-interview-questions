@@ -13,7 +13,7 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 - [Spring Core](#spring-core)
 - [Spring MVC](#spring-mvc)
 - [Spring Data JPA](#spring-data-jpa)
-- Spring Security
+- [Spring Security](#spring-security)
 - Spring AOP
 - Spring Cloud
 - Spring Batch
@@ -405,6 +405,10 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 98  | [How do you handle custom exception handling and error codes in a Spring Data JPA application?](#98-how-do-you-handle-custom-exception-handling-and-error-codes-in-a-spring-data-jpa-application) |
 | 99  | [What are the key differences between Hibernate and other JPA implementations like EclipseLink?](#99-what-are-the-key-differences-between-hibernate-and-other-jpa-implementations-like-eclipselink) |
 | 100 | [How do you integrate Spring Data JPA with other Spring projects like Spring Batch or Spring Integration?](#100-how-do-you-integrate-spring-data-jpa-with-other-spring-projects-like-spring-batch-or-spring-integration) |
+
+## Spring Security
+### Table of Contents
+### Level : Spring Security Easy
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
