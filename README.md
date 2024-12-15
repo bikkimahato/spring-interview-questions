@@ -14,7 +14,7 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 - [Spring MVC](#spring-mvc)
 - [Spring Data JPA](#spring-data-jpa)
 - [Spring Security](#spring-security)
-- Spring AOP
+- [Spring AOP](#spring-aop)
 - Spring Cloud
 - Spring Batch
 - Spring Integration
@@ -409,6 +409,10 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 ## Spring Security
 ### Table of Contents
 ### Level : Spring Security Easy
+
+## Spring AOP
+### Table of Contents
+### Level : Spring AOP Easy
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
