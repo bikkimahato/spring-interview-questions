@@ -437,6 +437,36 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 24  | [What is the purpose of the `SecurityContextHolder`?](#24-what-is-the-purpose-of-the-securitycontextholder) |
 | 25  | [How do you handle session fixation attacks in Spring Security?](#25-how-do-you-handle-session-fixation-attacks-in-spring-security) |
 
+### Level : Spring Security Medium
+| No. | Questions |
+| --- | --------- |
+| 26  | [How does Spring Security integrate with the Spring MVC framework?](#26-how-does-spring-security-integrate-with-the-spring-mvc-framework) |
+| 27  | [Explain the concept of security filters in Spring Security.](#27-explain-the-concept-of-security-filters-in-spring-security) |
+| 28  | [How do you configure multiple authentication providers in Spring Security?](#28-how-do-you-configure-multiple-authentication-providers-in-spring-security) |
+| 29  | [How do you implement role-based access control in Spring Security?](#29-how-do-you-implement-role-based-access-control-in-spring-security) |
+| 30  | [What is the purpose of the `FilterChainProxy`?](#30-what-is-the-purpose-of-the-filterchainproxy) |
+| 31  | [How do you configure CORS in Spring Security?](#31-how-do-you-configure-cors-in-spring-security) |
+| 32  | [Explain how to secure REST APIs with Spring Security.](#32-explain-how-to-secure-rest-apis-with-spring-security) |
+| 33  | [How do you handle exceptions in Spring Security?](#33-how-do-you-handle-exceptions-in-spring-security) |
+| 34  | [How do you customize the access denied page in Spring Security?](#34-how-do-you-customize-the-access-denied-page-in-spring-security) |
+| 35  | [What is the role of `SecurityConfigurerAdapter`?](#35-what-is-the-role-of-securityconfigureradapter) |
+| 36  | [How do you secure a Spring Boot application with Spring Security?](#36-how-do-you-secure-a-spring-boot-application-with-spring-security) |
+| 37  | [Explain the `OAuth2` support in Spring Security.](#37-explain-the-oauth2-support-in-spring-security) |
+| 38  | [How do you configure JWT authentication in Spring Security?](#38-how-do-you-configure-jwt-authentication-in-spring-security) |
+| 39  | [What is the purpose of `HttpSecurity`?](#39-what-is-the-purpose-of-httpsecurity) |
+| 40  | [How do you secure WebSocket connections in Spring Security?](#40-how-do-you-secure-websocket-connections-in-spring-security) |
+| 41  | [How do you integrate Spring Security with Thymeleaf?](#41-how-do-you-integrate-spring-security-with-thymeleaf) |
+| 42  | [Explain the purpose of `@WithMockUser` in Spring Security testing.](#42-explain-the-purpose-of-withmockuser-in-spring-security-testing) |
+| 43  | [How do you configure a custom authentication provider in Spring Security?](#43-how-do-you-configure-a-custom-authentication-provider-in-spring-security) |
+| 44  | [How do you handle CSRF tokens in AJAX requests with Spring Security?](#44-how-do-you-handle-csrf-tokens-in-ajax-requests-with-spring-security) |
+| 45  | [What are the different types of authentication mechanisms supported by Spring Security?](#45-what-are-the-different-types-of-authentication-mechanisms-supported-by-spring-security) |
+| 46  | [How do you implement two-factor authentication in Spring Security?](#46-how-do-you-implement-two-factor-authentication-in-spring-security) |
+| 47  | [How do you configure security for a microservices architecture with Spring Security?](#47-how-do-you-configure-security-for-a-microservices-architecture-with-spring-security) |
+| 48  | [Explain the concept of security expressions in Spring Security.](#48-explain-the-concept-of-security-expressions-in-spring-security) |
+| 49  | [How do you implement single sign-on (SSO) with Spring Security?](#49-how-do-you-implement-single-sign-on-sso-with-spring-security) |
+| 50  | [How do you perform security testing in a Spring Security application?](#50-how-do-you-perform-security-testing-in-a-spring-security-application) |
+
+
 
 ## Spring AOP
 ### Table of Contents
