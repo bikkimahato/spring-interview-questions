@@ -409,6 +409,34 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 ## Spring Security
 ### Table of Contents
 ### Level : Spring Security Easy
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is Spring Security?](#1-what-is-spring-security) |
+| 2   | [How does Spring Security work?](#2-how-does-spring-security-work) |
+| 3   | [What is the default login URL in Spring Security?](#3-what-is-the-default-login-url-in-spring-security) |
+| 4   | [How do you configure HTTP Basic Authentication in Spring Security?](#4-how-do-you-configure-http-basic-authentication-in-spring-security) |
+| 5   | [What is the purpose of the `@EnableWebSecurity` annotation?](#5-what-is-the-purpose-of-the-enablewebsecurity-annotation) |
+| 6   | [How do you disable CSRF protection in Spring Security?](#6-how-do-you-disable-csrf-protection-in-spring-security) |
+| 7   | [What is a `UserDetailsService`?](#7-what-is-a-userdetailsservice) |
+| 8   | [How do you create a custom login form in Spring Security?](#8-how-do-you-create-a-custom-login-form-in-spring-security) |
+| 9   | [Explain the role of `PasswordEncoder` in Spring Security.](#9-explain-the-role-of-passwordencoder-in-spring-security) |
+| 10  | [How can you restrict access to a URL based on roles?](#10-how-can-you-restrict-access-to-a-url-based-on-roles) |
+| 11  | [What is the purpose of the `SecurityContext`?](#11-what-is-the-purpose-of-the-securitycontext) |
+| 12  | [How do you configure form-based authentication in Spring Security?](#12-how-do-you-configure-form-based-authentication-in-spring-security) |
+| 13  | [What is the default username and password in Spring Security if none is provided?](#13-what-is-the-default-username-and-password-in-spring-security-if-none-is-provided) |
+| 14  | [How do you implement logout functionality in Spring Security?](#14-how-do-you-implement-logout-functionality-in-spring-security) |
+| 15  | [What is the difference between `@Secured` and `@PreAuthorize`?](#15-what-is-the-difference-between-secured-and-preauthorize) |
+| 16  | [How do you secure a method in Spring Security?](#16-how-do-you-secure-a-method-in-spring-security) |
+| 17  | [What is the role of the `AuthenticationManager`?](#17-what-is-the-role-of-the-authenticationmanager) |
+| 18  | [How can you remember a user's login in Spring Security?](#18-how-can-you-remember-a-users-login-in-spring-security) |
+| 19  | [How do you configure LDAP authentication in Spring Security?](#19-how-do-you-configure-ldap-authentication-in-spring-security) |
+| 20  | [What is the purpose of the `UserDetails` interface?](#20-what-is-the-purpose-of-the-userdetails-interface) |
+| 21  | [How do you create a custom `UserDetailsService`?](#21-how-do-you-create-a-custom-userdetailsservice) |
+| 22  | [Explain the `GrantedAuthority` interface.](#22-explain-the-grantedauthority-interface) |
+| 23  | [How do you configure HTTPS in Spring Security?](#23-how-do-you-configure-https-in-spring-security) |
+| 24  | [What is the purpose of the `SecurityContextHolder`?](#24-what-is-the-purpose-of-the-securitycontextholder) |
+| 25  | [How do you handle session fixation attacks in Spring Security?](#25-how-do-you-handle-session-fixation-attacks-in-spring-security) |
+
 
 ## Spring AOP
 ### Table of Contents
