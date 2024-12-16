@@ -466,7 +466,34 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 49  | [How do you implement single sign-on (SSO) with Spring Security?](#49-how-do-you-implement-single-sign-on-sso-with-spring-security) |
 | 50  | [How do you perform security testing in a Spring Security application?](#50-how-do-you-perform-security-testing-in-a-spring-security-application) |
 
-
+### Level : Spring Security Hard
+| No. | Questions |
+| --- | --------- |
+| 51  | [Explain the internals of the `DelegatingFilterProxy`.](#51-explain-the-internals-of-the-delegatingfilterproxy) |
+| 52  | [How does Spring Security handle authentication and authorization for reactive applications?](#52-how-does-spring-security-handle-authentication-and-authorization-for-reactive-applications) |
+| 53  | [How do you implement custom security filters in Spring Security?](#53-how-do-you-implement-custom-security-filters-in-spring-security) |
+| 54  | [Explain the `AbstractSecurityInterceptor` class.](#54-explain-the-abstractsecurityinterceptor-class) |
+| 55  | [How do you integrate Spring Security with OAuth2 and OpenID Connect?](#55-how-do-you-integrate-spring-security-with-oauth2-and-openid-connect) |
+| 56  | [How do you implement a custom `AccessDecisionManager`?](#56-how-do-you-implement-a-custom-accessdecisionmanager) |
+| 57  | [How do you configure security for a Spring Cloud Gateway?](#57-how-do-you-configure-security-for-a-spring-cloud-gateway) |
+| 58  | [Explain the `SecurityContextRepository` interface.](#58-explain-the-securitycontextrepository-interface) |
+| 59  | [How do you implement attribute-based access control (ABAC) in Spring Security?](#59-how-do-you-implement-attribute-based-access-control-abac-in-spring-security) |
+| 60  | [How do you integrate Spring Security with a third-party identity provider?](#60-how-do-you-integrate-spring-security-with-a-third-party-identity-provider) |
+| 61  | [How do you handle cross-origin resource sharing (CORS) in a Spring Security application?](#61-how-do-you-handle-cross-origin-resource-sharing-cors-in-a-spring-security-application) |
+| 62  | [Explain the concept of AOP-based method security in Spring Security.](#62-explain-the-concept-of-aop-based-method-security-in-spring-security) |
+| 63  | [How do you configure security for a multi-tenant application in Spring Security?](#63-how-do-you-configure-security-for-a-multi-tenant-application-in-spring-security) |
+| 64  | [How do you implement custom token-based authentication in Spring Security?](#64-how-do-you-implement-custom-token-based-authentication-in-spring-security) |
+| 65  | [Explain the `SecurityExpressionHandler` interface.](#65-explain-the-securityexpressionhandler-interface) |
+| 66  | [How do you handle password reset functionality in Spring Security?](#66-how-do-you-handle-password-reset-functionality-in-spring-security) |
+| 67  | [How do you secure a Spring WebFlux application with Spring Security?](#67-how-do-you-secure-a-spring-webflux-application-with-spring-security) |
+| 68  | [Explain the `ReactiveAuthenticationManager` interface.](#68-explain-the-reactiveauthenticationmanager-interface) |
+| 69  | [How do you implement security auditing in Spring Security?](#69-how-do-you-implement-security-auditing-in-spring-security) |
+| 70  | [How do you secure a Spring Boot Admin server with Spring Security?](#70-how-do-you-secure-a-spring-boot-admin-server-with-spring-security) |
+| 71  | [Explain the `SecurityEvaluationContextExtension` class.](#71-explain-the-securityevaluationcontextextension-class) |
+| 72  | [How do you configure security for a GraphQL API with Spring Security?](#72-how-do-you-configure-security-for-a-graphql-api-with-spring-security) |
+| 73  | [How do you implement security for a server-sent events (SSE) endpoint in Spring Security?](#73-how-do-you-implement-security-for-a-server-sent-events-sse-endpoint-in-spring-security) |
+| 74  | [Explain the `JwtAccessTokenConverter` class.](#74-explain-the-jwtaccesstokenconverter-class) |
+| 75  | [How do you handle security for a batch processing application with Spring Security?](#75-how-do-you-handle-security-for-a-batch-processing-application-with-spring-security) |
 
 ## Spring AOP
 ### Table of Contents
