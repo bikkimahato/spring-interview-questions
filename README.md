@@ -9671,6 +9671,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-easy)**
+---
 
 ### 27. Explain the concept of security filters in Spring Security.
 
@@ -9694,6 +9696,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 28. How do you configure multiple authentication providers in Spring Security?
 
@@ -9717,6 +9721,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 29. How do you implement role-based access control in Spring Security?
 
@@ -9757,10 +9763,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 30. What is the purpose of the `FilterChainProxy`?
 
 The `FilterChainProxy` in Spring Security is responsible for delegating web requests to a chain of security filters. It allows for a centralized configuration of multiple filter chains in a Spring Security application. This enables different security configurations to be applied based on the request URL.
+
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 31. How do you configure CORS in Spring Security?
 
@@ -9790,6 +9801,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 32. Explain how to secure REST APIs with Spring Security.
 
@@ -9810,6 +9823,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 33. How do you handle exceptions in Spring Security?
 
@@ -9843,6 +9858,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 34. How do you customize the access denied page in Spring Security?
 
@@ -9861,10 +9878,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 35. What is the role of `SecurityConfigurerAdapter`?
 
 The `SecurityConfigurerAdapter` is a base class used to create custom security configurations in Spring Security. It provides default implementations for many methods, allowing you to override only the methods you need.
+
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 36. How do you secure a Spring Boot application with Spring Security?
 
@@ -9893,6 +9915,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 37. Explain the `OAuth2` support in Spring Security.
 
@@ -9912,6 +9936,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 38. How do you configure JWT authentication in Spring Security?
 
@@ -9938,10 +9964,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     // Implementation
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 39. What is the purpose of `HttpSecurity`?
 
 `HttpSecurity` is used to configure web-based security for specific HTTP requests. It allows customization of security settings, such as specifying which endpoints require authentication, configuring form login, and setting up CSRF protection.
+
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 40. How do you secure WebSocket connections in Spring Security?
 
@@ -9965,6 +9996,8 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 41. How do you integrate Spring Security with Thymeleaf?
 
@@ -9994,6 +10027,8 @@ Example:
 </body>
 </html>
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 42. Explain the purpose of `@WithMockUser` in Spring Security testing.
 
@@ -10017,6 +10052,8 @@ public class MyControllerTest {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 43. How do you configure a custom authentication provider in Spring Security?
 
@@ -10049,6 +10086,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 44. How do you handle CSRF tokens in AJAX requests with Spring Security?
 
@@ -10066,6 +10105,8 @@ Example:
     });
 </script>
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 45. What are the different types of authentication mechanisms supported by Spring Security?
 
@@ -10077,6 +10118,9 @@ Spring Security supports various authentication mechanisms, including:
 - OAuth2
 - JWT Authentication
 - OpenID Connect
+
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 46. How do you implement two-factor authentication in Spring Security?
 
@@ -10105,6 +10149,8 @@ public class TwoFactorAuthenticationFilter extends GenericFilterBean {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 47. How do you configure security for a microservices architecture with Spring Security?
 
@@ -10124,6 +10170,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 48. Explain the concept of security expressions in Spring Security.
 
@@ -10146,6 +10194,8 @@ public class MyController {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 49. How do you implement single sign-on (SSO) with Spring Security?
 
@@ -10165,6 +10215,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
 
 ### 50. How do you perform security testing in a Spring Security application?
 
@@ -10188,3 +10240,5 @@ public class MyControllerTest {
     }
 }
 ```
+#### **[⬆ Back to Top](#level--spring-security-medium)**
+---
