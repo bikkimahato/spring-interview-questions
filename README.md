@@ -9639,3 +9639,552 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ```
 #### **[⬆ Back to Top](#level--spring-security-easy)**
 ---
+
+# Spring Security Medium Interview Questions and Answers
+### 26. How does Spring Security integrate with the Spring MVC framework?
+
+Spring Security integrates seamlessly with the Spring MVC framework to provide a comprehensive security solution. This integration is achieved through several key mechanisms:
+
+1. **Security Filters**: Spring Security uses a series of filters to intercept requests and apply security rules. These filters are configured in the `FilterChainProxy`.
+2. **Annotations**: Spring Security provides several annotations like `@Secured`, `@PreAuthorize`, and `@RolesAllowed` to secure methods in your controllers.
+3. **Security Context**: Spring Security maintains a security context that holds the authentication information of the current user.
+4. **Authentication Mechanisms**: Spring Security supports various authentication mechanisms such as form-based login, HTTP Basic authentication, and OAuth2.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
+    }
+}
+```
+
+### 27. Explain the concept of security filters in Spring Security.
+
+Security filters are a core component of Spring Security and are used to intercept and process web requests before they reach the application. These filters are part of the `FilterChainProxy` and each filter performs a specific security-related function:
+
+1. **Authentication Filters**: Handle user authentication.
+2. **Authorization Filters**: Check if the authenticated user has the required permissions.
+3. **Session Management Filters**: Manage user sessions.
+4. **CSRF Filters**: Protect against cross-site request forgery attacks.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .addFilter(new CustomAuthenticationFilter(authenticationManager()))
+            .addFilter(new CustomAuthorizationFilter(authenticationManager()));
+    }
+}
+```
+
+### 28. How do you configure multiple authentication providers in Spring Security?
+
+To configure multiple authentication providers in Spring Security, you need to define each provider and add them to the `AuthenticationManagerBuilder`.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+                .withUser("user").password("{noop}password").roles("USER")
+                .and()
+            .jdbcAuthentication()
+                .dataSource(dataSource())
+                .usersByUsernameQuery("select username, password, enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
+    }
+}
+```
+
+### 29. How do you implement role-based access control in Spring Security?
+
+Role-based access control (RBAC) can be implemented in Spring Security using annotations or configuring HTTP security rules.
+
+Example with annotations:
+```java
+@RestController
+public class MyController {
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String admin() {
+        return "Hello Admin";
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String user() {
+        return "Hello User";
+    }
+}
+```
+
+Example with HTTP security:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .anyRequest().authenticated()
+                .and()
+            .formLogin();
+    }
+}
+```
+
+### 30. What is the purpose of the `FilterChainProxy`?
+
+The `FilterChainProxy` in Spring Security is responsible for delegating web requests to a chain of security filters. It allows for a centralized configuration of multiple filter chains in a Spring Security application. This enables different security configurations to be applied based on the request URL.
+
+### 31. How do you configure CORS in Spring Security?
+
+CORS (Cross-Origin Resource Sharing) can be configured in Spring Security using the `CorsConfigurationSource` and the `HttpSecurity.cors()` method.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .cors().configurationSource(corsConfigurationSource())
+            .and()
+            .csrf().disable();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://example.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
+```
+
+### 32. Explain how to secure REST APIs with Spring Security.
+
+To secure REST APIs with Spring Security, you can use HTTP Basic authentication, OAuth2, or JWT. Here’s an example using HTTP Basic authentication:
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .httpBasic();
+    }
+}
+```
+
+### 33. How do you handle exceptions in Spring Security?
+
+Spring Security allows you to handle exceptions through the `AuthenticationEntryPoint` and `AccessDeniedHandler`.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(new CustomAccessDeniedHandler());
+    }
+}
+
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+    }
+}
+
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+    }
+}
+```
+
+### 34. How do you customize the access denied page in Spring Security?
+
+You can customize the access denied page by implementing a custom `AccessDeniedHandler`.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .exceptionHandling()
+                .accessDeniedPage("/access-denied");
+    }
+}
+```
+
+### 35. What is the role of `SecurityConfigurerAdapter`?
+
+The `SecurityConfigurerAdapter` is a base class used to create custom security configurations in Spring Security. It provides default implementations for many methods, allowing you to override only the methods you need.
+
+### 36. How do you secure a Spring Boot application with Spring Security?
+
+To secure a Spring Boot application with Spring Security, add the Spring Security starter dependency and configure security settings in a `WebSecurityConfigurerAdapter`.
+
+Example:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin();
+    }
+}
+```
+
+### 37. Explain the `OAuth2` support in Spring Security.
+
+Spring Security supports OAuth2 for securing applications by providing a framework to handle authorization and resource access. It includes support for OAuth2 client, resource server, and authorization server.
+
+Example for OAuth2 client:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .oauth2Login()
+                .loginPage("/oauth2/authorization/messaging-client-oidc")
+                .permitAll();
+    }
+}
+```
+
+### 38. How do you configure JWT authentication in Spring Security?
+
+To configure JWT authentication, you need to create a filter that validates the JWT and add it to the security filter chain.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+            .addFilter(new JWTAuthorizationFilter(authenticationManager()));
+    }
+}
+
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    // Implementation
+}
+
+public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+    // Implementation
+}
+```
+
+### 39. What is the purpose of `HttpSecurity`?
+
+`HttpSecurity` is used to configure web-based security for specific HTTP requests. It allows customization of security settings, such as specifying which endpoints require authentication, configuring form login, and setting up CSRF protection.
+
+### 40. How do you secure WebSocket connections in Spring Security?
+
+To secure WebSocket connections, you need to configure the `AbstractSecurityWebSocketMessageBrokerConfigurer`.
+
+Example:
+```java
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+    @Override
+    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+        messages
+            .simpDestMatchers("/user/**").authenticated()
+            .anyMessage().authenticated();
+    }
+
+    @Override
+    protected boolean sameOriginDisabled() {
+        return true;
+    }
+}
+```
+
+### 41. How do you integrate Spring Security with Thymeleaf?
+
+Integrating Spring Security with Thymeleaf involves adding the Thymeleaf Spring Security dialect and using specific security expressions in your Thymeleaf templates.
+
+Example:
+```xml
+<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+</dependency>
+```
+
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Spring Security with Thymeleaf</title>
+</head>
+<body>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        <p>Welcome, user!</p>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <p>Welcome, authenticated user!</p>
+    </div>
+</body>
+</html>
+```
+
+### 42. Explain the purpose of `@WithMockUser` in Spring Security testing.
+
+`@WithMockUser` is used in Spring Security testing to create a mock user with specific roles and authorities for testing purposes. It helps simulate an authenticated user in unit tests.
+
+Example:
+```java
+@RunWith(SpringRunner.class)
+@WebMvcTest(MyController.class)
+public class MyControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    public void testUserEndpoint() throws Exception {
+        mockMvc.perform(get("/user"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello User"));
+    }
+}
+```
+
+### 43. How do you configure a custom authentication provider in Spring Security?
+
+To configure a custom authentication provider, implement the `AuthenticationProvider` interface and add it to the `AuthenticationManagerBuilder`.
+
+Example:
+```java
+public class CustomAuthenticationProvider implements AuthenticationProvider {
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String username = authentication.getName();
+        String password = authentication.getCredentials().toString();
+        // Custom authentication logic
+        return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+}
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(new CustomAuthenticationProvider());
+    }
+}
+```
+
+### 44. How do you handle CSRF tokens in AJAX requests with Spring Security?
+
+To handle CSRF tokens in AJAX requests, you need to include the CSRF token in your AJAX request headers.
+
+Example:
+```html
+<script>
+    $(document).ready(function() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+</script>
+```
+
+### 45. What are the different types of authentication mechanisms supported by Spring Security?
+
+Spring Security supports various authentication mechanisms, including:
+- HTTP Basic Authentication
+- Form-Based Authentication
+- Digest Authentication
+- LDAP Authentication
+- OAuth2
+- JWT Authentication
+- OpenID Connect
+
+### 46. How do you implement two-factor authentication in Spring Security?
+
+To implement two-factor authentication, you need to add an additional authentication step after the initial login. This can be done using a custom filter.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .addFilterBefore(new TwoFactorAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .formLogin()
+                .loginPage("/login")
+                .permitAll();
+    }
+}
+
+public class TwoFactorAuthenticationFilter extends GenericFilterBean {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        // Two-factor authentication logic
+        chain.doFilter(request, response);
+    }
+}
+```
+
+### 47. How do you configure security for a microservices architecture with Spring Security?
+
+To configure security for a microservices architecture, you can use OAuth2 and JWT for token-based authentication. Each microservice should validate the JWT token and extract the user information.
+
+Example:
+```java
+@Configuration
+@EnableResourceServer
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/public/**").permitAll()
+                .anyRequest().authenticated();
+    }
+}
+```
+
+### 48. Explain the concept of security expressions in Spring Security.
+
+Security expressions in Spring Security are used to define fine-grained access control rules. They can be used in method-level security annotations and in HTTP security configurations.
+
+Example:
+```java
+@RestController
+public class MyController {
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String admin() {
+        return "Hello Admin";
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String user() {
+        return "Hello User";
+    }
+}
+```
+
+### 49. How do you implement single sign-on (SSO) with Spring Security?
+
+To implement SSO with Spring Security, you can use OAuth2 and configure your application as an OAuth2 client.
+
+Example:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .oauth2Login()
+                .loginPage("/oauth2/authorization/messaging-client-oidc")
+                .permitAll();
+    }
+}
+```
+
+### 50. How do you perform security testing in a Spring Security application?
+
+To perform security testing, you can use Spring Security’s testing support, including `@WithMockUser` and `@WithUserDetails`.
+
+Example:
+```java
+@RunWith(SpringRunner.class)
+@WebMvcTest(MyController.class)
+public class MyControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    public void testUserEndpoint() throws Exception {
+        mockMvc.perform(get("/user"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello User"));
+    }
+}
+```
