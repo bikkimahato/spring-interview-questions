@@ -10906,3 +10906,474 @@ public class SecurityConfig {
 ```
 #### **[⬆ Back to Top](#level--spring-security-hard)**
 ---
+
+### 68. Explain the `ReactiveAuthenticationManager` interface
+
+The `ReactiveAuthenticationManager` is an interface in Spring Security designed for reactive applications, such as those built with Spring WebFlux. This interface is responsible for authenticating users in a non-blocking, asynchronous manner.
+
+#### Key Method:
+- **`Mono<Authentication> authenticate(Authentication authentication)`**: This method takes an `Authentication` object (which contains authentication request details like username and password) and returns a `Mono<Authentication>`, which is a reactive type from Project Reactor representing a single asynchronous value or an error.
+
+#### Example Implementation:
+```java
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.core.Authentication;
+import reactor.core.publisher.Mono;
+
+public class CustomReactiveAuthenticationManager implements ReactiveAuthenticationManager {
+
+    @Override
+    public Mono<Authentication> authenticate(Authentication authentication) {
+        // Custom authentication logic here
+        return Mono.just(authentication); // Replace with actual authentication logic
+    }
+}
+```
+
+In this example, the `CustomReactiveAuthenticationManager` simply returns the passed `Authentication` object wrapped in a `Mono`. In a real-world scenario, you would implement actual authentication logic, such as validating credentials against a database.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 69. How do you implement security auditing in Spring Security?
+
+Security auditing in Spring Security can be implemented using the `AbstractAuditableEvent` class and the `AuditEventRepository` interface. Auditing allows you to log and keep track of security-related events, such as login attempts and access to secured resources.
+
+#### Steps to Implement Security Auditing:
+
+1. **Create a Custom `AuditEventRepository`**:
+   ```java
+   import org.springframework.boot.actuate.audit.AuditEvent;
+   import org.springframework.boot.actuate.audit.AuditEventRepository;
+   import org.springframework.stereotype.Component;
+
+   import java.util.ArrayList;
+   import java.util.Date;
+   import java.util.List;
+
+   @Component
+   public class CustomAuditEventRepository implements AuditEventRepository {
+
+       private final List<AuditEvent> auditEvents = new ArrayList<>();
+
+       @Override
+       public void add(AuditEvent event) {
+           // Custom logic to store audit event
+           auditEvents.add(event);
+           System.out.println("Audit Event: " + event.getType());
+       }
+
+       @Override
+       public List<AuditEvent> find(String principal, Date after) {
+           // Custom logic to retrieve audit events
+           return auditEvents;
+       }
+   }
+   ```
+
+2. **Enable Auditing Configuration**:
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+   @Configuration
+   @EnableJpaAuditing
+   public class AuditingConfig {
+   }
+   ```
+
+3. **Create an Event Listener to Log Security Events**:
+   ```java
+   import org.springframework.context.event.EventListener;
+   import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
+   import org.springframework.security.web.authentication.WebAuthenticationDetails;
+   import org.springframework.stereotype.Component;
+
+   @Component
+   public class AuthenticationEventListener {
+
+       private final CustomAuditEventRepository auditEventRepository;
+
+       public AuthenticationEventListener(CustomAuditEventRepository auditEventRepository) {
+           this.auditEventRepository = auditEventRepository;
+       }
+
+       @EventListener
+       public void handleAuthenticationSuccess(AbstractAuthenticationEvent event) {
+           WebAuthenticationDetails details = (WebAuthenticationDetails) event.getAuthentication().getDetails();
+           AuditEvent auditEvent = new AuditEvent(event.getAuthentication().getName(), "AUTHENTICATION_SUCCESS", details.getRemoteAddress());
+           auditEventRepository.add(auditEvent);
+       }
+   }
+   ```
+
+This setup will log successful authentication events using the custom `AuditEventRepository`.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 70. How do you secure a Spring Boot Admin server with Spring Security?
+
+Spring Boot Admin is a web application used for managing and monitoring Spring Boot applications. Securing it with Spring Security involves setting up basic authentication or integrating with an OAuth2 provider.
+
+#### Example Configuration:
+
+1. **Add Dependencies**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-security</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>de.codecentric</groupId>
+       <artifactId>spring-boot-admin-starter-server</artifactId>
+   </dependency>
+   ```
+
+2. **Configure Security**:
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(HttpSecurity http) throws Exception {
+           http
+               .authorizeRequests()
+                   .antMatchers("/actuator/**").permitAll()
+                   .anyRequest().authenticated()
+               .and()
+               .httpBasic();
+       }
+   }
+   ```
+
+3. **Application Properties**:
+   ```properties
+   spring.security.user.name=admin
+   spring.security.user.password=admin
+   ```
+
+In this example, HTTP basic authentication is used to secure the Spring Boot Admin server. The admin credentials are specified in the application properties file.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 71. Explain the `SecurityEvaluationContextExtension` class
+
+The `SecurityEvaluationContextExtension` class in Spring Security is used to expose security-related properties and methods to the SpEL (Spring Expression Language) evaluation context. This is useful when you want to access security information within your SpEL expressions, for instance in Spring Data JPA repositories or Thymeleaf templates.
+
+#### Example Usage:
+
+1. **Add the Dependency**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.security</groupId>
+       <artifactId>spring-security-data</artifactId>
+   </dependency>
+   ```
+
+2. **Register the `SecurityEvaluationContextExtension` Bean**:
+   ```java
+   import org.springframework.context.annotation.Bean;
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.data.repository.query.spi.EvaluationContextExtension;
+   import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+
+   @Configuration
+   public class SecurityConfig {
+
+       @Bean
+       public EvaluationContextExtension securityExtension() {
+           return new SecurityEvaluationContextExtension();
+       }
+   }
+   ```
+
+3. **Use in Repository**:
+   ```java
+   import org.springframework.data.jpa.repository.JpaRepository;
+   import org.springframework.data.jpa.repository.Query;
+
+   public interface UserRepository extends JpaRepository<User, Long> {
+
+       @Query("select u from User u where u.username = ?#{principal.username}")
+       User findCurrentUser();
+   }
+   ```
+
+In this example, the `SecurityEvaluationContextExtension` allows access to the currently authenticated user's username directly within a JPA query.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 72. How do you configure security for a GraphQL API with Spring Security?
+
+Configuring security for a GraphQL API in Spring involves integrating Spring Security with Spring GraphQL. GraphQL queries and mutations can be secured by defining security rules and applying them to the appropriate endpoints.
+
+#### Example Configuration:
+
+1. **Add Dependencies**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-security</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>com.graphql-java-kickstart</groupId>
+       <artifactId>graphql-spring-boot-starter</artifactId>
+   </dependency>
+   ```
+
+2. **Configure Security**:
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(HttpSecurity http) throws Exception {
+           http
+               .csrf().disable()
+               .authorizeRequests()
+                   .antMatchers("/graphql").authenticated()
+                   .anyRequest().permitAll()
+               .and()
+               .httpBasic();
+       }
+   }
+   ```
+
+3. **GraphQL Controller**:
+   ```java
+   import org.springframework.graphql.data.method.annotation.QueryMapping;
+   import org.springframework.stereotype.Controller;
+
+   @Controller
+   public class GraphQLController {
+
+       @QueryMapping
+       public String hello() {
+           return "Hello, World!";
+       }
+   }
+   ```
+
+In this example, the `/graphql` endpoint is secured and requires authentication, while other endpoints are permitted to all users.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 73. How do you implement security for a server-sent events (SSE) endpoint in Spring Security?
+
+Securing Server-Sent Events (SSE) endpoints in Spring Security involves configuring HTTP security to protect the SSE endpoints and using the `SseEmitter` class to send events.
+
+#### Example Configuration:
+
+1. **Add Dependency**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-security</artifactId>
+   </dependency>
+   ```
+
+2. **Configure Security**:
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(HttpSecurity http) throws Exception {
+           http
+               .authorizeRequests()
+                   .antMatchers("/sse/**").authenticated()
+                   .anyRequest().permitAll()
+               .and()
+               .httpBasic();
+       }
+   }
+   ```
+
+3. **SSE Controller**:
+   ```java
+   import org.springframework.web.bind.annotation.GetMapping;
+   import org.springframework.web.bind.annotation.RestController;
+   import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+   @RestController
+   public class SseController {
+
+       @GetMapping("/sse/stream")
+       public SseEmitter stream() {
+           SseEmitter emitter = new SseEmitter();
+           // Send events to the client
+           return emitter;
+       }
+   }
+   ```
+
+In this example, the `/sse/stream` endpoint is secured and requires authentication, while other endpoints are permitted to all users.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 74. Explain the `JwtAccessTokenConverter` class
+
+The `JwtAccessTokenConverter` class in Spring Security OAuth2 is used to convert between JWT (JSON Web Token) encoded OAuth2 access tokens and OAuth2 authentication information. It also provides methods to sign and verify the tokens.
+
+#### Key Methods:
+- **`convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication)`**: Converts an OAuth2 access token and authentication into a JWT.
+- **`extractAuthentication(Map<String, ?> claims)`**: Extracts authentication information from the claims in a JWT.
+
+#### Example Usage:
+
+1. **Add Dependencies**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+   </dependency>
+   ```
+
+2. **Configure JWT Token Enhancer**:
+   ```java
+   import org.springframework.context.annotation.Bean;
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+   import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+   @Configuration
+   public class JwtConfig {
+
+       @Bean
+       public JwtAccessTokenConverter accessTokenConverter() {
+           JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+           converter.setSigningKey("signing-key");
+           return converter;
+       }
+   }
+   ```
+
+3. **Use in Authorization Server**:
+   ```java
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+   import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+   import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+   import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+   import org.springframework.security.oauth2.provider.token.TokenStore;
+   import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+   @Configuration
+   @EnableAuthorizationServer
+   public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+       @Autowired
+       private JwtAccessTokenConverter accessTokenConverter;
+
+       @Override
+       public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+           endpoints
+               .tokenStore(tokenStore())
+               .accessTokenConverter(accessTokenConverter);
+       }
+
+       @Bean
+       public TokenStore tokenStore() {
+           return new JwtTokenStore(accessTokenConverter);
+       }
+   }
+   ```
+
+In this example, the `JwtAccessTokenConverter` is configured with a signing key and used in the authorization server to sign and verify JWT tokens.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 75. How do you handle security for a batch processing application with Spring Security?
+
+Securing a batch processing application with Spring Security involves configuring security for the batch jobs and ensuring that only authorized users can start, stop, or view the status of batch jobs.
+
+#### Example Configuration:
+
+1. **Add Dependencies**:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-batch</artifactId>
+   </dependency>
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-security</artifactId>
+   </dependency>
+   ```
+
+2. **Configure Security**:
+   ```java
+   import org.springframework.context.annotation.Configuration;
+   import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+   import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+   @Configuration
+   public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(HttpSecurity http) throws Exception {
+           http
+               .authorizeRequests()
+                   .antMatchers("/batch/**").authenticated()
+                   .anyRequest().permitAll()
+               .and()
+               .httpBasic();
+       }
+   }
+   ```
+
+3. **Batch Job Configuration**:
+   ```java
+   import org.springframework.batch.core.Job;
+   import org.springframework.batch.core.JobExecutionListener;
+   import org.springframework.batch.core.Step;
+   import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+   import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+   import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+   import org.springframework.batch.core.launch.support.RunIdIncrementer;
+   import org.springframework.context.annotation.Bean;
+   import org.springframework.context.annotation.Configuration;
+
+   @Configuration
+   @EnableBatchProcessing
+   public class BatchConfig {
+
+       @Bean
+       public Job job(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory,
+                      JobExecutionListener listener) {
+           Step step = stepBuilderFactory.get("step")
+                   .tasklet((contribution, chunkContext) -> null)
+                   .build();
+
+           return jobBuilderFactory.get("job")
+                   .incrementer(new RunIdIncrementer())
+                   .listener(listener)
+                   .start(step)
+                   .build();
+       }
+   }
+   ```
+
+In this example, the `/batch/**` endpoints are secured and require authentication, ensuring that only authorized users can interact with the batch jobs.
+
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
