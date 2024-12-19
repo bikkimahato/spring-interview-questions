@@ -10865,3 +10865,44 @@ public void resetPassword(String token, String newPassword) {
 ```
 #### **[⬆ Back to Top](#level--spring-security-hard)**
 ---
+
+### 67. How do you secure a Spring WebFlux application with Spring Security?
+
+Spring WebFlux applications can be secured using the `SecurityWebFilterChain` and `ServerHttpSecurity`.
+
+#### Example:
+```java
+@EnableWebFluxSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        return http
+            .authorizeExchange()
+                .pathMatchers("/public/**").permitAll()
+                .anyExchange().authenticated()
+            .and()
+            .httpBasic()
+            .and()
+            .formLogin()
+            .and()
+            .build();
+    }
+
+    @Bean
+    public ReactiveAuthenticationManager authenticationManager() {
+        return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService());
+    }
+
+    @Bean
+    public MapReactiveUserDetailsService userDetailsService() {
+        UserDetails user = User.withDefaultPasswordEncoder()
+            .username("user")
+            .password("password")
+            .roles("USER")
+            .build();
+        return new MapReactiveUserDetailsService(user);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
