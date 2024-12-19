@@ -10242,3 +10242,626 @@ public class MyControllerTest {
 ```
 #### **[⬆ Back to Top](#level--spring-security-medium)**
 ---
+
+# Spring Security Hard Interview Questions and Answers
+
+### 51. Explain the internals of the `DelegatingFilterProxy`
+
+The `DelegatingFilterProxy` in Spring Security allows a filter to be managed by the Spring application context. It is a servlet filter that delegates the actual filtering to a Spring bean that implements the `Filter` interface.
+
+#### How it works:
+- The `DelegatingFilterProxy` is defined in the `web.xml` file or using Java-based configuration.
+- When the `DelegatingFilterProxy` is invoked, it looks up a Spring bean by name (the `targetBeanName`).
+- The `DelegatingFilterProxy` then delegates the actual request handling to this bean.
+
+#### Example:
+```xml
+<filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+
+<filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+In a Java-based configuration:
+```java
+@Configuration
+public class WebConfig extends WebMvcConfigurerAdapter {
+    @Bean
+    public FilterRegistrationBean delegatingFilterProxy() {
+        FilterRegistrationBean registration = new FilterRegistrationBean(new DelegatingFilterProxy("springSecurityFilterChain"));
+        registration.addUrlPatterns("/*");
+        return registration;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 52. How does Spring Security handle authentication and authorization for reactive applications?
+
+Spring Security provides support for reactive applications through its `spring-security-webflux` module. It integrates seamlessly with Spring WebFlux.
+
+#### Key Components:
+- **`ReactiveAuthenticationManager`**: Handles the authentication logic.
+- **`SecurityWebFilterChain`**: Configures security at the WebFlux layer.
+- **`ServerHttpSecurity`**: DSL for configuring security in a reactive application.
+
+#### Example:
+```java
+@Configuration
+public class SecurityConfig {
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        return http
+            .authorizeExchange()
+                .pathMatchers("/public/**").permitAll()
+                .anyExchange().authenticated()
+            .and()
+            .httpBasic().and()
+            .formLogin()
+            .and()
+            .build();
+    }
+
+    @Bean
+    public ReactiveAuthenticationManager authenticationManager() {
+        return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService());
+    }
+
+    @Bean
+    public MapReactiveUserDetailsService userDetailsService() {
+        UserDetails user = User.withDefaultPasswordEncoder()
+            .username("user")
+            .password("password")
+            .roles("USER")
+            .build();
+        return new MapReactiveUserDetailsService(user);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 53. How do you implement custom security filters in Spring Security?
+
+To create a custom security filter, you need to implement the `Filter` interface and register it in the Spring Security filter chain.
+
+#### Steps:
+1. Implement the `javax.servlet.Filter` interface.
+2. Register the custom filter in the Spring Security configuration.
+
+#### Example:
+```java
+public class CustomFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // Initialization logic
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        // Custom filtering logic
+        chain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        // Cleanup logic
+    }
+}
+```
+
+Registering the filter:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(new CustomFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authorizeRequests()
+            .anyRequest().authenticated();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 54. Explain the `AbstractSecurityInterceptor` class.
+
+The `AbstractSecurityInterceptor` is a base class for performing security checks within Spring Security. It is responsible for invoking the `AccessDecisionManager` to make authorization decisions.
+
+#### Key Responsibilities:
+- Obtains the `Authentication` object from the `SecurityContextHolder`.
+- Interacts with the `AccessDecisionManager` to decide whether the request should be allowed.
+- Throws an `AccessDeniedException` if the authorization fails.
+
+### Example:
+```java
+public class CustomSecurityInterceptor extends AbstractSecurityInterceptor {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        // Custom logic and security checks
+        chain.doFilter(request, response);
+    }
+    
+    @Override
+    public Class<?> getSecureObjectClass() {
+        return FilterInvocation.class;
+    }
+
+    @Override
+    public SecurityMetadataSource obtainSecurityMetadataSource() {
+        return new CustomSecurityMetadataSource();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 55. How do you integrate Spring Security with OAuth2 and OpenID Connect?
+
+Spring Security supports integration with OAuth2 and OpenID Connect through the `spring-security-oauth2-client` module.
+
+#### Steps:
+1. Configure an `OAuth2LoginConfigurer` in your security configuration.
+2. Define the client registration details in the `application.yml` or `application.properties`.
+
+#### Example:
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: google-client-id
+            client-secret: google-client-secret
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            authorization-grant-type: authorization_code
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://accounts.google.com/o/oauth2/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+```
+
+Security Configuration:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests(authorizeRequests ->
+                authorizeRequests
+                    .anyRequest().authenticated())
+            .oauth2Login(withDefaults());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 56. How do you implement a custom `AccessDecisionManager`?
+
+The `AccessDecisionManager` is responsible for making final access control decisions. To create a custom `AccessDecisionManager`, implement the `AccessDecisionManager` interface.
+
+#### Example:
+```java
+public class CustomAccessDecisionManager implements AccessDecisionManager {
+    @Override
+    public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes)
+            throws AccessDeniedException, InsufficientAuthenticationException {
+        // Custom logic to decide whether access is granted or denied.
+        // Throw AccessDeniedException if access is denied.
+    }
+
+    @Override
+    public boolean supports(ConfigAttribute attribute) {
+        return true;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return true;
+    }
+}
+```
+
+Registering the custom `AccessDecisionManager`:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .anyRequest().authenticated()
+            .accessDecisionManager(new CustomAccessDecisionManager());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 57. How do you configure security for a Spring Cloud Gateway?
+
+Spring Cloud Gateway supports Spring Security integration to secure gateway routes.
+
+#### Example:
+```java
+@EnableWebFluxSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        http
+            .authorizeExchange()
+                .pathMatchers("/public/**").permitAll()
+                .anyExchange().authenticated()
+            .and()
+            .oauth2Login()
+            .and()
+            .oauth2ResourceServer().jwt();
+        return http.build();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 58. Explain the `SecurityContextRepository` interface.
+
+The `SecurityContextRepository` interface is responsible for storing and retrieving the `SecurityContext` between requests.
+
+#### Methods:
+- **`loadContext`**: Loads the `SecurityContext` from the request.
+- **`saveContext`**: Saves the `SecurityContext` to the request.
+- **`containsContext`**: Checks if the request contains a `SecurityContext`.
+
+#### Example:
+```java
+public class CustomSecurityContextRepository implements SecurityContextRepository {
+    @Override
+    public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
+        // Load the SecurityContext from the request
+        return SecurityContextHolder.createEmptyContext();
+    }
+
+    @Override
+    public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
+        // Save the SecurityContext to the request
+    }
+
+    @Override
+    public boolean containsContext(HttpServletRequest request) {
+        // Check if the request contains a SecurityContext
+        return false;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 59. How do you implement attribute-based access control (ABAC) in Spring Security?
+
+Attribute-Based Access Control (ABAC) allows access decisions to be based on user attributes, resource attributes, and environment attributes.
+
+#### Example:
+1. Create a custom `PermissionEvaluator`:
+```java
+public class CustomPermissionEvaluator implements PermissionEvaluator {
+    @Override
+    public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+        // Evaluate permission based on attributes
+        return true;
+    }
+
+    @Override
+    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+        // Evaluate permission based on attributes
+        return true;
+    }
+}
+```
+
+2. Register the custom `PermissionEvaluator`:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .anyRequest().access("@customPermissionEvaluator.hasPermission(authentication, #this, 'READ')")
+            .and()
+            .oauth2Login();
+    }
+
+    @Bean
+    public CustomPermissionEvaluator customPermissionEvaluator() {
+        return new CustomPermissionEvaluator();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 60. How do you integrate Spring Security with a third-party identity provider?
+
+To integrate Spring Security with a third-party identity provider, you can use OAuth2 or OpenID Connect.
+
+#### Example:
+Configure the identity provider in `application.yml`:
+```yaml
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          custom-provider:
+            client-id: custom-client-id
+            client-secret: custom-client-secret
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/custom-provider"
+            authorization-grant-type: authorization_code
+        provider:
+          custom-provider:
+            authorization-uri: https://idp.example.com/oauth2/authorize
+            token-uri: https://idp.example.com/oauth2/token
+            user-info-uri: https://idp.example.com/userinfo
+```
+
+Security Configuration:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests(authorizeRequests ->
+                authorizeRequests
+                    .anyRequest().authenticated())
+            .oauth2Login(withDefaults());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 61. How do you handle cross-origin resource sharing (CORS) in a Spring Security application?
+
+CORS can be configured in Spring Security using the `CorsConfiguration` class and the `HttpSecurity.cors()` method.
+
+#### Example:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(corsConfigurationSource())
+            .and()
+            .authorizeRequests()
+            .anyRequest().authenticated();
+
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://example.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 62. Explain the concept of AOP-based method security in Spring Security.
+
+AOP-based method security allows you to apply security constraints at the method level using annotations. It leverages Spring AOP to create proxies around methods and enforce security checks.
+
+#### Annotations:
+- **`@PreAuthorize`**: Checks if the user has the required permission before invoking the method.
+- **`@PostAuthorize`**: Checks if the user has the required permission after invoking the method.
+- **`@Secured`**: Specifies the roles required to invoke the method.
+
+#### Example:
+```java
+@Service
+public class MyService {
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public void securedMethod() {
+        // Method logic
+    }
+}
+```
+
+Enable method security in configuration:
+```java
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 63. How do you configure security for a multi-tenant application in Spring Security?
+
+In a multi-tenant application, you can configure security by creating a custom `AuthenticationProvider` that handles tenant-specific authentication logic.
+
+#### Example:
+```java
+public class MultiTenantAuthenticationProvider implements AuthenticationProvider {
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String tenant = ((CustomAuthenticationToken) authentication).getTenant();
+        // Tenant-specific authentication logic
+        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return CustomAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+}
+```
+
+Custom token:
+```java
+public class CustomAuthenticationToken extends UsernamePasswordAuthenticationToken {
+    private String tenant;
+
+    public CustomAuthenticationToken(Object principal, Object credentials, String tenant) {
+        super(principal, credentials);
+        this.tenant = tenant;
+    }
+
+    public String getTenant() {
+        return tenant;
+    }
+}
+```
+
+Register the custom `AuthenticationProvider`:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(new MultiTenantAuthenticationProvider());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 64. How do you implement custom token-based authentication in Spring Security?
+
+To implement custom token-based authentication, you need to create a custom `AuthenticationFilter` and `AuthenticationProvider`.
+
+#### Example:
+Custom `AuthenticationFilter`:
+```java
+public class CustomTokenAuthenticationFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        String token = request.getHeader("Authorization");
+        if (token != null) {
+            Authentication auth = new CustomAuthenticationToken(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+        filterChain.doFilter(request, response);
+    }
+}
+```
+
+Custom `AuthenticationProvider`:
+```java
+public class CustomAuthenticationProvider implements AuthenticationProvider {
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String token = (String) authentication.getCredentials();
+        // Custom token validation logic
+        return new UsernamePasswordAuthenticationToken(user, null, authorities);
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return CustomAuthenticationToken.class.isAssignableFrom(authentication);
+    }
+}
+```
+
+Register the custom filter and provider:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(new CustomTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authorizeRequests()
+            .anyRequest().authenticated();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(new CustomAuthenticationProvider());
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 65. Explain the `SecurityExpressionHandler` interface.
+
+The `SecurityExpressionHandler` interface is used to handle security expressions in Spring Security. It allows you to define custom security expressions for use in annotations like `@PreAuthorize` and `@PostAuthorize`.
+
+#### Methods:
+- **`createEvaluationContext`**: Creates an `EvaluationContext` for security expressions.
+- **`setReturnObject`**: Sets the return object in the `EvaluationContext`.
+- **`setFilterObject`**: Sets the filter object in the `EvaluationContext`.
+
+#### Example:
+```java
+public class CustomSecurityExpressionHandler extends DefaultWebSecurityExpressionHandler {
+    @Override
+    protected EvaluationContext createEvaluationContextInternal(Authentication authentication, MethodInvocation mi) {
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        // Custom logic to add variables to the context
+        return context;
+    }
+}
+```
+
+Registering the custom `SecurityExpressionHandler`:
+```java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .expressionHandler(new CustomSecurityExpressionHandler())
+            .anyRequest().authenticated();
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
+
+### 66. How do you handle password reset functionality in Spring Security?
+
+To handle password reset functionality, you can implement the following steps:
+1. Generate a password reset token.
+2. Send the token to the user's email.
+3. Verify the token when the user submits a new password.
+4. Update the user's password.
+
+#### Example:
+Generate token and send email:
+```java
+public void sendPasswordResetEmail(String email) {
+    String token = UUID.randomUUID().toString();
+    // Save token and email in a persistence store
+    // Send email with the token
+}
+```
+
+Verify token and update password:
+```java
+public void resetPassword(String token, String newPassword) {
+    // Verify the token
+    // Update the user's password
+}
+```
+#### **[⬆ Back to Top](#level--spring-security-hard)**
+---
