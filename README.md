@@ -526,6 +526,35 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 24  | [How would you exclude a method from being advised?](#24-how-would-you-exclude-a-method-from-being-advised) |
 | 25  | [What are the limitations of Spring AOP?](#25-what-are-the-limitations-of-spring-aop) |
 
+### Level : Spring AOP Medium
+| No. | Questions |
+| --- | --------- |
+| 26  | [How does Spring AOP work internally?](#26-how-does-spring-aop-work-internally) |
+| 27  | [What is the difference between static and dynamic weaving?](#27-what-is-the-difference-between-static-and-dynamic-weaving) |
+| 28  | [What is the difference between compile-time and load-time weaving?](#28-what-is-the-difference-between-compile-time-and-load-time-weaving) |
+| 29  | [How do you implement a custom annotation for AOP?](#29-how-do-you-implement-a-custom-annotation-for-aop) |
+| 30  | [How can you control the order of multiple aspects?](#30-how-can-you-control-the-order-of-multiple-aspects) |
+| 31  | [How do you pass parameters to advice methods?](#31-how-do-you-pass-parameters-to-advice-methods) |
+| 32  | [Can you access the return value in @AfterReturning advice?](#32-can-you-access-the-return-value-in-afterreturning-advice) |
+| 33  | [What is the use of ProceedingJoinPoint in @Around advice?](#33-what-is-the-use-of-proceedingjoinpoint-in-around-advice) |
+| 34  | [How do you handle exceptions in AOP?](#34-how-do-you-handle-exceptions-in-aop) |
+| 35  | [How can you apply AOP to specific beans?](#35-how-can-you-apply-aop-to-specific-beans) |
+| 36  | [How do you define multiple pointcuts in a single aspect?](#36-how-do-you-define-multiple-pointcuts-in-a-single-aspect) |
+| 37  | [Can you use AOP with non-Spring managed beans?](#37-can-you-use-aop-with-non-spring-managed-beans) |
+| 38  | [What is the use of @DeclareParents annotation?](#38-what-is-the-use-of-declareparents-annotation) |
+| 39  | [How do you test AOP functionality?](#39-how-do-you-test-aop-functionality) |
+| 40  | [Can you use AOP to modify method arguments?](#40-can-you-use-aop-to-modify-method-arguments) |
+| 41  | [How can you measure method execution time using AOP?](#41-how-can-you-measure-method-execution-time-using-aop) |
+| 42  | [How do you disable AOP for a specific environment?](#42-how-do-you-disable-aop-for-a-specific-environment) |
+| 43  | [How do you combine multiple pointcut expressions?](#43-how-do-you-combine-multiple-pointcut-expressions) |
+| 44  | [What is the use of @EnableAspectJAutoProxy annotation?](#44-what-is-the-use-of-enableaspectjautoproxy-annotation) |
+| 45  | [How do you apply AOP to private methods?](#45-how-do-you-apply-aop-to-private-methods) |
+| 46  | [How do you use AOP to manage transactions?](#46-how-do-you-use-aop-to-manage-transactions) |
+| 47  | [What is the difference between @Aspect and @Component annotations?](#47-what-is-the-difference-between-aspect-and-component-annotations) |
+| 48  | [How do you implement a logging aspect?](#48-how-do-you-implement-a-logging-aspect) |
+| 49  | [How do you use AOP to handle security concerns?](#49-how-do-you-use-aop-to-handle-security-concerns) |
+| 50  | [How do you use AOP to handle caching?](#50-how-do-you-use-aop-to-handle-caching) |
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
