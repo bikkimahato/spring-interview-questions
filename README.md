@@ -498,6 +498,33 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 ## Spring AOP
 ### Table of Contents
 ### Level : Spring AOP Easy
+| No. | Questions |
+| --- | --------- |
+| 1   | [What does AOP stand for in Spring?](#1-what-does-aop-stand-for-in-spring) |
+| 2   | [What are the key concepts of AOP?](#2-what-are-the-key-concepts-of-aop) |
+| 3   | [What is a cross-cutting concern? Can you give an example?](#3-what-is-a-cross-cutting-concern-can-you-give-an-example) |
+| 4   | [What is a join point?](#4-what-is-a-join-point) |
+| 5   | [What is a pointcut?](#5-what-is-a-pointcut) |
+| 6   | [What is an advice?](#6-what-is-an-advice) |
+| 7   | [What are the different types of advice in Spring AOP?](#7-what-are-the-different-types-of-advice-in-spring-aop) |
+| 8   | [What is an aspect?](#8-what-is-an-aspect) |
+| 9   | [How do you define an aspect in Spring AOP?](#9-how-do-you-define-an-aspect-in-spring-aop) |
+| 10  | [What is a proxy in Spring AOP?](#10-what-is-a-proxy-in-spring-aop) |
+| 11  | [What is weaving in the context of AOP?](#11-what-is-weaving-in-the-context-of-aop) |
+| 12  | [What is the difference between Spring AOP and AspectJ?](#12-what-is-the-difference-between-spring-aop-and-aspectj) |
+| 13  | [How do you enable AOP in a Spring application?](#13-how-do-you-enable-aop-in-a-spring-application) |
+| 14  | [What is @Aspect annotation used for?](#14-what-is-aspect-annotation-used-for) |
+| 15  | [What is @Pointcut annotation used for?](#15-what-is-pointcut-annotation-used-for) |
+| 16  | [What is the use of @Before annotation?](#16-what-is-the-use-of-before-annotation) |
+| 17  | [What is the use of @After annotation?](#17-what-is-the-use-of-after-annotation) |
+| 18  | [What is the use of @AfterReturning annotation?](#18-what-is-the-use-of-afterreturning-annotation) |
+| 19  | [What is the use of @AfterThrowing annotation?](#19-what-is-the-use-of-afterthrowing-annotation) |
+| 20  | [What is the use of @Around annotation?](#20-what-is-the-use-of-around-annotation) |
+| 21  | [How do you define a pointcut expression?](#21-how-do-you-define-a-pointcut-expression) |
+| 22  | [What is the purpose of JoinPoint interface in Spring AOP?](#22-what-is-the-purpose-of-joinpoint-interface-in-spring-aop) |
+| 23  | [Can you use Spring AOP with Spring Boot?](#23-can-you-use-spring-aop-with-spring-boot) |
+| 24  | [How would you exclude a method from being advised?](#24-how-would-you-exclude-a-method-from-being-advised) |
+| 25  | [What are the limitations of Spring AOP?](#25-what-are-the-limitations-of-spring-aop) |
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
