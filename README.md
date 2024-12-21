@@ -555,6 +555,35 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 49  | [How do you use AOP to handle security concerns?](#49-how-do-you-use-aop-to-handle-security-concerns) |
 | 50  | [How do you use AOP to handle caching?](#50-how-do-you-use-aop-to-handle-caching) |
 
+### Level : Spring AOP Hard
+| No. | Questions |
+| --- | --------- |
+| 51  | [How does Spring AOP integrate with AspectJ?](#51-how-does-spring-aop-integrate-with-aspectj) |
+| 52  | [What are AspectJ annotations and how are they different from Spring AOP annotations?](#52-what-are-aspectj-annotations-and-how-are-they-different-from-spring-aop-annotations) |
+| 53  | [How do you perform load-time weaving with AspectJ in a Spring application?](#53-how-do-you-perform-load-time-weaving-with-aspectj-in-a-spring-application) |
+| 54  | [What is the @AspectJ style of declaring aspects?](#54-what-is-the-aspectj-style-of-declaring-aspects) |
+| 55  | [How do you use @Configurable annotation in AspectJ?](#55-how-do-you-use-configurable-annotation-in-aspectj) |
+| 56  | [How do you implement aspect precedence in AspectJ?](#56-how-do-you-implement-aspect-precedence-in-aspectj) |
+| 57  | [How do you use @DeclareError and @DeclareWarning annotations in AspectJ?](#57-how-do-you-use-declareerror-and-declarewarning-annotations-in-aspectj) |
+| 58  | [How do you use AOP with asynchronous methods?](#58-how-do-you-use-aop-with-asynchronous-methods) |
+| 59  | [How do you use AOP to implement a retry mechanism?](#59-how-do-you-use-aop-to-implement-a-retry-mechanism) |
+| 60  | [How do you manage circular dependencies in AOP?](#60-how-do-you-manage-circular-dependencies-in-aop) |
+| 61  | [How do you use AOP to enforce coding standards?](#61-how-do-you-use-aop-to-enforce-coding-standards) |
+| 62  | [How do you use AOP for monitoring and profiling?](#62-how-do-you-use-aop-for-monitoring-and-profiling) |
+| 63  | [How do you use AOP to implement a feature toggle?](#63-how-do-you-use-aop-to-implement-a-feature-toggle) |
+| 64  | [How do you use AOP to implement a rate limiter?](#64-how-do-you-use-aop-to-implement-a-rate-limiter) |
+| 65  | [How do you use AOP to implement a circuit breaker?](#65-how-do-you-use-aop-to-implement-a-circuit-breaker) |
+| 66  | [How do you use AOP to implement dependency injection?](#66-how-do-you-use-aop-to-implement-dependency-injection) |
+| 67  | [What is the use of @AspectJAutoProxyCreator?](#67-what-is-the-use-of-aspectjautoproxycreator) |
+| 68  | [How do you create a custom pointcut expression?](#68-how-do-you-create-a-custom-pointcut-expression) |
+| 69  | [How do you handle concurrency issues in AOP?](#69-how-do-you-handle-concurrency-issues-in-aop) |
+| 70  | [How do you use AOP for dynamic proxy creation?](#70-how-do-you-use-aop-for-dynamic-proxy-creation) |
+| 71  | [How do you use AOP to handle resource management?](#71-how-do-you-use-aop-to-handle-resource-management) |
+| 72  | [How do you use AOP to implement data validation?](#72-how-do-you-use-aop-to-implement-data-validation) |
+| 73  | [How do you use AOP to handle method chaining?](#73-how-do-you-use-aop-to-handle-method-chaining) |
+| 74  | [How do you optimize AOP performance?](#74-how-do-you-optimize-aop-performance) |
+| 75  | [How do you debug AOP issues in a Spring application?](#75-how-do-you-debug-aop-issues-in-a-spring-application) |
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
