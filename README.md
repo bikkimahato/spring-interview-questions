@@ -11462,3 +11462,121 @@ In this example, the `/batch/**` endpoints are secured and require authenticatio
 
 #### **[⬆ Back to Top](#level--spring-security-hard)**
 ---
+
+# Spring AOP Easy Interview Questions and Answers
+# 1. What does AOP stand for in Spring?
+AOP stands for Aspect-Oriented Programming. It is a programming paradigm that aims to increase modularity by allowing the separation of cross-cutting concerns. In Spring, AOP is used to provide declarative enterprise services, such as declarative transaction management, and allows for the implementation of custom aspects.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 2. What are the key concepts of AOP?
+The key concepts of AOP include:
+
+- **Aspect**: A module that has a set of APIs providing cross-cutting requirements.
+- **Join Point**: A point during the execution of a program, such as the execution of a method or the handling of an exception.
+- **Advice**: The action taken by an aspect at a particular join point.
+- **Pointcut**: A predicate that matches join points, determining whether an advice should be applied.
+- **Introduction**: Declaring additional methods or fields for a type.
+- **Target Object**: The object being advised by one or more aspects.
+- **Proxy**: The object created by the AOP framework to implement the aspect contracts.
+- **Weaving**: The process of linking aspects with other types to create an advised object.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 3. What is a cross-cutting concern? Can you give an example?
+A cross-cutting concern is a concern that affects multiple parts of an application and cannot be cleanly decomposed from the rest of the system. Examples include logging, security, and transaction management.
+
+**Example**:
+```java
+@Aspect
+public class LoggingAspect {
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+    }
+}
+```
+In this example, logging is a cross-cutting concern that is applied to all methods in the `com.example.service` package.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 4. What is a join point?
+A join point is a point in the execution of a program, such as a method call or field access. In Spring AOP, a join point always represents a method execution.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 5. What is a pointcut?
+A pointcut is an expression that matches join points. Pointcuts allow advice to be applied at specific join points.
+
+**Example**:
+```java
+@Pointcut("execution(* com.example.service.*.*(..))")
+public void serviceMethods() {
+}
+```
+This pointcut matches all methods in the `com.example.service` package.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 6. What is an advice?
+An advice is an action taken by an aspect at a particular join point. Different types of advice include `before`, `after`, `after-returning`, `after-throwing`, and `around`.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 7. What are the different types of advice in Spring AOP?
+The different types of advice in Spring AOP are:
+
+- **Before**: Executed before the join point.
+- **After**: Executed after the join point, regardless of its outcome.
+- **AfterReturning**: Executed after the join point completes normally.
+- **AfterThrowing**: Executed if the join point throws an exception.
+- **Around**: Surrounds the join point, allowing for custom behavior before and after the join point.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 8. What is an aspect?
+An aspect is a module that encapsulates a cross-cutting concern. It can contain pointcuts and advice.
+
+**Example**:
+```java
+@Aspect
+public class PerformanceAspect {
+    @Around("execution(* com.example.service.*.*(..))")
+    public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long elapsedTime = System.currentTimeMillis() - start;
+        System.out.println("Method execution time: " + elapsedTime + " milliseconds.");
+        return result;
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 9. How do you define an aspect in Spring AOP?
+You define an aspect using the `@Aspect` annotation and declaring the aspect class.
+
+**Example**:
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+    // Define pointcuts and advice here
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 10. What is a proxy in Spring AOP?
+A proxy is an object created by the AOP framework to implement the aspect contracts. It is used to intercept method calls and apply the advice.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
