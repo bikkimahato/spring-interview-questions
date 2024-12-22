@@ -11580,3 +11580,174 @@ A proxy is an object created by the AOP framework to implement the aspect contra
 
 #### **[⬆ Back to Top](#level--spring-aop-easy)**
 ---
+
+# 11. What is weaving in the context of AOP?
+Weaving is the process of linking aspects with other types to create an advised object. Weaving can be done at compile-time, load-time, or at runtime.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 12. What is the difference between Spring AOP and AspectJ?
+- **Spring AOP**: Proxy-based and applies only to method execution join points. Suitable for most enterprise applications.
+- **AspectJ**: Provides a more powerful and flexible AOP framework that supports various join points, including constructors, field accesses, and more. It requires a special compiler.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 13. How do you enable AOP in a Spring application?
+You enable AOP in a Spring application by adding the `@EnableAspectJAutoProxy` annotation in a configuration class.
+
+**Example**:
+```java
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+    // Bean definitions
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 14. What is @Aspect annotation used for?
+The `@Aspect` annotation is used to declare a class as an aspect. This class can then contain pointcuts and advice.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 15. What is @Pointcut annotation used for?
+The `@Pointcut` annotation is used to declare a pointcut expression. This can be referenced by advice methods.
+
+**Example**:
+```java
+@Aspect
+public class LoggingAspect {
+    @Pointcut("execution(* com.example.service.*.*(..))")
+    public void serviceMethods() {
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 16. What is the use of @Before annotation?
+The `@Before` annotation is used to declare a before advice, which runs before the join point.
+
+**Example**:
+```java
+@Before("execution(* com.example.service.*.*(..))")
+public void logBefore(JoinPoint joinPoint) {
+    System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 17. What is the use of @After annotation?
+The `@After` annotation is used to declare an after advice, which runs after the join point, regardless of its outcome.
+
+**Example**:
+```java
+@After("execution(* com.example.service.*.*(..))")
+public void logAfter(JoinPoint joinPoint) {
+    System.out.println("Logging after method: " + joinPoint.getSignature().getName());
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 18. What is the use of @AfterReturning annotation?
+The `@AfterReturning` annotation is used to declare an after-returning advice, which runs after the join point completes normally.
+
+**Example**:
+```java
+@AfterReturning(pointcut = "execution(* com.example.service.*.*(..))", returning = "result")
+public void logAfterReturning(JoinPoint joinPoint, Object result) {
+    System.out.println("Logging after method: " + joinPoint.getSignature().getName() + " returned: " + result);
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 19. What is the use of @AfterThrowing annotation?
+The `@AfterThrowing` annotation is used to declare an after-throwing advice, which runs if the join point throws an exception.
+
+**Example**:
+```java
+@AfterThrowing(pointcut = "execution(* com.example.service.*.*(..))", throwing = "error")
+public void logAfterThrowing(JoinPoint joinPoint, Throwable error) {
+    System.out.println("Logging after method: " + joinPoint.getSignature().getName() + " threw: " + error);
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 20. What is the use of @Around annotation?
+The `@Around` annotation is used to declare an around advice, which surrounds the join point, allowing for custom behavior before and after the join point.
+
+**Example**:
+```java
+@Around("execution(* com.example.service.*.*(..))")
+public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+    long start = System.currentTimeMillis();
+    Object result = joinPoint.proceed();
+    long elapsedTime = System.currentTimeMillis() - start;
+    System.out.println("Method execution time: " + elapsedTime + " milliseconds.");
+    return result;
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 21. How do you define a pointcut expression?
+A pointcut expression is defined using the `@Pointcut` annotation and a method that declares the expression.
+
+**Example**:
+```java
+@Pointcut("execution(* com.example.service.*.*(..))")
+public void serviceMethods() {
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 22. What is the purpose of JoinPoint interface in Spring AOP?
+The `JoinPoint` interface provides reflective access to the state available at a join point. It allows access to method signatures, arguments, and the target object.
+
+**Example**:
+```java
+@Before("execution(* com.example.service.*.*(..))")
+public void logBefore(JoinPoint joinPoint) {
+    System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 23. Can you use Spring AOP with Spring Boot?
+Yes, you can use Spring AOP with Spring Boot. Spring Boot automatically configures AOP if it detects the appropriate dependencies on the classpath.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 24. How would you exclude a method from being advised?
+You can exclude a method from being advised by using a pointcut expression that excludes the specific method.
+
+**Example**:
+```java
+@Pointcut("execution(* com.example.service.*.*(..)) && !execution(* com.example.service.SomeService.someMethod(..))")
+public void serviceMethodsExcludingSomeMethod() {
+}
+```
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
+
+# 25. What are the limitations of Spring AOP?
+The limitations of Spring AOP include:
+
+- **Proxy-based**: Spring AOP is proxy-based, which means it can only advise public methods.
+- **Method execution join points**: Spring AOP supports only method execution join points.
+- **Performance overhead**: There may be a performance overhead due to the creation of proxies.
+- **Compile-time weaving**: Spring AOP does not support compile-time weaving, which limits its capabilities compared to AspectJ.
+
+#### **[⬆ Back to Top](#level--spring-aop-easy)**
+---
