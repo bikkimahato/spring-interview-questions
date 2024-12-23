@@ -11751,3 +11751,692 @@ The limitations of Spring AOP include:
 
 #### **[⬆ Back to Top](#level--spring-aop-easy)**
 ---
+
+### 26. How does Spring AOP work internally?
+
+Spring AOP (Aspect-Oriented Programming) works by intercepting method calls and injecting additional behavior into those methods without modifying their code. It uses proxies to achieve this:
+
+1. **Proxies**: Spring AOP uses JDK dynamic proxies or CGLIB proxies to create proxy objects. 
+   - **JDK Dynamic Proxies**: Used when the target object implements at least one interface. The proxy will implement the same interfaces.
+   - **CGLIB Proxies**: Used when the target object doesn’t implement any interfaces. CGLIB creates a subclass of the target class and overrides its methods to add the additional behavior.
+
+2. **Advisors and Advice**: An Advisor is a combination of a Pointcut and an Advice.
+   - **Pointcut**: Defines the join points (method executions) where the advice should be applied.
+   - **Advice**: The action taken by the aspect at a particular join point. Types of advice include `@Before`, `@After`, `@AfterReturning`, `@AfterThrowing`, and `@Around`.
+
+3. **Weaving**: The process of applying aspects to a target object to create an advised object (proxy). Spring AOP performs weaving at runtime, creating proxies dynamically.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+In this example, the `LoggingAspect` class is an aspect that logs a message before any method in the `com.example.service` package is executed.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 27. What is the difference between static and dynamic weaving?
+
+- **Static Weaving**: The aspects are woven into the target classes at compile-time. This means the bytecode of the target classes is modified to include the aspects before the application runs. Tools like AspectJ can perform static weaving.
+
+- **Dynamic Weaving**: The aspects are woven into the target classes at runtime. Spring AOP uses dynamic weaving, creating proxies dynamically as the application runs.
+
+| Static Weaving                      | Dynamic Weaving                      |
+|-------------------------------------|--------------------------------------|
+| Performed at compile-time           | Performed at runtime                 |
+| Modifies bytecode of target classes | Uses proxies to add behavior         |
+| Requires special compiler (AspectJ) | No special compiler needed           |
+| Can be more performant              | Slightly less performant due to proxy creation |
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 28. What is the difference between compile-time and load-time weaving?
+
+- **Compile-Time Weaving**: Aspects are woven into the target classes during the compilation process. This is typically done using AspectJ's special compiler (ajc).
+
+- **Load-Time Weaving**: Aspects are woven into the target classes when the classes are loaded into the JVM. This requires a special class loader or Java agent.
+
+| Compile-Time Weaving                | Load-Time Weaving                    |
+|-------------------------------------|--------------------------------------|
+| Performed during compilation        | Performed during class loading       |
+| Requires AspectJ compiler (ajc)     | Requires special class loader or agent |
+| Modifies bytecode before runtime    | Modifies bytecode at runtime         |
+| No impact on class loading speed    | May impact class loading speed       |
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 29. How do you implement a custom annotation for AOP?
+
+To implement a custom annotation for AOP, follow these steps:
+
+1. **Define the Custom Annotation**:
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MyCustomAnnotation {
+}
+```
+
+2. **Create the Aspect**:
+```java
+@Aspect
+@Component
+public class MyCustomAspect {
+
+    @Before("@annotation(MyCustomAnnotation)")
+    public void beforeAdvice(JoinPoint joinPoint) {
+        System.out.println("Executing before advice for method: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+3. **Use the Custom Annotation**:
+```java
+public class MyService {
+
+    @MyCustomAnnotation
+    public void myMethod() {
+        System.out.println("Executing myMethod");
+    }
+}
+```
+
+In this example, `MyCustomAnnotation` is a custom annotation. The aspect `MyCustomAspect` applies a `@Before` advice to any method annotated with `@MyCustomAnnotation`.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 30. How can you control the order of multiple aspects?
+
+You can control the order of multiple aspects using the `@Order` annotation. The `@Order` annotation specifies the order in which aspects are applied. Lower values have higher precedence.
+
+### Example
+
+```java
+@Aspect
+@Order(1)
+@Component
+public class FirstAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void firstAdvice() {
+        System.out.println("First Aspect");
+    }
+}
+
+@Aspect
+@Order(2)
+@Component
+public class SecondAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void secondAdvice() {
+        System.out.println("Second Aspect");
+    }
+}
+```
+
+In this example, `FirstAspect` will be applied before `SecondAspect` because it has a lower order value.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 31. How do you pass parameters to advice methods?
+
+You can pass parameters to advice methods using the `args` keyword in the pointcut expression.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(String)) && args(name)")
+    public void logBeforeMethod(String name) {
+        System.out.println("Method called with parameter: " + name);
+    }
+}
+
+public class MyService {
+
+    public void myMethod(String name) {
+        System.out.println("Executing myMethod with: " + name);
+    }
+}
+```
+
+In this example, the `logBeforeMethod` advice method receives the parameter `name` from the method being intercepted.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 32. Can you access the return value in @AfterReturning advice?
+
+Yes, you can access the return value in `@AfterReturning` advice using the `returning` attribute.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @AfterReturning(pointcut = "execution(* com.example.service.*.*(..))", returning = "result")
+    public void logAfterReturning(Object result) {
+        System.out.println("Method returned: " + result);
+    }
+}
+
+public class MyService {
+
+    public String myMethod() {
+        return "Hello, World!";
+    }
+}
+```
+
+In this example, the `logAfterReturning` advice method receives the return value of the intercepted method.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 33. What is the use of ProceedingJoinPoint in @Around advice?
+
+`ProceedingJoinPoint` is used in `@Around` advice to control the execution of the intercepted method. It allows you to proceed with the original method call or modify the behavior.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Around("execution(* com.example.service.*.*(..))")
+    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("Before method: " + joinPoint.getSignature().getName());
+        Object result = joinPoint.proceed();
+        System.out.println("After method: " + joinPoint.getSignature().getName());
+        return result;
+    }
+}
+
+public class MyService {
+
+    public String myMethod() {
+        return "Hello, World!";
+    }
+}
+```
+
+In this example, the `logAround` advice method logs a message before and after the intercepted method, and proceeds with the original method call using `joinPoint.proceed()`.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 34. How do you handle exceptions in AOP?
+
+You can handle exceptions in AOP using `@AfterThrowing` advice. This advice is executed when a method throws an exception.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @AfterThrowing(pointcut = "execution(* com.example.service.*.*(..))", throwing = "ex")
+    public void logAfterThrowing(Exception ex) {
+        System.out.println("Exception thrown: " + ex.getMessage());
+    }
+}
+
+public class MyService {
+
+    public void myMethod() throws Exception {
+        throw new Exception("Something went wrong");
+    }
+}
+```
+
+In this example, the `logAfterThrowing` advice method logs the exception thrown by the intercepted method.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 35. How can you apply AOP to specific beans?
+
+You can apply AOP to specific beans by using pointcut expressions that match the bean names.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("bean(myService) && execution(* *(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+    }
+}
+
+@Component("myService")
+public class MyService {
+
+    public void myMethod() {
+        System.out.println("Executing myMethod");
+    }
+}
+```
+
+In this example, the `logBefore` advice is applied only to methods of the bean named `myService`.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 36. How do you define multiple pointcuts in a single aspect?
+
+You can define multiple pointcuts in a single aspect by using multiple `@Pointcut` annotations and referencing them in your advice methods.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Pointcut("execution(* com.example.service.*.*(..))")
+    public void serviceMethods() {}
+
+    @Pointcut("execution(* com.example.repository.*.*(..))")
+    public void repositoryMethods() {}
+
+    @Before("serviceMethods()")
+    public void logServiceMethods() {
+        System.out.println("Service method called");
+    }
+
+    @Before("repositoryMethods()")
+    public void logRepositoryMethods() {
+        System.out.println("Repository method called");
+    }
+}
+```
+
+In this example, `LoggingAspect` defines two pointcuts (`serviceMethods` and `repositoryMethods`) and applies different advice methods to each.
+
+### 37. Can you use AOP with non-Spring managed beans?
+
+Spring AOP works primarily with Spring-managed beans. However, you can use AspectJ to apply aspects to non-Spring managed beans by using compile-time or load-time weaving.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 38. What is the use of @DeclareParents annotation?
+
+`@DeclareParents` is used to introduce new interfaces to existing classes. It allows you to add new functionality to existing classes without modifying their code.
+
+### Example
+
+```java
+public interface AdditionalFunctionality {
+    void newMethod();
+}
+
+public class AdditionalFunctionalityImpl implements AdditionalFunctionality {
+    @Override
+    public void newMethod() {
+        System.out.println("New method executed");
+    }
+}
+
+@Aspect
+@Component
+public class IntroductionAspect {
+    @DeclareParents(value = "com.example.service.*+", defaultImpl = AdditionalFunctionalityImpl.class)
+    public static AdditionalFunctionality additionalFunctionality;
+}
+
+public class MyService {
+    public void myMethod() {
+        System.out.println("Executing myMethod");
+    }
+}
+```
+
+In this example, `IntroductionAspect` introduces the `AdditionalFunctionality` interface to all classes in the `com.example.service` package, using `AdditionalFunctionalityImpl` as the default implementation.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 39. How do you test AOP functionality?
+
+To test AOP functionality, you can write unit tests that verify the behavior of your aspects.
+
+### Example
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {AppConfig.class})
+public class LoggingAspectTest {
+
+    @Autowired
+    private MyService myService;
+
+    @Test
+    public void testBeforeAdvice() {
+        myService.myMethod();
+        // Verify that the aspect's advice was executed
+    }
+}
+```
+
+In this example, a JUnit test is used to verify that the `LoggingAspect`'s advice was executed when `myService.myMethod()` was called.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 40. Can you use AOP to modify method arguments?
+
+Yes, you can use `@Around` advice to modify method arguments before proceeding with the original method call.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Around("execution(* com.example.service.*.*(String)) && args(name)")
+    public Object logAround(ProceedingJoinPoint joinPoint, String name) throws Throwable {
+        System.out.println("Original argument: " + name);
+        name = "Modified Argument";
+        return joinPoint.proceed(new Object[]{name});
+    }
+}
+
+public class MyService {
+
+    public void myMethod(String name) {
+        System.out.println("Executing myMethod with: " + name);
+    }
+}
+```
+
+In this example, the `logAround` advice method modifies the `name` argument before proceeding with the original method call.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 41. How can you measure method execution time using AOP?
+
+You can measure method execution time using `@Around` advice by recording the start and end times.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Around("execution(* com.example.service.*.*(..))")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object proceed = joinPoint.proceed();
+        long executionTime = System.currentTimeMillis() - start;
+        System.out.println(joinPoint.getSignature() + " executed in " + executionTime + "ms");
+        return proceed;
+    }
+}
+
+public class MyService {
+
+    public void myMethod() {
+        System.out.println("Executing myMethod");
+    }
+}
+```
+
+In this example, the `logExecutionTime` advice method measures the execution time of the intercepted method and logs it.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 42. How do you disable AOP for a specific environment?
+
+You can disable AOP for a specific environment by using Spring profiles and conditional configuration.
+
+### Example
+
+1. **Define the Aspect with a Profile**:
+```java
+@Aspect
+@Component
+@Profile("!test")
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+2. **Set the Active Profile**:
+```yaml
+spring:
+  profiles:
+    active: test
+```
+
+In this example, the `LoggingAspect` will be active in all environments except the `test` profile.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 43. How do you combine multiple pointcut expressions?
+
+You can combine multiple pointcut expressions using logical operators (`&&`, `||`, `!`).
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Pointcut("execution(* com.example.service.*.*(..))")
+    public void serviceMethods() {}
+
+    @Pointcut("execution(* com.example.repository.*.*(..))")
+    public void repositoryMethods() {}
+
+    @Before("serviceMethods() || repositoryMethods()")
+    public void logMethods() {
+        System.out.println("Service or Repository method called");
+    }
+}
+```
+
+In this example, the `logMethods` advice is applied to both service and repository methods.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 44. What is the use of @EnableAspectJAutoProxy annotation?
+
+`@EnableAspectJAutoProxy` is used to enable support for handling components marked with `@Aspect` annotations, similar to functionality found in the Spring configuration XML's `<aop:aspectj-autoproxy>` element.
+
+### Example
+
+```java
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+
+    @Bean
+    public LoggingAspect loggingAspect() {
+        return new LoggingAspect();
+    }
+}
+```
+
+In this example, `@EnableAspectJAutoProxy` is used to enable AspectJ auto-proxying in the Spring configuration class.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 45. How do you apply AOP to private methods?
+
+Spring AOP does not support applying aspects to private methods because it uses proxies, which can only intercept public methods.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 46. How do you use AOP to manage transactions?
+
+You can use AOP to manage transactions by annotating methods with `@Transactional`.
+
+### Example
+
+```java
+@Service
+public class MyService {
+
+    @Transactional
+    public void performTransaction() {
+        // Business logic
+    }
+}
+```
+
+In this example, the `performTransaction` method is transactional, and Spring AOP manages the transaction boundaries.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 47. What is the difference between @Aspect and @Component annotations?
+
+- **@Aspect**: Marks a class as an aspect, which contains advice methods.
+- **@Component**: Marks a class as a Spring bean, which will be automatically detected and registered by Spring's component scanning.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+In this example, `LoggingAspect` is both an aspect and a Spring bean.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 48. How do you implement a logging aspect?
+
+To implement a logging aspect, define an aspect class with advice methods that log method execution.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Logging before method: " + joinPoint.getSignature().getName());
+    }
+
+    @After("execution(* com.example.service.*.*(..))")
+    public void logAfter(JoinPoint joinPoint) {
+        System.out.println("Logging after method: " + joinPoint.getSignature().getName());
+    }
+}
+
+public class MyService {
+
+    public void myMethod() {
+        System.out.println("Executing myMethod");
+    }
+}
+```
+
+In this example, `LoggingAspect` logs messages before and after method execution.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 49. How do you use AOP to handle security concerns?
+
+You can use AOP to handle security concerns by defining aspects that check security constraints before method execution.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class SecurityAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void checkSecurity(JoinPoint joinPoint) {
+        // Perform security checks
+        System.out.println("Checking security for method: " + joinPoint.getSignature().getName());
+    }
+}
+
+public class MyService {
+
+    public void myMethod() {
+        System.out.println("Executing myMethod");
+    }
+}
+```
+
+In this example, `SecurityAspect` performs security checks before method execution.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
+
+### 50. How do you use AOP to handle caching?
+
+Aspect-Oriented Programming (AOP) is a programming paradigm that allows the separation of cross-cutting concerns, such as logging, security, and caching, from the main business logic. This separation is achieved by defining aspects, which are modular units of cross-cutting behavior. AOP is particularly useful for handling caching because it allows you to apply caching logic transparently, without modifying the core business logic.
+
+#### Key Concepts of AOP
+
+1. **Aspect**: A module that encapsulates a concern that cuts across multiple classes.
+2. **Join Point**: A point during the execution of a program, such as the execution of a method or the handling of an exception.
+3. **Advice**: Action taken by an aspect at a particular join point. Types of advice include "before," "after," and "around."
+4. **Pointcut**: A predicate that matches join points. It allows you to specify where advice should be applied.
+5. **Weaving**: The process of linking aspects with other application types or objects to create an advised object.
+
+#### Using AOP for Caching
+
+To handle caching using AOP, you typically follow these steps:
+
+1. **Define an Aspect for Caching**: Create an aspect that contains the caching logic.
+2. **Identify Join Points**: Determine where in the application the caching logic should be applied (e.g., methods that fetch data from a database).
+3. **Apply Advice**: Use advice to add caching behavior before, after, or around the identified join points.
+
+#### **[⬆ Back to Top](#level--spring-aop-medium)**
+---
