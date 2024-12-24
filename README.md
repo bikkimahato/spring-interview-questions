@@ -12440,3 +12440,588 @@ To handle caching using AOP, you typically follow these steps:
 
 #### **[⬆ Back to Top](#level--spring-aop-medium)**
 ---
+
+# Spring AOP Hard Interview Questions and Answers
+### 51. How does Spring AOP integrate with AspectJ?
+
+Spring AOP provides integration with AspectJ, a powerful and mature aspect-oriented programming (AOP) framework. While Spring AOP is simpler and sufficient for many use cases, AspectJ offers a more comprehensive set of AOP features, including support for more complex pointcut expressions and richer weaving models. There are two main ways Spring AOP integrates with AspectJ:
+
+1. **@AspectJ Support**: Spring AOP supports the use of AspectJ annotations to define aspects. This allows developers to use the familiar AspectJ syntax while leveraging Spring's AOP infrastructure.
+2. **Weaving**: Spring AOP supports both compile-time and load-time weaving with AspectJ. Weaving is the process of applying aspects to the target objects.
+
+#### Example: Using @AspectJ with Spring AOP
+
+First, add the necessary dependencies to your `pom.xml` if you are using Maven.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+    </dependency>
+</dependencies>
+```
+
+Enable AspectJ support in your Spring Boot application:
+
+```java
+@SpringBootApplication
+@EnableAspectJAutoProxy
+public class AspectJApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AspectJApplication.class, args);
+    }
+}
+```
+
+Define an aspect using AspectJ annotations:
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Executing: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+### 52. What are AspectJ annotations and how are they different from Spring AOP annotations?
+
+AspectJ annotations are used to define aspects in AspectJ, a fully-fledged AOP framework. These annotations provide a way to declare aspects, pointcuts, and advices. They are more powerful and flexible compared to Spring AOP annotations. Spring AOP annotations, on the other hand, are a subset and are used for simpler AOP use cases within the Spring Framework.
+
+#### AspectJ Annotations
+
+- `@Aspect`: Declares a class as an aspect.
+- `@Before`: Declares a before advice.
+- `@After`: Declares an after advice.
+- `@AfterReturning`: Declares an after returning advice.
+- `@AfterThrowing`: Declares an after throwing advice.
+- `@Around`: Declares an around advice.
+- `@Pointcut`: Declares a reusable pointcut.
+
+#### Spring AOP Annotations
+
+- `@Aspect`: Same as in AspectJ.
+- `@Before`: Same as in AspectJ.
+- `@After`: Same as in AspectJ.
+- `@AfterReturning`: Same as in AspectJ.
+- `@AfterThrowing`: Same as in AspectJ.
+- `@Around`: Same as in AspectJ.
+- `@Pointcut`: Same as in AspectJ.
+
+#### Example
+
+Using AspectJ annotations in Spring:
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution(* com.example.service.*.*(..))")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Executing: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+This example is identical to Spring AOP annotations because Spring AOP supports @AspectJ annotations for ease of use and compatibility.
+
+### 53. How do you perform load-time weaving with AspectJ in a Spring application?
+
+Load-time weaving (LTW) allows aspects to be woven into classes as they are loaded into the JVM. This is useful for applying aspects to classes that are not compiled with AspectJ.
+
+#### Steps to Perform Load-Time Weaving with AspectJ
+
+1. **Add Dependencies**: Ensure you have the AspectJ weaver in your classpath.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+    </dependency>
+</dependencies>
+```
+
+2. **Enable Load-Time Weaving**: Configure Spring to use load-time weaving.
+
+```java
+@SpringBootApplication
+@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+public class AspectJApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AspectJApplication.class, args);
+    }
+}
+```
+
+3. **Configure Spring**: Add a `META-INF/aop.xml` file to configure AspectJ weaving.
+
+```xml
+<aspectj>
+    <weaver>
+        <include within="com.example..*" />
+    </weaver>
+    <aspects>
+        <aspect name="com.example.aspect.LoggingAspect" />
+    </aspects>
+</aspectj>
+```
+
+4. **Run with Java Agent**: Run your application with the AspectJ agent.
+
+```sh
+java -javaagent:/path/to/aspectjweaver.jar -jar your-application.jar
+```
+
+### 54. What is the @AspectJ style of declaring aspects?
+
+The `@AspectJ` style is a way of defining aspects using Java annotations rather than AspectJ's native syntax. It is integrated with Spring AOP to provide a more familiar and concise way of declaring aspects.
+
+#### Example
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Pointcut("execution(* com.example.service.*.*(..))")
+    public void serviceMethods() {}
+
+    @Before("serviceMethods()")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Executing: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+In this example:
+- `@Aspect` declares the class as an aspect.
+- `@Pointcut` defines a pointcut.
+- `@Before` defines a before advice that uses the pointcut.
+
+### 55. How do you use @Configurable annotation in AspectJ?
+
+The `@Configurable` annotation in AspectJ is used to indicate that a class can be injected with dependencies by the Spring container. This is particularly useful for objects that are not instantiated by Spring (e.g., created using `new`).
+
+#### Example
+
+1. **Enable Spring Configuration**: Enable Spring's aspect configuration.
+
+```java
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+    @Bean
+    public MyService myService() {
+        return new MyService();
+    }
+}
+```
+
+2. **Annotate the Class**: Use `@Configurable` on the class to be injected.
+
+```java
+@Configurable
+public class MyBean {
+    @Autowired
+    private MyService myService;
+
+    public void doSomething() {
+        myService.perform();
+    }
+}
+```
+
+3. **Configure AspectJ**: Add `META-INF/aop.xml` for AspectJ configuration.
+
+```xml
+<aspectj>
+    <aspects>
+        <aspect name="org.springframework.beans.factory.aspectj.AnnotationBeanConfigurerAspect" />
+    </aspects>
+</aspectj>
+```
+
+4. **Run with AspectJ Agent**: Run your application with the AspectJ agent.
+
+```sh
+java -javaagent:/path/to/aspectjweaver.jar -jar your-application.jar
+```
+
+### 56. How do you implement aspect precedence in AspectJ?
+
+Aspect precedence determines the order in which aspects are applied. In AspectJ, you can define the precedence of aspects using the `@DeclarePrecedence` annotation.
+
+#### Example
+
+```java
+@Aspect
+@Component
+@DeclarePrecedence("com.example.aspect.SecurityAspect, com.example.aspect.LoggingAspect")
+public class PrecedenceAspect {}
+```
+
+In this example:
+- `@DeclarePrecedence` specifies that `SecurityAspect` should be applied before `LoggingAspect`.
+
+### 57. How do you use @DeclareError and @DeclareWarning annotations in AspectJ?
+
+The `@DeclareError` and `@DeclareWarning` annotations in AspectJ are used to declare compile-time errors and warnings for specific join points.
+
+#### Example
+
+```java
+@Aspect
+public class ValidationAspect {
+
+    @DeclareWarning("execution(* com.example.service.*.*(..)) && args(..,password)")
+    private static final String WARN_MESSAGE = "Avoid passing passwords as method arguments.";
+
+    @DeclareError("execution(* com.example.service.*.delete*(..))")
+    private static final String ERROR_MESSAGE = "Deletion methods are not allowed.";
+}
+```
+
+In this example:
+- `@DeclareWarning` issues a warning if a method with a password argument is called.
+- `@DeclareError` issues an error if any delete method is called.
+
+### 58. How do you use AOP with asynchronous methods?
+
+AOP can be used with asynchronous methods to apply cross-cutting concerns such as logging, security, or transaction management.
+
+#### Example
+
+First, enable async support in your Spring Boot application:
+
+```java
+@SpringBootApplication
+@EnableAsync
+public class AsyncApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AsyncApplication.class, args);
+    }
+}
+```
+
+Define an aspect for logging:
+
+```java
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("@annotation(org.springframework.scheduling.annotation.Async)")
+    public void logBeforeAsync(JoinPoint joinPoint) {
+        System.out.println("Executing async method: " + joinPoint.getSignature().getName());
+    }
+}
+```
+
+Define a service with an asynchronous method:
+
+```java
+@Service
+public class AsyncService {
+
+    @Async
+    public void asyncMethod() {
+        System.out.println("Executing async task");
+    }
+}
+```
+
+### 59. How do you use AOP to implement a retry mechanism?
+
+A retry mechanism can be implemented using AOP to automatically retry failed operations a specified number of times.
+
+#### Example
+
+Define an aspect for retry:
+
+```java
+@Aspect
+@Component
+public class RetryAspect {
+
+    @Around("@annotation(com.example.annotation.Retry)")
+    public Object retry(ProceedingJoinPoint joinPoint) throws Throwable {
+        int maxAttempts = 3;
+        int attempts = 0;
+        Throwable lastException = null;
+        while (attempts < maxAttempts) {
+            try {
+                return joinPoint.proceed();
+            } catch (Throwable e) {
+                lastException = e;
+                attempts++;
+                if (attempts >= maxAttempts) {
+                    throw lastException;
+                }
+            }
+        }
+        throw lastException;
+    }
+}
+```
+
+Define the `Retry` annotation:
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Retry {}
+```
+
+Use the `Retry` annotation on methods:
+
+```java
+@Service
+public class RetryService {
+
+    @Retry
+    public void retryMethod() {
+        System.out.println("Attempting operation");
+        if (new Random().nextBoolean()) {
+            throw new RuntimeException("Failed operation");
+        }
+        System.out.println("Operation succeeded");
+    }
+}
+```
+
+### 60. How do you manage circular dependencies in AOP?
+
+Circular dependencies in AOP can occur when aspects depend on each other. To manage circular dependencies, you can use techniques such as:
+
+1. **Refactoring**: Refactor the code to remove circular dependencies.
+2. **Lazy Initialization**: Use `@Lazy` annotation to delay the initialization of beans.
+3. **Setter Injection**: Use setter injection instead of constructor injection to break the circular dependency.
+
+#### Example
+
+Using `@Lazy` annotation:
+
+```java
+@Service
+public class AService {
+
+    private final BService bService;
+
+    @Autowired
+    public AService(@Lazy BService bService) {
+        this.bService = bService;
+    }
+
+    public void doSomething() {
+        bService.doSomethingElse();
+    }
+}
+
+@Service
+public class BService {
+
+    private final AService aService;
+
+    @Autowired
+    public BService(@Lazy AService aService) {
+        this.aService = aService;
+    }
+
+    public void doSomethingElse() {
+        aService.doSomething();
+    }
+}
+```
+
+### 61. How do you use AOP to enforce coding standards?
+
+AOP can be used to enforce coding standards by applying aspects that check for compliance and issue warnings or errors when violations are detected.
+
+#### Example
+
+Define an aspect for enforcing coding standards:
+
+```java
+@Aspect
+@Component
+public class CodingStandardAspect {
+
+    @Before("execution(* com.example..*.*(..))")
+    public void checkCodingStandards(JoinPoint joinPoint) {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        if (!Character.isLowerCase(method.getName().charAt(0))) {
+            throw new RuntimeException("Method names should start with a lowercase letter: " + method.getName());
+        }
+    }
+}
+```
+
+### 62. How do you use AOP for monitoring and profiling?
+
+AOP can be used to monitor and profile application performance by applying aspects that log execution times and other metrics.
+
+#### Example
+
+Define an aspect for monitoring:
+
+```java
+@Aspect
+@Component
+public class MonitoringAspect {
+
+    @Around("execution(* com.example.service.*.*(..))")
+    public Object profile(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long elapsedTime = System.currentTimeMillis() - start;
+        System.out.println("Method " + joinPoint.getSignature().getName() + " executed in " + elapsedTime + " ms");
+        return result;
+    }
+}
+```
+
+### 63. How do you use AOP to implement a feature toggle?
+
+A feature toggle allows you to enable or disable features dynamically. AOP can be used to implement feature toggles by applying aspects that check the status of features before executing methods.
+
+#### Example
+
+Define a `FeatureToggle` annotation:
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface FeatureToggle {
+    String value();
+}
+```
+
+Define an aspect for feature toggles:
+
+```java
+@Aspect
+@Component
+public class FeatureToggleAspect {
+
+    @Around("@annotation(featureToggle)")
+    public Object checkFeatureToggle(ProceedingJoinPoint joinPoint, FeatureToggle featureToggle) throws Throwable {
+        if (isFeatureEnabled(featureToggle.value())) {
+            return joinPoint.proceed();
+        } else {
+            throw new RuntimeException("Feature " + featureToggle.value() + " is disabled");
+        }
+    }
+
+    private boolean isFeatureEnabled(String featureName) {
+        // Implement your feature toggle logic here
+        return true;
+    }
+}
+```
+
+Use the `FeatureToggle` annotation on methods:
+
+```java
+@Service
+public class FeatureService {
+
+    @FeatureToggle("newFeature")
+    public void newFeatureMethod() {
+        System.out.println("Executing new feature");
+    }
+}
+```
+
+### 64. How do you use AOP to implement a rate limiter?
+
+A rate limiter restricts the number of times a method can be called within a specified period. AOP can be used to implement rate limiting by applying aspects that track and enforce limits on method calls.
+
+#### Example
+
+Define an aspect for rate limiting:
+
+```java
+@Aspect
+@Component
+public class RateLimiterAspect {
+
+    private final Map<String, RateLimiter> limiters = new ConcurrentHashMap<>();
+
+    @Around("@annotation(rateLimit)")
+    public Object rateLimit(ProceedingJoinPoint joinPoint, RateLimit rateLimit) throws Throwable {
+        String methodName = joinPoint.getSignature().getName();
+        RateLimiter rateLimiter = limiters.computeIfAbsent(methodName, k -> new RateLimiter(rateLimit.value()));
+        if (rateLimiter.tryAcquire()) {
+            return joinPoint.proceed();
+        } else {
+            throw new RuntimeException("Rate limit exceeded for method: " + methodName);
+        }
+    }
+}
+```
+
+Define the `RateLimit` annotation:
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RateLimit {
+    int value();
+}
+```
+
+Implement a simple rate limiter:
+
+```java
+public class RateLimiter {
+
+    private final int maxRequests;
+    private final long interval;
+    private final Queue<Long> requestTimes = new LinkedList<>();
+
+    public RateLimiter(int maxRequests) {
+        this.maxRequests = maxRequests;
+        this.interval = TimeUnit.SECONDS.toMillis(1);
+    }
+
+    public synchronized boolean tryAcquire() {
+        long now = System.currentTimeMillis();
+        while (!requestTimes.isEmpty() && now - requestTimes.peek() > interval) {
+            requestTimes.poll();
+        }
+        if (requestTimes.size() < maxRequests) {
+            requestTimes.add(now);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+Use the `RateLimit` annotation on methods:
+
+```java
+@Service
+public class RateLimitedService {
+
+    @RateLimit(5)
+    public void limitedMethod() {
+        System.out.println("Executing rate-limited method");
+    }
+}
+```
