@@ -13057,3 +13057,316 @@ public class RateLimitedService {
 ```
 #### **[⬆ Back to Top](#level--spring-aop-hard)**
 ---
+
+### 65. How do you use AOP to implement a circuit breaker?
+
+AOP can be used to implement a circuit breaker by intercepting method calls and tracking failures to decide when to trip the circuit.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class CircuitBreakerAspect {
+
+    private CircuitBreaker circuitBreaker = new CircuitBreaker();
+
+    @Around("execution(* com.example.service.MyService.remoteCall(..))")
+    public Object circuitBreaker(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (circuitBreaker.isClosed()) {
+            try {
+                Object result = joinPoint.proceed();
+                circuitBreaker.recordSuccess();
+                return result;
+            } catch (Exception e) {
+                circuitBreaker.recordFailure();
+                throw e;
+            }
+        } else {
+            throw new CircuitBreakerOpenException("Circuit breaker is open");
+        }
+    }
+}
+```
+
+In this example, the `@Around` advice uses a `CircuitBreaker` class to track failures and decide when to open the circuit.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 66. How do you use AOP to implement dependency injection?
+
+AOP can be used to implement dependency injection by intercepting method calls and injecting dependencies dynamically.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class DependencyInjectionAspect {
+
+    @Autowired
+    private SomeDependency someDependency;
+
+    @Before("execution(* com.example.service.MyService.someMethod(..)) && args(param)")
+    public void injectDependency(JoinPoint joinPoint, SomeClass param) {
+        param.setSomeDependency(someDependency);
+    }
+}
+```
+
+In this example, the `@Before` advice injects a dependency into the method parameter before the method execution.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 67. What is the use of @AspectJAutoProxyCreator?
+
+`@AspectJAutoProxyCreator` is an annotation in Spring that enables automatic creation of proxies for beans annotated with `@Aspect`. It simplifies the configuration of AOP by eliminating the need for manual proxy creation.
+
+### Example
+
+```java
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+}
+```
+
+In this example, the `@EnableAspectJAutoProxy` annotation enables AOP proxy support in the Spring application.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 68. How do you create a custom pointcut expression?
+
+A custom pointcut expression can be created using the `@Pointcut` annotation in an aspect.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class CustomPointcutAspect {
+
+    @Pointcut("execution(* com.example.service..*(..))")
+    public void serviceLayer() {}
+
+    @Before("serviceLayer()")
+    public void beforeServiceLayerMethods(JoinPoint joinPoint) {
+        System.out.println("Before executing: " + joinPoint.getSignature());
+    }
+}
+```
+
+In this example, the `@Pointcut` annotation defines a custom pointcut expression `serviceLayer` that targets all methods in the `com.example.service` package. The `@Before` advice uses this pointcut.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 69. How do you handle concurrency issues in AOP?
+
+Concurrency issues in AOP can be handled by using synchronization mechanisms such as locks or by ensuring thread safety in the advice logic.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class ConcurrencyAspect {
+
+    private final Object lock = new Object();
+
+    @Around("execution(* com.example.service..*(..))")
+    public Object handleConcurrency(ProceedingJoinPoint joinPoint) throws Throwable {
+        synchronized (lock) {
+            return joinPoint.proceed();
+        }
+    }
+}
+```
+
+In this example, the `@Around` advice uses synchronized blocks to ensure that only one thread can execute the intercepted method at a time.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 70. How do you use AOP for dynamic proxy creation?
+
+AOP can be used for dynamic proxy creation by defining aspects that intercept method calls and delegate them to proxy instances.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class DynamicProxyAspect {
+
+    @Around("execution(* com.example.service.MyService.*(..))")
+    public Object createDynamicProxy(ProceedingJoinPoint joinPoint) throws Throwable {
+        return Proxy.newProxyInstance(
+                joinPoint.getTarget().getClass().getClassLoader(),
+                joinPoint.getTarget().getClass().getInterfaces(),
+                (proxy, method, args) -> method.invoke(joinPoint.getTarget(), args)
+        );
+    }
+}
+```
+
+In this example, the `@Around` advice creates a dynamic proxy for methods in `MyService`.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 71. How do you use AOP to handle resource management?
+
+AOP can be used to handle resource management by intercepting method calls and ensuring that resources are properly closed or released after use.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class ResourceManagementAspect {
+
+    @Around("execution(* com.example.service..*(..))")
+    public Object manageResources(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object resource = null;
+        try {
+            resource = acquireResource();
+            Object result = joinPoint.proceed();
+            return result;
+        } finally {
+            releaseResource(resource);
+        }
+    }
+
+    private Object acquireResource() {
+        // Acquire resource logic
+        return new Object();
+    }
+
+    private void releaseResource(Object resource) {
+        // Release resource logic
+    }
+}
+```
+
+In this example, the `@Around` advice acquires a resource before the method execution and releases it afterward.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 72. How do you use AOP to implement data validation?
+
+AOP can be used to implement data validation by intercepting method calls and validating the input parameters before proceeding.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class DataValidationAspect {
+
+    @Before("execution(* com.example.service.MyService.*(..)) && args(param,..)")
+    public void validateData(JoinPoint joinPoint, SomeClass param) {
+        if (!isValid(param)) {
+            throw new IllegalArgumentException("Invalid data");
+        }
+    }
+
+    private boolean isValid(SomeClass param) {
+        // Validation logic
+        return true;
+    }
+}
+```
+
+In this example, the `@Before` advice validates the method parameter before the method execution.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 73. How do you use AOP to handle method chaining?
+
+AOP can be used to handle method chaining by intercepting method calls and ensuring that the chain of methods is executed correctly.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class MethodChainingAspect {
+
+    @Around("execution(* com.example.service.MyService.*(..)) && target(target)")
+    public Object handleMethodChaining(ProceedingJoinPoint joinPoint, Object target) throws Throwable {
+        Object result = joinPoint.proceed();
+        if (result == target) {
+            return target;
+        }
+        return result;
+    }
+}
+```
+
+In this example, the `@Around` advice ensures that method chaining works correctly by returning the target object if the method call returns it.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 74. How do you optimize AOP performance?
+
+To optimize AOP performance, you can:
+
+1. Use more specific pointcut expressions to minimize the number of intercepted methods.
+2. Avoid using `@Around` advice unless necessary, as it has higher overhead compared to `@Before` and `@After` advice.
+3. Use compile-time weaving instead of runtime weaving when possible.
+
+### Example
+
+```java
+@Aspect
+@Component
+public class OptimizedAspect {
+
+    @Before("execution(* com.example.service..*(..))")
+    public void beforeMethodExecution(JoinPoint joinPoint) {
+        // Perform lightweight operations
+    }
+}
+```
+
+In this example, the `@Before` advice is used for lightweight operations to minimize overhead.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
+
+### 75. How do you debug AOP issues in a Spring application?
+
+To debug AOP issues in a Spring application:
+
+1. Enable logging for AOP-related classes.
+2. Use `@EnableAspectJAutoProxy(proxyTargetClass=true)` to force CGLIB proxies if needed.
+3. Verify pointcut expressions using `@Pointcut` methods.
+4. Use debugging tools and breakpoints in the aspect classes.
+
+### Example
+
+```java
+@Configuration
+@EnableAspectJAutoProxy(proxyTargetClass=true)
+public class AppConfig {
+    // Configuration
+}
+```
+
+In this example, `@EnableAspectJAutoProxy(proxyTargetClass=true)` forces the use of CGLIB proxies, which can help in debugging issues related to proxy creation.
+
+```properties
+logging.level.org.springframework.aop=DEBUG
+```
+
+In this example, the logging level for AOP-related classes is set to DEBUG in the application's properties file.
+
+#### **[⬆ Back to Top](#level--spring-aop-hard)**
+---
