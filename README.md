@@ -587,6 +587,34 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 ## Spring Cloud
 ### Table of Contents
 ### Level : Spring Cloud Easy
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is Spring Cloud, and how is it different from Spring Boot?](#1-what-is-spring-cloud-and-how-is-it-different-from-spring-boot) |
+| 2   | [Explain the concept of microservices.](#2-explain-the-concept-of-microservices) |
+| 3   | [What is Spring Cloud Config, and how does it work?](#3-what-is-spring-cloud-config-and-how-does-it-work) |
+| 4   | [How do you use Spring Cloud Config Server to manage configuration for microservices?](#4-how-do-you-use-spring-cloud-config-server-to-manage-configuration-for-microservices) |
+| 5   | [What is the role of Eureka in Spring Cloud?](#5-what-is-the-role-of-eureka-in-spring-cloud) |
+| 6   | [How do you register a service with Eureka?](#6-how-do-you-register-a-service-with-eureka) |
+| 7   | [What is Zuul, and how does it work in Spring Cloud?](#7-what-is-zuul-and-how-does-it-work-in-spring-cloud) |
+| 8   | [How do you implement a Zuul API Gateway?](#8-how-do-you-implement-a-zuul-api-gateway) |
+| 9   | [What is Spring Cloud Feign, and what are its advantages?](#9-what-is-spring-cloud-feign-and-what-are-its-advantages) |
+| 10  | [How do you use Feign clients to call other microservices?](#10-how-do-you-use-feign-clients-to-call-other-microservices) |
+| 11  | [What is Hystrix, and how does it help in fault tolerance?](#11-what-is-hystrix-and-how-does-it-help-in-fault-tolerance) |
+| 12  | [How do you implement Hystrix in a Spring Cloud application?](#12-how-do-you-implement-hystrix-in-a-spring-cloud-application) |
+| 13  | [Explain the circuit breaker pattern and its benefits.](#13-explain-the-circuit-breaker-pattern-and-its-benefits) |
+| 14  | [What is Spring Cloud Sleuth, and how does it help in distributed tracing?](#14-what-is-spring-cloud-sleuth-and-how-does-it-help-in-distributed-tracing) |
+| 15  | [How do you enable and use Spring Cloud Sleuth?](#15-how-do-you-enable-and-use-spring-cloud-sleuth) |
+| 16  | [What is Spring Cloud Bus, and how does it work?](#16-what-is-spring-cloud-bus-and-how-does-it-work) |
+| 17  | [How do you use Spring Cloud Bus to propagate configuration changes?](#17-how-do-you-use-spring-cloud-bus-to-propagate-configuration-changes) |
+| 18  | [What is a Config Server, and how do you set it up?](#18-what-is-a-config-server-and-how-do-you-set-it-up) |
+| 19  | [How do you secure a Spring Cloud Config Server?](#19-how-do-you-secure-a-spring-cloud-config-server) |
+| 20  | [What is the purpose of Spring Cloud Stream?](#20-what-is-the-purpose-of-spring-cloud-stream) |
+| 21  | [How do you use Spring Cloud Stream to build event-driven microservices?](#21-how-do-you-use-spring-cloud-stream-to-build-event-driven-microservices) |
+| 22  | [What is Ribbon, and how does it achieve client-side load balancing?](#22-what-is-ribbon-and-how-does-it-achieve-client-side-load-balancing) |
+| 23  | [How do you integrate Ribbon with Eureka?](#23-how-do-you-integrate-ribbon-with-eureka) |
+| 24  | [What is Spring Cloud Gateway, and how is it different from Zuul?](#24-what-is-spring-cloud-gateway-and-how-is-it-different-from-zuul) |
+| 25  | [How do you implement rate limiting in Spring Cloud Gateway?](#25-how-do-you-implement-rate-limiting-in-spring-cloud-gateway) |
+
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
