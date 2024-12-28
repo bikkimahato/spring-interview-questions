@@ -15,7 +15,7 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 - [Spring Data JPA](#spring-data-jpa)
 - [Spring Security](#spring-security)
 - [Spring AOP](#spring-aop)
-- Spring Cloud
+- [Spring Cloud](#spring-cloud)
 - Spring Batch
 - Spring Integration
 
@@ -583,6 +583,10 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 73  | [How do you use AOP to handle method chaining?](#73-how-do-you-use-aop-to-handle-method-chaining) |
 | 74  | [How do you optimize AOP performance?](#74-how-do-you-optimize-aop-performance) |
 | 75  | [How do you debug AOP issues in a Spring application?](#75-how-do-you-debug-aop-issues-in-a-spring-application) |
+
+## Spring Cloud
+### Table of Contents
+### Level : Spring Cloud Easy
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
