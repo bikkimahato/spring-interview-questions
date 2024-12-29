@@ -615,6 +615,41 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 24  | [What is Spring Cloud Gateway, and how is it different from Zuul?](#24-what-is-spring-cloud-gateway-and-how-is-it-different-from-zuul) |
 | 25  | [How do you implement rate limiting in Spring Cloud Gateway?](#25-how-do-you-implement-rate-limiting-in-spring-cloud-gateway) |
 
+### Table of Contents
+### Level : Spring Cloud Medium
+| No. | Questions |
+| --- | --------- |
+| 26  | [How do you handle configuration changes dynamically in Spring Cloud?](#26-how-do-you-handle-configuration-changes-dynamically-in-spring-cloud) |
+| 27  | [What are the different ways to configure a Spring Cloud application?](#27-what-are-the-different-ways-to-configure-a-spring-cloud-application) |
+| 28  | [How do you manage secrets and sensitive data in Spring Cloud Config?](#28-how-do-you-manage-secrets-and-sensitive-data-in-spring-cloud-config) |
+| 29  | [Explain the differences between client-side and server-side load balancing.](#29-explain-the-differences-between-client-side-and-server-side-load-balancing) |
+| 30  | [How do you implement a custom load-balancing strategy with Ribbon?](#30-how-do-you-implement-a-custom-load-balancing-strategy-with-ribbon) |
+| 31  | [Describe the fallback mechanism in Hystrix.](#31-describe-the-fallback-mechanism-in-hystrix) |
+| 32  | [How do you configure a global fallback method in Hystrix?](#32-how-do-you-configure-a-global-fallback-method-in-hystrix) |
+| 33  | [What is the difference between a Hystrix command and a Hystrix observable command?](#33-what-is-the-difference-between-a-hystrix-command-and-a-hystrix-observable-command) |
+| 34  | [How do you monitor Hystrix metrics?](#34-how-do-you-monitor-hystrix-metrics) |
+| 35  | [What are Spring Cloud Sleuth's span and trace IDs?](#35-what-are-spring-cloud-sleuths-span-and-trace-ids) |
+| 36  | [How do you propagate tracing information across microservices with Spring Cloud Sleuth?](#36-how-do-you-propagate-tracing-information-across-microservices-with-spring-cloud-sleuth) |
+| 37  | [Explain the role of Zipkin in distributed tracing.](#37-explain-the-role-of-zipkin-in-distributed-tracing) |
+| 38  | [How do you integrate Spring Cloud Sleuth with Zipkin?](#38-how-do-you-integrate-spring-cloud-sleuth-with-zipkin) |
+| 39  | [What are the advantages of using Spring Cloud Stream over traditional messaging?](#39-what-are-the-advantages-of-using-spring-cloud-stream-over-traditional-messaging) |
+| 40  | [How do you implement a custom binder in Spring Cloud Stream?](#40-how-do-you-implement-a-custom-binder-in-spring-cloud-stream) |
+| 41  | [What is the difference between @StreamListener and @EnableBinding?](#41-what-is-the-difference-between-streamlistener-and-enablebinding) |
+| 42  | [How do you achieve data consistency in microservices using Spring Cloud Stream?](#42-how-do-you-achieve-data-consistency-in-microservices-using-spring-cloud-stream) |
+| 43  | [Explain the difference between Spring Cloud Bus and Spring Cloud Stream.](#43-explain-the-difference-between-spring-cloud-bus-and-spring-cloud-stream) |
+| 44  | [How do you implement distributed transactions in Spring Cloud?](#44-how-do-you-implement-distributed-transactions-in-spring-cloud) |
+| 45  | [Describe the role of Spring Cloud Consul.](#45-describe-the-role-of-spring-cloud-consul) |
+| 46  | [How do you use Consul for service discovery and configuration management?](#46-how-do-you-use-consul-for-service-discovery-and-configuration-management) |
+| 47  | [What is Spring Cloud Kubernetes, and how does it help in deploying microservices to Kubernetes?](#47-what-is-spring-cloud-kubernetes-and-how-does-it-help-in-deploying-microservices-to-kubernetes) |
+| 48  | [How do you configure Spring Cloud applications for Kubernetes?](#48-how-do-you-configure-spring-cloud-applications-for-kubernetes) |
+| 49  | [Explain the concept of service mesh and its benefits.](#49-explain-the-concept-of-service-mesh-and-its-benefits) |
+| 50  | [How do you integrate Spring Cloud applications with Istio?](#50-how-do-you-integrate-spring-cloud-applications-with-istio) |
+| 51  | [What is the difference between Spring Cloud Gateway and Spring Cloud Zuul?](#51-what-is-the-difference-between-spring-cloud-gateway-and-spring-cloud-zuul) |
+| 52  | [How do you implement security in Spring Cloud Gateway?](#52-how-do-you-implement-security-in-spring-cloud-gateway) |
+| 53  | [Describe the role of OAuth2 in securing microservices.](#53-describe-the-role-of-oauth2-in-securing-microservices) |
+| 54  | [How do you integrate Spring Security OAuth2 with Spring Cloud Gateway?](#54-how-do-you-integrate-spring-security-oauth2-with-spring-cloud-gateway) |
+| 55  | [Explain how to use Spring Cloud Contract for consumer-driven contracts.](#55-explain-how-to-use-spring-cloud-contract-for-consumer-driven-contracts) |
+
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
