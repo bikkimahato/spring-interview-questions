@@ -650,6 +650,30 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 54  | [How do you integrate Spring Security OAuth2 with Spring Cloud Gateway?](#54-how-do-you-integrate-spring-security-oauth2-with-spring-cloud-gateway) |
 | 55  | [Explain how to use Spring Cloud Contract for consumer-driven contracts.](#55-explain-how-to-use-spring-cloud-contract-for-consumer-driven-contracts) |
 
+### Table of Contents
+### Level : Spring Cloud Hard
+| No. | Questions |
+| --- | --------- |
+| 56  | [How do you implement a distributed caching strategy in Spring Cloud?](#56-how-do-you-implement-a-distributed-caching-strategy-in-spring-cloud) |
+| 57  | [Explain the CAP theorem and its relevance to Spring Cloud applications.](#57-explain-the-cap-theorem-and-its-relevance-to-spring-cloud-applications) |
+| 58  | [How do you handle eventual consistency in microservices?](#58-how-do-you-handle-eventual-consistency-in-microservices) |
+| 59  | [What are the challenges of using microservices, and how does Spring Cloud address them?](#59-what-are-the-challenges-of-using-microservices-and-how-does-spring-cloud-address-them) |
+| 60  | [How do you implement a custom Zuul filter?](#60-how-do-you-implement-a-custom-zuul-filter) |
+| 61  | [What are the different types of Zuul filters, and how do they work?](#61-what-are-the-different-types-of-zuul-filters-and-how-do-they-work) |
+| 62  | [How do you implement a custom plugin for Spring Cloud Gateway?](#62-how-do-you-implement-a-custom-plugin-for-spring-cloud-gateway) |
+| 63  | [Explain the importance of service registry in microservices architecture.](#63-explain-the-importance-of-service-registry-in-microservices-architecture) |
+| 64  | [How do you implement a custom service registry with Spring Cloud?](#64-how-do-you-implement-a-custom-service-registry-with-spring-cloud) |
+| 65  | [Describe a scenario where you would use Spring Cloud Sleuth without Zipkin.](#65-describe-a-scenario-where-you-would-use-spring-cloud-sleuth-without-zipkin) |
+| 66  | [How do you monitor and troubleshoot performance issues in a Spring Cloud application?](#66-how-do-you-monitor-and-troubleshoot-performance-issues-in-a-spring-cloud-application) |
+| 67  | [What is the role of Prometheus and Grafana in monitoring Spring Cloud applications?](#67-what-is-the-role-of-prometheus-and-grafana-in-monitoring-spring-cloud-applications) |
+| 68  | [How do you configure Spring Cloud applications for high availability?](#68-how-do-you-configure-spring-cloud-applications-for-high-availability) |
+| 69  | [Explain the concept of blue-green deployment and how to implement it with Spring Cloud.](#69-explain-the-concept-of-blue-green-deployment-and-how-to-implement-it-with-spring-cloud) |
+| 70  | [How do you handle versioning of microservices in Spring Cloud?](#70-how-do-you-handle-versioning-of-microservices-in-spring-cloud) |
+| 71  | [What is Canary release, and how do you implement it with Spring Cloud?](#71-what-is-canary-release-and-how-do-you-implement-it-with-spring-cloud) |
+| 72  | [How do you implement a global error handling strategy in Spring Cloud Gateway?](#72-how-do-you-implement-a-global-error-handling-strategy-in-spring-cloud-gateway) |
+| 73  | [Explain the importance of observability in microservices and how Spring Cloud helps achieve it.](#73-explain-the-importance-of-observability-in-microservices-and-how-spring-cloud-helps-achieve-it) |
+| 74  | [How do you implement distributed logging in Spring Cloud applications?](#74-how-do-you-implement-distributed-logging-in-spring-cloud-applications) |
+| 75  | [Describe a complex use case where you combined multiple Spring Cloud components to solve a problem.](#75-describe-a-complex-use-case-where-you-combined-multiple-spring-cloud-components-to-solve-a-problem) |
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
