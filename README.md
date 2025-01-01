@@ -13785,3 +13785,380 @@ public class OrderService {
 ```
 #### **[⬆ Back to Top](#level--spring-cloud-easy)**
 ---
+
+### 11. What is Hystrix, and how does it help in fault tolerance?
+
+Hystrix is a library from Netflix that provides latency and fault tolerance in distributed systems. It helps to isolate points of access to remote systems, services, and third-party libraries, stopping cascading failures and enabling resilience in complex distributed systems.
+
+### Key Features:
+- **Circuit Breaker**: Prevents repetitive failures.
+- **Fallbacks**: Provides default responses when services fail.
+- **Isolation**: Isolates failures in different parts of the system.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+```
+
+#### Configuration:
+```yaml
+# application.yml
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+```
+
+#### Service Implementation:
+```java
+@Service
+public class InventoryService {
+    @HystrixCommand(fallbackMethod = "defaultInventory")
+    public Inventory getInventory(String productId) {
+        // Call to remote service
+    }
+
+    public Inventory defaultInventory(String productId) {
+        return new Inventory(productId, 0);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 12. How do you implement Hystrix in a Spring Cloud application?
+
+To implement Hystrix in a Spring Cloud application, you need to add the Hystrix dependency, enable Hystrix in your application, and annotate methods with `@HystrixCommand` to define fallback methods.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
+```
+
+#### Main Application:
+```java
+@SpringBootApplication
+@EnableHystrix
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+#### Service Implementation:
+```java
+@Service
+public class InventoryService {
+    @HystrixCommand(fallbackMethod = "defaultInventory")
+    public Inventory getInventory(String productId) {
+        // Call to remote service
+    }
+
+    public Inventory defaultInventory(String productId) {
+        return new Inventory(productId, 0);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 13. Explain the circuit breaker pattern and its benefits.
+
+The circuit breaker pattern is used to prevent repetitive failures in distributed systems. It monitors the number of failures in a service and trips the circuit breaker to stop calling the service if the failure rate exceeds a threshold. This helps to prevent cascading failures and allows the system to recover gracefully.
+
+### Benefits:
+- **Fault Isolation**: Stops cascading failures by isolating the faulty component.
+- **Resilience**: Allows the system to recover gracefully from failures.
+- **Fallbacks**: Provides alternative responses when services fail.
+
+### Example:
+```java
+@Service
+public class InventoryService {
+    @HystrixCommand(fallbackMethod = "defaultInventory")
+    public Inventory getInventory(String productId) {
+        // Call to remote service
+    }
+
+    public Inventory defaultInventory(String productId) {
+        return new Inventory(productId, 0);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 14. What is Spring Cloud Sleuth, and how does it help in distributed tracing?
+
+Spring Cloud Sleuth provides support for distributed tracing in microservices. It adds unique identifiers to requests to trace the flow through different services, making it easier to debug and analyze performance issues in distributed systems.
+
+### Key Features:
+- **Trace and Span IDs**: Adds unique IDs to trace requests across services.
+- **Log Correlation**: Correlates logs with trace IDs.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+```
+
+#### Configuration:
+```yaml
+# application.yml
+spring:
+  sleuth:
+    sampler:
+      probability: 1.0
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 15. How do you enable and use Spring Cloud Sleuth?
+
+To enable and use Spring Cloud Sleuth, you need to add the Sleuth dependency to your project and configure it to start tracing requests.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+```
+
+#### Configuration:
+```yaml
+# application.yml
+spring:
+  sleuth:
+    sampler:
+      probability: 1.0
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 16. What is Spring Cloud Bus, and how does it work?
+
+Spring Cloud Bus links nodes of a distributed system with a lightweight message broker. It can be used to broadcast state changes (e.g., configuration changes) or other management instructions.
+
+### How it works:
+- **Message Broker**: Uses a message broker (e.g., Kafka, RabbitMQ) to propagate changes.
+- **Event Handling**: Listens for events and propagates them to all nodes.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+</dependency>
+```
+
+#### Configuration:
+```yaml
+# application.yml
+spring:
+  cloud:
+    bus:
+      enabled: true
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 17. How do you use Spring Cloud Bus to propagate configuration changes?
+
+To use Spring Cloud Bus to propagate configuration changes, you need to set up a message broker, add the Spring Cloud Bus dependency, and configure your application to use the message broker.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+</dependency>
+```
+
+#### Configuration:
+```yaml
+# application.yml
+spring:
+  cloud:
+    bus:
+      enabled: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 18. What is a Config Server, and how do you set it up?
+
+A Config Server is a centralized server that manages configuration properties for multiple applications. It allows you to store configurations in a Git repository and serve them to applications on demand.
+
+### Setup:
+1. Create a Spring Boot application.
+2. Add the Spring Cloud Config Server dependency.
+3. Configure the server to point to a Git repository.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-config-server</artifactId>
+</dependency>
+```
+
+#### Main Application:
+```java
+@SpringBootApplication
+@EnableConfigServer
+public class ConfigServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServerApplication.class, args);
+    }
+}
+```
+
+#### Configuration:
+```yaml
+# application.yml
+server:
+  port: 8888
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/your-repo/config-repo
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 19. How do you secure a Spring Cloud Config Server?
+
+To secure a Spring Cloud Config Server, you can use Spring Security to add authentication and authorization mechanisms.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+#### Security Configuration:
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+            .httpBasic();
+    }
+}
+```
+
+#### User Configuration:
+```yaml
+# application.yml
+spring:
+  security:
+    user:
+      name: user
+      password: password
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 20. What is the purpose of Spring Cloud Stream?
+
+Spring Cloud Stream is a framework for building event-driven microservices connected to shared messaging systems. It provides a consistent and flexible programming model for message-driven microservices.
+
+### Key Features:
+- **Binder Abstraction**: Abstracts the underlying messaging system.
+- **Message Channels**: Defines input and output channels for message flow.
+- **Spring Integration**: Integrates seamlessly with Spring Integration.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+</dependency>
+```
+
+#### Configuration:
+```yaml
+# application.yml
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: my-topic
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 21. How do you use Spring Cloud Stream to build event-driven microservices?
+
+To use Spring Cloud Stream to build event-driven microservices, you need to create a Spring Boot application, add the Spring Cloud Stream dependency, and define input and output channels.
+
+### Example:
+#### Maven Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+</dependency>
+```
+
+#### Source (Producer):
+```java
+@EnableBinding(Source.class)
+public class MessageProducer {
+    @Autowired
+    private MessageChannel output;
+
+    public void sendMessage(String message) {
+        output.send(MessageBuilder.withPayload(message).build());
+    }
+}
+```
+
+#### Sink (Consumer):
+```java
+@EnableBinding(Sink.class)
+public class MessageConsumer {
+    @StreamListener(Sink.INPUT)
+    public void handleMessage(String message) {
+        System.out.println("Received: " + message);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
