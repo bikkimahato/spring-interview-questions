@@ -14162,3 +14162,173 @@ public class MessageConsumer {
 ```
 #### **[⬆ Back to Top](#level--spring-cloud-easy)**
 ---
+
+
+### 22. What is Ribbon, and how does it achieve client-side load balancing?
+
+Ribbon is a client-side load balancer that provides control over the behavior of HTTP and TCP clients. It is a part of the Netflix OSS family and integrates seamlessly with Spring Cloud. Ribbon achieves client-side load balancing by distributing the incoming client requests among the available service instances based on various algorithms.
+
+#### Key Features of Ribbon:
+- **Client-side Load Balancing:** Unlike traditional server-side load balancers, Ribbon resides on the client side and distributes requests across multiple service instances.
+- **Pluggable Load Balancing Algorithms:** Ribbon supports various load-balancing algorithms like Round-Robin, Random, Weighted Response Time, etc.
+- **Integration with Eureka:** Ribbon can be easily integrated with Eureka, a service registry, to dynamically discover service instances.
+
+#### How Ribbon Works:
+1. **Service Discovery:** Ribbon queries the service registry (like Eureka) to get the list of available service instances.
+2. **Load Balancing:** Ribbon uses the configured load-balancing algorithm to select one of the available instances to handle the request.
+3. **Client Request:** The client request is then routed to the chosen instance.
+
+#### Example of Ribbon Configuration:
+```yaml
+# application.yml
+ribbon:
+  eureka:
+    enabled: true
+  client:
+    name: example-service
+    listOfServers: localhost:8081,localhost:8082,localhost:8083
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 23. How do you integrate Ribbon with Eureka?
+
+Eureka is a service registry that helps in locating services in a microservices architecture. Integrating Ribbon with Eureka allows Ribbon to dynamically discover service instances registered with Eureka.
+
+#### Steps to Integrate Ribbon with Eureka:
+1. **Add Dependencies:** Add the necessary dependencies for Ribbon and Eureka in your `pom.xml` file.
+2. **Enable Eureka Client:** Annotate your Spring Boot application with `@EnableEurekaClient`.
+3. **Configure Ribbon:** Configure Ribbon in `application.yml` or `application.properties`.
+
+#### Example Integration:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+</dependency>
+```
+
+```java
+// Application.java
+@SpringBootApplication
+@EnableEurekaClient
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+```yaml
+# application.yml
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+ribbon:
+  eureka:
+    enabled: true
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 24. What is Spring Cloud Gateway, and how is it different from Zuul?
+
+Spring Cloud Gateway is an API Gateway built on top of the Spring ecosystem, specifically designed to handle routing and provide cross-cutting concerns such as security, monitoring/metrics, and resiliency. It is a replacement for Zuul, which is also an API Gateway provided by Netflix OSS.
+
+#### Key Differences:
+- **Technology Stack:**
+  - **Spring Cloud Gateway:** Built on top of Spring 5, Project Reactor, and Spring Boot 2, providing a reactive programming model.
+  - **Zuul:** Built on Servlet 2.5 (blocking APIs), which can be less efficient in terms of resource utilization.
+
+- **Performance:**
+  - **Spring Cloud Gateway:** Provides better performance and scalability due to its non-blocking, reactive model.
+  - **Zuul:** Uses a blocking model, which can be less performant under high load.
+
+- **Features:**
+  - **Spring Cloud Gateway:** Offers advanced routing capabilities, filters, and integration with Spring ecosystem components.
+  - **Zuul:** Provides basic routing and filtering capabilities but lacks some advanced features.
+
+#### Example Configuration:
+```yaml
+# application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: example-route
+          uri: http://example.org
+          predicates:
+            - Path=/example/**
+          filters:
+            - StripPrefix=1
+```
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
+
+### 25. How do you implement rate limiting in Spring Cloud Gateway?
+
+Rate limiting is a technique used to control the rate of incoming requests to an API. Spring Cloud Gateway provides built-in support for rate limiting using Redis to store request counts.
+
+#### Steps to Implement Rate Limiting:
+1. **Add Dependencies:** Add Spring Cloud Gateway and Redis dependencies in your `pom.xml`.
+2. **Configure Redis:** Set up Redis in your Spring application.
+3. **Configure Rate Limiting Filter:** Use the `RequestRateLimiter` filter to configure rate limiting.
+
+#### Example Implementation:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: rate_limited_route
+          uri: http://example.org
+          predicates:
+            - Path=/rate-limited/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter:
+                  replenishRate: 10
+                  burstCapacity: 20
+  redis:
+    host: localhost
+    port: 6379
+```
+
+```java
+// RedisRateLimiterConfig.java
+@Configuration
+public class RedisRateLimiterConfig {
+    @Bean
+    public KeyResolver userKeyResolver() {
+        return exchange -> Mono.just("user");
+    }
+}
+```
+
+In the example above, the rate limiting is applied to the route with a path `/rate-limited/**`. The configuration specifies a replenish rate of 10 requests per second and a burst capacity of 20 requests. The `userKeyResolver` is used to identify the user making the request, which is necessary for rate limiting.
+
+By following these steps, you can effectively implement rate limiting in Spring Cloud Gateway to protect your API endpoints from excessive requests.
+
+#### **[⬆ Back to Top](#level--spring-cloud-easy)**
+---
