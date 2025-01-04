@@ -14661,3 +14661,142 @@ public class HystrixDashboardApplication {
 ```
 #### **[⬆ Back to Top](#level--spring-cloud-medium)**
 ---
+
+### 35. What are Spring Cloud Sleuth's span and trace IDs?
+
+Spring Cloud Sleuth provides distributed tracing support for Spring applications by adding unique identifiers to each request.
+
+#### Span ID:
+- **Definition:** Represents a single unit of work within a trace.
+- **Usage:** Used to track specific operations within a trace.
+
+#### Trace ID:
+- **Definition:** Represents a unique identifier for a single request that can span multiple services.
+- **Usage:** Used to correlate spans across different services.
+
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 36. How do you propagate tracing information across microservices with Spring Cloud Sleuth?
+
+Spring Cloud Sleuth automatically propagates tracing information across microservices by adding trace and span IDs to HTTP headers and messaging protocols.
+
+#### Example Configuration:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+```
+
+```java
+// ExampleService.java
+@Service
+public class ExampleService {
+
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public ExampleService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public String callOtherService() {
+        return restTemplate.getForObject("http://other-service/endpoint", String.class);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 37. Explain the role of Zipkin in distributed tracing.
+
+Zipkin is a distributed tracing system that helps gather timing data needed to troubleshoot latency problems in service architectures. It provides a backend for storing and querying traces, as well as a UI for visualizing trace data.
+
+#### Key Features:
+- **Trace Collection:** Collects trace data from various services.
+- **Trace Storage:** Stores trace data in a backend (e.g., MySQL, Elasticsearch).
+- **Trace Visualization:** Provides a UI to visualize and analyze trace data.
+
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 38. How do you integrate Spring Cloud Sleuth with Zipkin?
+
+To integrate Spring Cloud Sleuth with Zipkin, you need to add the necessary dependencies and configure the Zipkin server URL.
+
+#### Example Integration:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 39. What are the advantages of using Spring Cloud Stream over traditional messaging?
+
+Spring Cloud Stream provides a framework for building event-driven microservices connected to shared messaging systems. It abstracts messaging infrastructure and provides a consistent programming model.
+
+#### Advantages:
+- **Abstraction:** Abstracts underlying messaging infrastructure, allowing developers to focus on business logic.
+- **Binder Support:** Supports multiple messaging systems (e.g., Kafka, RabbitMQ) through binders.
+- **Declarative Configuration:** Simplifies configuration and reduces boilerplate code.
+- **Integration:** Seamlessly integrates with the Spring ecosystem.
+
+#### Example Configuration:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yml
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: input-topic
+          group: input-group
+        output:
+          destination: output-topic
+```
+
+```java
+// ExampleProcessor.java
+@EnableBinding(Processor.class)
+public class ExampleProcessor {
+
+    @StreamListener(Processor.INPUT)
+    @SendTo(Processor.OUTPUT)
+    public String process(String input) {
+        return input.toUpperCase();
+    }
+}
+```
+
+By following these steps, you can effectively leverage Spring Cloud Stream for building event-driven microservices with robust messaging capabilities.
+
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
