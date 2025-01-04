@@ -14334,3 +14334,330 @@ By following these steps, you can effectively implement rate limiting in Spring 
 ---
 
 # Spring Cloud Medium Interview Questions and Answers
+### 26. How do you handle configuration changes dynamically in Spring Cloud?
+
+Spring Cloud Config provides server and client-side support for externalized configuration in a distributed system. Configuration properties are sourced from a central location (such as a Git repository) and can be updated without redeploying the application.
+
+#### Steps to Handle Configuration Changes Dynamically:
+1. **Set up Spring Cloud Config Server:** The Config Server fetches configuration properties from external sources.
+2. **Enable Spring Cloud Config Client:** The Spring Boot application acts as a Config Client and fetches configuration properties from the Config Server.
+3. **Use the `@RefreshScope` Annotation:** Annotate beans that need to be refreshed when configuration changes.
+4. **Trigger a Refresh Event:** Use the `/actuator/refresh` endpoint to trigger a refresh event.
+
+#### Example Configuration:
+First, set up the Config Server:
+
+```xml
+<!-- pom.xml for Config Server -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-config-server</artifactId>
+</dependency>
+```
+
+```java
+// ConfigServerApplication.java
+@SpringBootApplication
+@EnableConfigServer
+public class ConfigServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServerApplication.class, args);
+    }
+}
+```
+
+```yaml
+# application.yml for Config Server
+server:
+  port: 8888
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/example/config-repo
+```
+
+Then, set up the Config Client:
+
+```xml
+<!-- pom.xml for Config Client -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-config</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+```yaml
+# bootstrap.yml for Config Client
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8888
+      name: my-app
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+```
+
+```java
+// ExampleService.java
+@RefreshScope
+@Service
+public class ExampleService {
+    @Value("${example.property}")
+    private String exampleProperty;
+
+    public String getExampleProperty() {
+        return exampleProperty;
+    }
+}
+```
+
+To refresh the configuration dynamically, send a POST request to `/actuator/refresh`.
+
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 27. What are the different ways to configure a Spring Cloud application?
+
+Spring Cloud applications can be configured in multiple ways, including:
+
+1. **Application Properties/YAML Files:** Configuration can be specified in `application.properties` or `application.yml` files.
+2. **Environment Variables:** Configuration can be set using environment variables.
+3. **Command-line Arguments:** Configuration can be passed as command-line arguments when starting the application.
+4. **Spring Cloud Config:** Externalized configuration can be managed using Spring Cloud Config Server.
+5. **Vault Integration:** Secrets and sensitive data can be managed using HashiCorp Vault.
+6. **Kubernetes ConfigMaps and Secrets:** Configuration can be managed using Kubernetes ConfigMaps and Secrets.
+7. **Consul/Zookeeper:** Configuration can be managed using service discovery tools like Consul or Zookeeper.
+
+#### Example Configuration:
+```yaml
+# application.yml
+spring:
+  application:
+    name: my-app
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: user
+    password: pass
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 28. How do you manage secrets and sensitive data in Spring Cloud Config?
+
+Managing secrets and sensitive data securely is crucial in any application. Spring Cloud Config supports various methods to secure sensitive data, including integration with Vault and encrypting properties.
+
+#### Using Vault:
+1. **Set up Vault:** Install and configure HashiCorp Vault.
+2. **Add Dependencies:** Add Spring Cloud Vault dependencies.
+3. **Configure Vault:** Configure Vault properties in `bootstrap.yml`.
+
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-vault-config</artifactId>
+</dependency>
+```
+
+```yaml
+# bootstrap.yml
+spring:
+  cloud:
+    vault:
+      uri: http://localhost:8200
+      token: s.xxxxxxxx
+```
+
+#### Using Encrypted Properties:
+1. **Encrypt Properties:** Use the `encrypt` and `decrypt` endpoints of the Config Server.
+2. **Configure Encryption:** Specify encryption keys in the Config Server.
+
+```yaml
+# Config Server application.yml
+encrypt:
+  key: my-secret-key
+```
+
+```yaml
+# application.yml in Config Repo
+my:
+  secret: '{cipher}AQB+pL0...'
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 29. Explain the differences between client-side and server-side load balancing.
+
+#### Client-side Load Balancing:
+- **Definition:** The client determines which server instance to send the request to.
+- **Examples:** Ribbon, Netflix OSS.
+- **Pros:** Reduces load on the server, allows for intelligent routing and failover.
+- **Cons:** Increases complexity on the client-side, requires up-to-date server instance information.
+
+#### Server-side Load Balancing:
+- **Definition:** A load balancer sits between the client and server instances, distributing incoming requests to available server instances.
+- **Examples:** Nginx, HAProxy.
+- **Pros:** Centralized control, simpler client configuration.
+- **Cons:** Potential single point of failure, additional hop in the network path.
+
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 30. How do you implement a custom load-balancing strategy with Ribbon?
+
+To implement a custom load-balancing strategy with Ribbon, you need to create a custom implementation of the `IRule` interface and configure Ribbon to use it.
+
+#### Example Custom Load-Balancing Strategy:
+```java
+// CustomLoadBalancingRule.java
+public class CustomLoadBalancingRule extends AbstractLoadBalancerRule {
+
+    @Override
+    public void initWithNiwsConfig(IClientConfig clientConfig) {
+        // Initialize custom rule
+    }
+
+    @Override
+    public Server choose(Object key) {
+        ILoadBalancer lb = getLoadBalancer();
+        List<Server> servers = lb.getAllServers();
+        
+        // Custom logic to select a server
+        return servers.get(new Random().nextInt(servers.size()));
+    }
+}
+```
+
+```yaml
+# application.yml
+ribbon:
+  eureka:
+    enabled: true
+  client:
+    name: example-service
+    NFLoadBalancerRuleClassName: com.example.CustomLoadBalancingRule
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 31. Describe the fallback mechanism in Hystrix.
+
+Hystrix is a fault-tolerance library that provides circuit breaker and fallback mechanisms to handle failures gracefully.
+
+#### Fallback Mechanism:
+- **Purpose:** To provide an alternative response or action when a request fails.
+- **How it Works:** When a Hystrix command fails, times out, or is short-circuited, the fallback method is executed.
+- **Benefits:** Improves system resilience, provides degraded functionality instead of complete failure.
+
+#### Example Fallback Method:
+```java
+// MyService.java
+public class MyService {
+
+    @HystrixCommand(fallbackMethod = "fallbackMethod")
+    public String performAction() {
+        // Code that may fail
+        return "Success";
+    }
+
+    public String fallbackMethod() {
+        return "Fallback response";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 32. How do you configure a global fallback method in Hystrix?
+
+To configure a global fallback method in Hystrix, you can use a combination of `HystrixCommand` and `HystrixProperties`.
+
+#### Example Global Fallback Configuration:
+```java
+// GlobalFallback.java
+@Component
+public class GlobalFallback {
+
+    @HystrixCommand(fallbackMethod = "globalFallbackMethod")
+    public String performAction() {
+        // Code that may fail
+        return "Success";
+    }
+
+    public String globalFallbackMethod() {
+        return "Global fallback response";
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 33. What is the difference between a Hystrix command and a Hystrix observable command?
+
+#### Hystrix Command:
+- **Purpose:** Execute a single action and return a result.
+- **Synchronous Execution:** Supports synchronous execution.
+- **Example:**
+    ```java
+    new HystrixCommand<String>(HystrixCommandGroupKey.Factory.asKey("ExampleGroup")) {
+        @Override
+        protected String run() {
+            return "Hello World";
+        }
+    }.execute();
+    ```
+
+#### Hystrix Observable Command:
+- **Purpose:** Execute a series of actions and return an observable result.
+- **Asynchronous Execution:** Supports asynchronous execution using RxJava.
+- **Example:**
+    ```java
+    new HystrixObservableCommand<String>(HystrixCommandGroupKey.Factory.asKey("ExampleGroup")) {
+        @Override
+        protected Observable<String> construct() {
+            return Observable.just("Hello World");
+        }
+    }.observe();
+    ```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
+
+### 34. How do you monitor Hystrix metrics?
+
+Hystrix provides various ways to monitor metrics, including:
+1. **Hystrix Dashboard:** A web-based dashboard to visualize Hystrix metrics in real-time.
+2. **Turbine:** Aggregates Hystrix metrics from multiple services into a single stream.
+3. **Metrics Streaming:** Hystrix metrics can be streamed to external monitoring systems.
+
+#### Example Configuration:
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+</dependency>
+```
+
+```java
+// HystrixDashboardApplication.java
+@SpringBootApplication
+@EnableHystrixDashboard
+public class HystrixDashboardApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(HystrixDashboardApplication.class, args);
+    }
+}
+```
+#### **[⬆ Back to Top](#level--spring-cloud-medium)**
+---
