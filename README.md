@@ -16,7 +16,7 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 - [Spring Security](#spring-security)
 - [Spring AOP](#spring-aop)
 - [Spring Cloud](#spring-cloud)
-- Spring Batch
+- [Spring Batch](#spring-batch)
 - Spring Integration
 
 ## How to Use
@@ -674,6 +674,9 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 73  | [Explain the importance of observability in microservices and how Spring Cloud helps achieve it.](#73-explain-the-importance-of-observability-in-microservices-and-how-spring-cloud-helps-achieve-it) |
 | 74  | [How do you implement distributed logging in Spring Cloud applications?](#74-how-do-you-implement-distributed-logging-in-spring-cloud-applications) |
 | 75  | [Describe a complex use case where you combined multiple Spring Cloud components to solve a problem.](#75-describe-a-complex-use-case-where-you-combined-multiple-spring-cloud-components-to-solve-a-problem) |
+
+## Spring Batch
+### Table of Contents
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
