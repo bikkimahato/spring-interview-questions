@@ -708,6 +708,27 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 27  | [How can you schedule Spring Batch jobs?](#27-how-can-you-schedule-spring-batch-jobs) |
 | 28  | [What are the best practices for designing Spring Batch jobs?](#28-what-are-the-best-practices-for-designing-spring-batch-jobs) |
 | 29  | [How do you monitor and manage Spring Batch jobs?](#29-how-do-you-monitor-and-manage-spring-batch-jobs) |
+| 30  | [Explain the role of the JobOperator in Spring Batch.](#30-explain-the-role-of-the-joboperator-in-spring-batch) |
+| 31  | [How can you partition a Spring Batch job?](#31-how-can-you-partition-a-spring-batch-job) |
+| 32  | [What is a CompositeItemProcessor and how is it used?](#32-what-is-a-compositeitemprocessor-and-how-is-it-used) |
+| 33  | [How do you implement a multi-threaded Step in Spring Batch?](#33-how-do-you-implement-a-multi-threaded-step-in-spring-batch) |
+| 34  | [What is the purpose of the Spring Batch Admin?](#34-what-is-the-purpose-of-the-spring-batch-admin) |
+| 35  | [How do you use the Spring Batch integration with Spring Cloud Data Flow?](#35-how-do-you-use-the-spring-batch-integration-with-spring-cloud-data-flow) |
+| 36  | [Explain the importance of the Spring Batch namespace configuration.](#36-explain-the-importance-of-the-spring-batch-namespace-configuration) |
+| 37  | [What is a StepScope and how is it used in Spring Batch?](#37-what-is-a-stepscope-and-how-is-it-used-in-spring-batch) |
+| 38  | [Describe how to implement a custom ItemReader.](#38-describe-how-to-implement-a-custom-itemreader) |
+| 39  | [How do you handle large data sets in Spring Batch?](#39-how-do-you-handle-large-data-sets-in-spring-batch) |
+| 40  | [How can you process database records using Spring Batch?](#40-how-can-you-process-database-records-using-spring-batch) |
+| 41  | [What is a StaxEventItemReader and how is it used?](#41-what-is-a-staxeventitemreader-and-how-is-it-used) |
+| 42  | [How do you manage job dependencies in Spring Batch?](#42-how-do-you-manage-job-dependencies-in-spring-batch) |
+| 43  | [Explain the concept of job parameters incrementer.](#43-explain-the-concept-of-job-parameters-incrementer) |
+| 44  | [How can you customize the JobLauncher?](#44-how-can-you-customize-the-joblauncher) |
+| 45  | [What are the different ways to stop a running job in Spring Batch?](#45-what-are-the-different-ways-to-stop-a-running-job-in-spring-batch) |
+| 46  | [How do you implement conditional flow in a Spring Batch job?](#46-how-do-you-implement-conditional-flow-in-a-spring-batch-job) |
+| 47  | [Describe the use of the SimpleJobLauncher.](#47-describe-the-use-of-the-simplejoblauncher) |
+| 48  | [How can you handle job execution failures in Spring Batch?](#48-how-can-you-handle-job-execution-failures-in-spring-batch) |
+| 49  | [How do you use annotations in Spring Batch configuration?](#49-how-do-you-use-annotations-in-spring-batch-configuration) |
+| 50  | [What are the core interfaces provided by Spring Batch?](#50-what-are-the-core-interfaces-provided-by-spring-batch) |
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
