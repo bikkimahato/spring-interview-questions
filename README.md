@@ -677,6 +677,37 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 
 ## Spring Batch
 ### Table of Contents
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is Spring Batch and why is it used?](#1-what-is-spring-batch-and-why-is-it-used) |
+| 2   | [Describe the architecture of Spring Batch.](#2-describe-the-architecture-of-spring-batch) |
+| 3   | [What are the main components of a Spring Batch job?](#3-what-are-the-main-components-of-a-spring-batch-job) |
+| 4   | [Explain the concept of a Job and a Step in Spring Batch.](#4-explain-the-concept-of-a-job-and-a-step-in-spring-batch) |
+| 5   | [What is a JobRepository in Spring Batch?](#5-what-is-a-jobrepository-in-spring-batch) |
+| 6   | [How is transaction management handled in Spring Batch?](#6-how-is-transaction-management-handled-in-spring-batch) |
+| 7   | [What is a JobLauncher and how does it work?](#7-what-is-a-joblauncher-and-how-does-it-work) |
+| 8   | [Explain the role of JobParameters in Spring Batch.](#8-explain-the-role-of-jobparameters-in-spring-batch) |
+| 9   | [What is the difference between a Tasklet and a Chunk-oriented processing in Spring Batch?](#9-what-is-the-difference-between-a-tasklet-and-a-chunk-oriented-processing-in-spring-batch) |
+| 10  | [How can you configure a Step in Spring Batch?](#10-how-can-you-configure-a-step-in-spring-batch) |
+| 11  | [What are ItemReader, ItemProcessor, and ItemWriter in Spring Batch?](#11-what-are-itemreader-itemprocessor-and-itemwriter-in-spring-batch) |
+| 12  | [How do you handle job execution states in Spring Batch?](#12-how-do-you-handle-job-execution-states-in-spring-batch) |
+| 13  | [What is a JobExecutionListener and how is it used?](#13-what-is-a-jobexecutionlistener-and-how-is-it-used) |
+| 14  | [How do you handle job restarts in Spring Batch?](#14-how-do-you-handle-job-restarts-in-spring-batch) |
+| 15  | [What are the different ways to configure Spring Batch jobs?](#15-what-are-the-different-ways-to-configure-spring-batch-jobs) |
+| 16  | [How do you implement skip and retry logic in Spring Batch?](#16-how-do-you-implement-skip-and-retry-logic-in-spring-batch) |
+| 17  | [What are the different job status and exit status codes in Spring Batch?](#17-what-are-the-different-job-status-and-exit-status-codes-in-spring-batch) |
+| 18  | [Explain the concept of JobInstance and JobExecution in Spring Batch.](#18-explain-the-concept-of-jobinstance-and-jobexecution-in-spring-batch) |
+| 19  | [How do you manage job concurrency in Spring Batch?](#19-how-do-you-manage-job-concurrency-in-spring-batch) |
+| 20  | [What is the role of the StepExecutionListener?](#20-what-is-the-role-of-the-stepexecutionlistener) |
+| 21  | [How would you configure and use a FlatFileItemReader in Spring Batch?](#21-how-would-you-configure-and-use-a-flatfileitemreader-in-spring-batch) |
+| 22  | [How can you process XML files using Spring Batch?](#22-how-can-you-process-xml-files-using-spring-batch) |
+| 23  | [Describe how to handle exceptions in Spring Batch.](#23-describe-how-to-handle-exceptions-in-spring-batch) |
+| 24  | [Explain the role of the ExecutionContext in Spring Batch.](#24-explain-the-role-of-the-executioncontext-in-spring-batch) |
+| 25  | [How do you integrate Spring Batch with Spring Boot?](#25-how-do-you-integrate-spring-batch-with-spring-boot) |
+| 26  | [What are the benefits of using Spring Batch with Spring Boot?](#26-what-are-the-benefits-of-using-spring-batch-with-spring-boot) |
+| 27  | [How can you schedule Spring Batch jobs?](#27-how-can-you-schedule-spring-batch-jobs) |
+| 28  | [What are the best practices for designing Spring Batch jobs?](#28-what-are-the-best-practices-for-designing-spring-batch-jobs) |
+| 29  | [How do you monitor and manage Spring Batch jobs?](#29-how-do-you-monitor-and-manage-spring-batch-jobs) |
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
