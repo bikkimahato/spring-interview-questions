@@ -17725,3 +17725,286 @@ public void startJob() throws Exception {
 ```
 #### **[⬆ Back to Top](#spring-batch)**
 ---
+
+### 48. How can you handle job execution failures in Spring Batch?
+
+### Detailed Explanation
+
+Handling job execution failures in Spring Batch is crucial for building robust and fault-tolerant batch processing applications. There are several strategies to manage job execution failures:
+
+1. **Retry Mechanism**: Spring Batch provides built-in support for retrying operations when they fail. This can be configured using the `RetryTemplate` and `RetryPolicy`.
+
+2. **Skip Policy**: You can configure Spring Batch to skip certain types of errors and continue processing. This is useful when you want the batch job to skip over problematic records.
+
+3. **Listeners**: Spring Batch allows you to define listeners that can be used to capture and handle job and step execution events, including failures.
+
+4. **Exit Status and Custom Exit Codes**: By configuring custom exit statuses and exit codes, you can control the job flow based on specific conditions and handle failures accordingly.
+
+5. **Error Handling in Steps**: You can handle errors within a step using transaction management and by setting up appropriate error handling logic.
+
+### Examples
+
+#### 1. Retry Mechanism
+
+```java
+@Configuration
+public class BatchConfig {
+
+    @Bean
+    public RetryTemplate retryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        retryTemplate.setRetryPolicy(retryPolicy);
+        return retryTemplate;
+    }
+
+    @Bean
+    public ItemProcessor<String, String> itemProcessor(RetryTemplate retryTemplate) {
+        return item -> retryTemplate.execute(context -> {
+            // Your processing logic here
+            // Simulate failure
+            if (Math.random() < 0.5) {
+                throw new RuntimeException("Random failure");
+            }
+            return item.toUpperCase();
+        });
+    }
+}
+```
+
+#### 2. Skip Policy
+
+```java
+@Bean
+public Step step(StepBuilderFactory stepBuilderFactory, ItemReader<String> reader,
+                 ItemProcessor<String, String> processor, ItemWriter<String> writer) {
+    return stepBuilderFactory.get("step")
+            .<String, String>chunk(10)
+            .reader(reader)
+            .processor(processor)
+            .writer(writer)
+            .faultTolerant()
+            .skip(RuntimeException.class)
+            .skipLimit(5)
+            .build();
+}
+```
+
+#### 3. Listeners
+
+```java
+@Component
+public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
+
+    @Override
+    public void afterJob(JobExecution jobExecution) {
+        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
+            System.out.println("Job completed successfully");
+        } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
+            System.out.println("Job failed with status: " + jobExecution.getStatus());
+        }
+    }
+}
+```
+
+#### 4. Exit Status and Custom Exit Codes
+
+```java
+@Bean
+public Step step(StepBuilderFactory stepBuilderFactory, ItemReader<String> reader,
+                 ItemProcessor<String, String> processor, ItemWriter<String> writer) {
+    return stepBuilderFactory.get("step")
+            .<String, String>chunk(10)
+            .reader(reader)
+            .processor(processor)
+            .writer(writer)
+            .listener(new StepExecutionListener() {
+                @Override
+                public void beforeStep(StepExecution stepExecution) {}
+                @Override
+                public ExitStatus afterStep(StepExecution stepExecution) {
+                    if (stepExecution.getReadCount() == 0) {
+                        return new ExitStatus("NO_DATA");
+                    }
+                    return stepExecution.getExitStatus();
+                }
+            })
+            .build();
+}
+```
+#### **[⬆ Back to Top](#spring-batch)**
+---
+
+### 49. How do you use annotations in Spring Batch configuration?
+
+### Detailed Explanation
+
+Annotations in Spring Batch simplify the configuration and setup of batch jobs, steps, readers, processors, and writers. Using annotations can reduce boilerplate code and make the configuration more readable and maintainable.
+
+Key annotations used in Spring Batch:
+
+1. `@EnableBatchProcessing`: Enables Spring Batch features and provides a base configuration.
+
+2. `@Configuration`: Indicates that the class is a source of bean definitions.
+
+3. `@Bean`: Indicates that a method produces a bean to be managed by Spring.
+
+4. `@StepScope`: Indicates that a bean should be step-scoped, meaning it will be created and initialized for each step execution.
+
+5. `@JobScope`: Similar to `@StepScope`, but at the job level.
+
+### Example
+
+```java
+@Configuration
+@EnableBatchProcessing
+public class BatchConfig {
+
+    @Bean
+    public Job job(JobBuilderFactory jobBuilderFactory, Step step) {
+        return jobBuilderFactory.get("job")
+                .start(step)
+                .build();
+    }
+
+    @Bean
+    public Step step(StepBuilderFactory stepBuilderFactory, ItemReader<String> reader,
+                     ItemProcessor<String, String> processor, ItemWriter<String> writer) {
+        return stepBuilderFactory.get("step")
+                .<String, String>chunk(10)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public ItemReader<String> reader() {
+        return new FlatFileItemReaderBuilder<String>()
+                .name("reader")
+                .resource(new ClassPathResource("input.txt"))
+                .delimited()
+                .names("field1")
+                .targetType(String.class)
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public ItemProcessor<String, String> processor() {
+        return item -> item.toUpperCase();
+    }
+
+    @Bean
+    @StepScope
+    public ItemWriter<String> writer() {
+        return items -> items.forEach(System.out::println);
+    }
+}
+```
+#### **[⬆ Back to Top](#spring-batch)**
+---
+
+### 50. What are the core interfaces provided by Spring Batch?
+
+### Detailed Explanation
+
+Spring Batch provides several core interfaces that define the structure and behavior of batch processing components. These interfaces include:
+
+1. **Job**: Represents the configuration and execution of a batch job. A job contains one or more steps.
+
+2. **Step**: Represents a single phase of a batch job. A step is a domain object that encapsulates an independent, sequential phase of the batch job.
+
+3. **JobLauncher**: Responsible for launching a job with a given set of job parameters.
+
+4. **JobRepository**: Manages the persistence of job and step execution metadata.
+
+5. **JobExecution**: Represents the execution of a job. It contains information about the job's status, start time, end time, and other execution details.
+
+6. **StepExecution**: Represents the execution of a step. It contains information about the step's status, start time, end time, read counts, write counts, and other execution details.
+
+7. **JobParameters**: Represents the parameters that are used to start a job execution.
+
+8. **ItemReader**: An abstraction that defines the contract for reading items from a data source.
+
+9. **ItemProcessor**: An abstraction that defines the contract for processing items.
+
+10. **ItemWriter**: An abstraction that defines the contract for writing items to a data destination.
+
+### Examples
+
+#### 1. Job and Step
+
+```java
+@Configuration
+@EnableBatchProcessing
+public class BatchConfig {
+
+    @Bean
+    public Job job(JobBuilderFactory jobBuilderFactory, Step step) {
+        return jobBuilderFactory.get("job")
+                .start(step)
+                .build();
+    }
+
+    @Bean
+    public Step step(StepBuilderFactory stepBuilderFactory, ItemReader<String> reader,
+                     ItemProcessor<String, String> processor, ItemWriter<String> writer) {
+        return stepBuilderFactory.get("step")
+                .<String, String>chunk(10)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .build();
+    }
+}
+```
+
+#### 2. JobLauncher
+
+```java
+@Autowired
+private JobLauncher jobLauncher;
+
+@Autowired
+private Job job;
+
+public void runJob() throws Exception {
+    JobParameters jobParameters = new JobParametersBuilder()
+            .addLong("time", System.currentTimeMillis())
+            .toJobParameters();
+    jobLauncher.run(job, jobParameters);
+}
+```
+
+#### 3. ItemReader, ItemProcessor, ItemWriter
+
+```java
+@Bean
+@StepScope
+public ItemReader<String> reader() {
+    return new FlatFileItemReaderBuilder<String>()
+            .name("reader")
+            .resource(new ClassPathResource("input.txt"))
+            .delimited()
+            .names("field1")
+            .targetType(String.class)
+            .build();
+}
+
+@Bean
+@StepScope
+public ItemProcessor<String, String> processor() {
+    return item -> item.toUpperCase();
+}
+
+@Bean
+@StepScope
+public ItemWriter<String> writer() {
+    return items -> items.forEach(System.out::println);
+}
+```
+#### **[⬆ Back to Top](#spring-batch)**
+---
