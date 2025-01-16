@@ -17,7 +17,7 @@ This repository aims to help you prepare for Spring Framework interviews by prov
 - [Spring AOP](#spring-aop)
 - [Spring Cloud](#spring-cloud)
 - [Spring Batch](#spring-batch)
-- Spring Integration
+- [Spring Integration](#spring-integration)
 
 ## How to Use
 
@@ -729,6 +729,9 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 48  | [How can you handle job execution failures in Spring Batch?](#48-how-can-you-handle-job-execution-failures-in-spring-batch) |
 | 49  | [How do you use annotations in Spring Batch configuration?](#49-how-do-you-use-annotations-in-spring-batch-configuration) |
 | 50  | [What are the core interfaces provided by Spring Batch?](#50-what-are-the-core-interfaces-provided-by-spring-batch) |
+
+## Spring Integration
+### Table of Contents
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
@@ -18008,3 +18011,5 @@ public ItemWriter<String> writer() {
 ```
 #### **[⬆ Back to Top](#spring-batch)**
 ---
+
+# Spring Integration Interview Questions and Answers
