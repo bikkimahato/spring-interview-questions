@@ -732,6 +732,58 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 
 ## Spring Integration
 ### Table of Contents
+| No. | Questions |
+| --- | --------- |
+| 1   | [What is Spring Integration? Explain the purpose and use cases of Spring Integration.](#1-what-is-spring-integration-explain-the-purpose-and-use-cases-of-spring-integration) |
+| 2   | [What are the main components of Spring Integration?](#2-what-are-the-main-components-of-spring-integration) |
+| 3   | [How does Spring Integration support messaging systems?](#3-how-does-spring-integration-support-messaging-systems) |
+| 4   | [Explain the concept of a Message in Spring Integration.](#4-explain-the-concept-of-a-message-in-spring-integration) |
+| 5   | [What is a Message Channel in Spring Integration?](#5-what-is-a-message-channel-in-spring-integration) |
+| 6   | [Differentiate between Direct Channel and Queue Channel.](#6-differentiate-between-direct-channel-and-queue-channel) |
+| 7   | [What are Message Endpoints?](#7-what-are-message-endpoints) |
+| 8   | [Explain the role of Message Transformers in Spring Integration.](#8-explain-the-role-of-message-transformers-in-spring-integration) |
+| 9   | [What are Message Routers?](#9-what-are-message-routers) |
+| 10  | [How do you configure a Message Filter in Spring Integration?](#10-how-do-you-configure-a-message-filter-in-spring-integration) |
+| 11  | [What is a Message Splitter?](#11-what-is-a-message-splitter) |
+| 12  | [Describe the use of a Message Aggregator.](#12-describe-the-use-of-a-message-aggregator) |
+| 13  | [How does Spring Integration support error handling?](#13-how-does-spring-integration-support-error-handling) |
+| 14  | [What is a Pollable Channel in Spring Integration?](#14-what-is-a-pollable-channel-in-spring-integration) |
+| 15  | [Explain the concept of a Channel Adapter.](#15-explain-the-concept-of-a-channel-adapter) |
+| 16  | [What are the different types of Channel Adapters?](#16-what-are-the-different-types-of-channel-adapters) |
+| 17  | [Describe the use of a Service Activator.](#17-describe-the-use-of-a-service-activator) |
+| 18  | [What is a Gateway in Spring Integration?](#18-what-is-a-gateway-in-spring-integration) |
+| 19  | [How do you configure a Gateway?](#19-how-do-you-configure-a-gateway) |
+| 20  | [Explain Inbound and Outbound Gateways.](#20-explain-inbound-and-outbound-gateways) |
+| 21  | [What is a Message Flow in Spring Integration?](#21-what-is-a-message-flow-in-spring-integration) |
+| 22  | [How do you implement Publish-Subscribe channels?](#22-how-do-you-implement-publish-subscribe-channels) |
+| 23  | [What is the role of a Message Selector?](#23-what-is-the-role-of-a-message-selector) |
+| 24  | [How can you integrate Spring Integration with JMS?](#24-how-can-you-integrate-spring-integration-with-jms) |
+| 25  | [Explain the use of SFTP/SCP adapters in Spring Integration.](#25-explain-the-use-of-sftp-scp-adapters-in-spring-integration) |
+| 26  | [How do you handle transactions in Spring Integration?](#26-how-do-you-handle-transactions-in-spring-integration) |
+| 27  | [What is a Bridge in Spring Integration?](#27-what-is-a-bridge-in-spring-integration) |
+| 28  | [Describe the concept of a Messaging Gateway Interface.](#28-describe-the-concept-of-a-messaging-gateway-interface) |
+| 29  | [What are the benefits of using Spring Integration over traditional messaging?](#29-what-are-the-benefits-of-using-spring-integration-over-traditional-messaging) |
+| 30  | [Explain the use of the `@MessagingGateway` annotation.](#30-explain-the-use-of-the-messaginggateway-annotation) |
+| 31  | [What is a Channel Interceptor?](#31-what-is-a-channel-interceptor) |
+| 32  | [How do you implement retry logic in Spring Integration?](#32-how-do-you-implement-retry-logic-in-spring-integration) |
+| 33  | [What is a Barrier in Spring Integration?](#33-what-is-a-barrier-in-spring-integration) |
+| 34  | [How do you use Spring Integration with RabbitMQ?](#34-how-do-you-use-spring-integration-with-rabbitmq) |
+| 35  | [Explain the concept of a Wire Tap.](#35-explain-the-concept-of-a-wire-tap) |
+| 36  | [What is a Control Bus in Spring Integration?](#36-what-is-a-control-bus-in-spring-integration) |
+| 37  | [How do you configure a Scatter-Gather pattern in Spring Integration?](#37-how-do-you-configure-a-scatter-gather-pattern-in-spring-integration) |
+| 38  | [Describe the role of a Payload in Spring Integration.](#38-describe-the-role-of-a-payload-in-spring-integration) |
+| 39  | [How do you use Spring Integration with Web Services?](#39-how-do-you-use-spring-integration-with-web-services) |
+| 40  | [What is the purpose of the IntegrationFlow?](#40-what-is-the-purpose-of-the-integrationflow) |
+| 41  | [How do you implement a custom transformer in Spring Integration?](#41-how-do-you-implement-a-custom-transformer-in-spring-integration) |
+| 42  | [What is an Executor Channel?](#42-what-is-an-executor-channel) |
+| 43  | [How do you implement a custom filter in Spring Integration?](#43-how-do-you-implement-a-custom-filter-in-spring-integration) |
+| 44  | [Describe the concept of a Delayer.](#44-describe-the-concept-of-a-delayer) |
+| 45  | [How do you monitor Spring Integration applications?](#45-how-do-you-monitor-spring-integration-applications) |
+| 46  | [What is the role of Integration Management in Spring Integration?](#46-what-is-the-role-of-integration-management-in-spring-integration) |
+| 47  | [How do you handle message headers in Spring Integration?](#47-how-do-you-handle-message-headers-in-spring-integration) |
+| 48  | [Explain the concept of a Message History.](#48-explain-the-concept-of-a-message-history) |
+| 49  | [How do you use Spring Integration with Kafka?](#49-how-do-you-use-spring-integration-with-kafka) |
+| 50  | [What are the best practices for designing Spring Integration flows?](#50-what-are-the-best-practices-for-designing-spring-integration-flows) |
 
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
