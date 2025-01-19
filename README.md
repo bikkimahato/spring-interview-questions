@@ -18358,3 +18358,225 @@ public class MyFilter {
 ```
 #### **[⬆ Back to Top](#spring-integration)**
 ---
+
+### 11. What is a Message Splitter?
+
+**Answer:**
+A Message Splitter divides a single message into multiple messages. It is useful when a large message needs to be processed in smaller, more manageable parts.
+
+**Example:**
+Defining a message splitter:
+
+```xml
+<int:splitter input-channel="inputChannel" output-channel="outputChannel"
+              ref="mySplitter" method="split"/>
+
+<bean id="mySplitter" class="com.example.MySplitter"/>
+
+<!-- MySplitter.java -->
+public class MySplitter {
+    public List<String> split(String message) {
+        return Arrays.asList(message.split(","));
+    }
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 12. Describe the use of a Message Aggregator.
+
+**Answer:**
+A Message Aggregator combines multiple messages into a single message. It is useful for scenarios where multiple related messages need to be processed together as a single unit.
+
+**Example:**
+Defining a message aggregator:
+
+```xml
+<int:aggregator input-channel="inputChannel" output-channel="outputChannel"
+                ref="myAggregator" method="aggregate"/>
+
+<bean id="myAggregator" class="com.example.MyAggregator"/>
+
+<!-- MyAggregator.java -->
+public class MyAggregator {
+    public String aggregate(List<String> messages) {
+        return String.join(",", messages);
+    }
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 13. How does Spring Integration support error handling?
+
+**Answer:**
+Spring Integration supports error handling through the use of error channels and error handlers. When an error occurs, the message is sent to an error channel or handled by a specific error handler.
+
+**Example:**
+Defining an error channel and handler:
+
+```xml
+<int:channel id="errorChannel"/>
+
+<int:service-activator input-channel="errorChannel" ref="errorHandler" method="handleError"/>
+
+<bean id="errorHandler" class="com.example.ErrorHandler"/>
+
+<!-- ErrorHandler.java -->
+public class ErrorHandler {
+    public void handleError(Message<?> message) {
+        System.out.println("Error handling message: " + message);
+    }
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 14. What is a Pollable Channel in Spring Integration?
+
+**Answer:**
+A Pollable Channel is a type of message channel that allows messages to be retrieved on demand, rather than being pushed to subscribers. It is typically used with message-driven components that poll for messages at regular intervals or on-demand.
+
+**Example:**
+Defining a pollable channel:
+
+```xml
+<int:channel id="pollableChannel">
+    <int:queue/>
+</int:channel>
+
+<int:inbound-channel-adapter channel="pollableChannel" ref="messageSource" method="receive" poller="poller"/>
+
+<bean id="messageSource" class="com.example.MessageSource"/>
+
+<int:poller id="poller" fixed-rate="5000"/>
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 15. Explain the concept of a Channel Adapter.
+
+**Answer:**
+A Channel Adapter is a component that connects Spring Integration with an external system. There are two types of channel adapters:
+
+1. **Inbound Channel Adapter:** Receives data from an external system and sends it to a Spring Integration channel.
+2. **Outbound Channel Adapter:** Sends data from a Spring Integration channel to an external system.
+
+**Example:**
+Defining an inbound file adapter:
+
+```xml
+<int-file:inbound-channel-adapter id="fileAdapter" directory="file:/input-directory"
+                                  channel="inputChannel" auto-startup="true">
+    <int:poller fixed-rate="5000"/>
+</int-file:inbound-channel-adapter>
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 16. What are the different types of Channel Adapters?
+
+**Answer:**
+Different types of Channel Adapters in Spring Integration include:
+
+1. **File Adapter:** For reading and writing files.
+2. **JMS Adapter:** For Java Message Service.
+3. **AMQP Adapter:** For RabbitMQ.
+4. **Kafka Adapter:** For Apache Kafka.
+5. **TCP/UDP Adapter:** For TCP and UDP communication.
+6. **HTTP Adapter:** For HTTP communication.
+7. **Mail Adapter:** For sending and receiving emails.
+8. **SFTP Adapter:** For SFTP communication.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 17. Describe the use of a Service Activator.
+
+**Answer:**
+A Service Activator is a component that invokes a method on a Spring bean when a message is received. It is used to perform business logic or processing on messages.
+
+**Example:**
+Defining a service activator:
+
+```xml
+<int:service-activator input-channel="inputChannel" ref="myService" method="processMessage"/>
+
+<bean id="myService" class="com.example.MyService"/>
+
+<!-- MyService.java -->
+public class MyService {
+    public void processMessage(String message) {
+        System.out.println("Processing message: " + message);
+    }
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 18. What is a Gateway in Spring Integration?
+
+**Answer:**
+A Gateway is an interface that allows interaction with the Spring Integration messaging system using regular Java method calls. It abstracts the messaging system details and provides a simple interface for sending and receiving messages.
+
+**Example:**
+Defining a gateway:
+
+```xml
+<int:gateway id="myGateway" service-interface="com.example.MyGateway" default-request-channel="inputChannel"/>
+
+<!-- MyGateway.java -->
+public interface MyGateway {
+    void sendMessage(String message);
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 19. How do you configure a Gateway?
+
+**Answer:**
+Configuring a Gateway involves defining the gateway interface and specifying the request and reply channels.
+
+**Example:**
+Defining a gateway with request and reply channels:
+
+```xml
+<int:gateway id="myGateway" service-interface="com.example.MyGateway"
+             default-request-channel="inputChannel" default-reply-channel="outputChannel"/>
+
+<!-- MyGateway.java -->
+public interface MyGateway {
+    String sendMessage(String message);
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 20. Explain Inbound and Outbound Gateways.
+
+**Answer:**
+- **Inbound Gateway:** Exposes a Spring Integration flow to external systems, receiving messages and sending replies.
+- **Outbound Gateway:** Sends messages to external systems and waits for a reply.
+
+**Example:**
+Defining an inbound HTTP gateway:
+
+```xml
+<int-http:inbound-gateway id="httpInboundGateway" request-channel="inputChannel"
+                          reply-channel="outputChannel" path="/receiveMessage"/>
+
+<!-- MyController.java -->
+@RestController
+public class MyController {
+    @Autowired
+    private MyGateway myGateway;
+
+    @PostMapping("/sendMessage")
+    public String sendMessage(@RequestBody String message) {
+        return myGateway.sendMessage(message);
+    }
+}
+```
+#### **[⬆ Back to Top](#spring-integration)**
+---
