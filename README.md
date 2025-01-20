@@ -18580,3 +18580,373 @@ public class MyController {
 ```
 #### **[⬆ Back to Top](#spring-integration)**
 ---
+
+### 21. What is a Message Flow in Spring Integration?
+
+A message flow in Spring Integration is a sequence of processing steps that a message undergoes from its creation to its final destination. Each step in the flow represents a specific task or function that processes the message. The steps can include routing, transformation, filtering, splitting, aggregation, and more. The message flow is designed using various Spring Integration components such as channels, endpoints, and handlers.
+
+### Example
+
+```java
+@Configuration
+public class IntegrationConfig {
+
+    @Bean
+    public IntegrationFlow messageFlow() {
+        return IntegrationFlows.from("inputChannel")
+                .filter((String s) -> s.startsWith("Hello"))
+                .transform(String::toUpperCase)
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, messages received on the `inputChannel` are filtered, transformed to uppercase, and then printed to the console.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 22. How do you implement Publish-Subscribe channels?
+
+In Spring Integration, a Publish-Subscribe channel allows multiple subscribers to receive the same message. When a message is sent to a publish-subscribe channel, it is broadcast to all subscribing handlers.
+
+### Example
+
+```java
+@Configuration
+public class PubSubConfig {
+
+    @Bean
+    public PublishSubscribeChannel pubSubChannel() {
+        return new PublishSubscribeChannel();
+    }
+
+    @Bean
+    public IntegrationFlow pubSubFlow() {
+        return IntegrationFlows.from("pubSubChannel")
+                .transform(String::toUpperCase)
+                .handle(message -> System.out.println("Subscriber 1: " + message.getPayload()))
+                .get();
+    }
+
+    @Bean
+    public IntegrationFlow anotherPubSubFlow() {
+        return IntegrationFlows.from("pubSubChannel")
+                .transform(String::toLowerCase)
+                .handle(message -> System.out.println("Subscriber 2: " + message.getPayload()))
+                .get();
+    }
+}
+```
+
+In this example, the `pubSubChannel` broadcasts messages to two different subscribers, each handling the message in a unique way.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 23. What is the role of a Message Selector?
+
+A Message Selector in Spring Integration is used to filter messages based on specific criteria before they are processed by an endpoint. Message selectors are often used to implement conditional routing within a message flow.
+
+### Example
+
+```java
+@Configuration
+public class SelectorConfig {
+
+    @Bean
+    public IntegrationFlow selectorFlow() {
+        return IntegrationFlows.from("inputChannel")
+                .filter((String s) -> s.contains("Spring"))
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, only messages containing the word "Spring" are passed to the handler for processing.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 24. How can you integrate Spring Integration with JMS?
+
+Spring Integration provides support for integrating with JMS (Java Message Service) through various components like `JmsMessageDrivenChannelAdapter` and `JmsOutboundGateway`.
+
+### Example
+
+```java
+@Configuration
+public class JmsIntegrationConfig {
+
+    @Bean
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+        return new JmsTemplate(connectionFactory);
+    }
+
+    @Bean
+    public IntegrationFlow jmsOutboundFlow(JmsTemplate jmsTemplate) {
+        return IntegrationFlows.from("jmsInputChannel")
+                .handle(Jms.outboundAdapter(jmsTemplate).destination("myQueue"))
+                .get();
+    }
+
+    @Bean
+    public IntegrationFlow jmsInboundFlow(ConnectionFactory connectionFactory) {
+        return IntegrationFlows.from(Jms.messageDrivenChannelAdapter(connectionFactory)
+                        .destination("myQueue"))
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, we create a `JmsTemplate` for sending messages to a JMS queue and a message-driven adapter for receiving messages from the queue.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+### 25. Explain the use of SFTP/SCP adapters in Spring Integration.
+
+SFTP (Secure File Transfer Protocol) and SCP (Secure Copy Protocol) adapters in Spring Integration are used for transferring files securely between systems. These adapters facilitate file operations like uploading, downloading, and listing files on remote servers.
+
+### Example
+
+```java
+@Configuration
+public class SftpConfig {
+
+    @Bean
+    public SessionFactory<LsEntry> sftpSessionFactory() {
+        DefaultSftpSessionFactory factory = new DefaultSftpSessionFactory();
+        factory.setHost("sftp.example.com");
+        factory.setPort(22);
+        factory.setUser("user");
+        factory.setPassword("password");
+        factory.setAllowUnknownKeys(true);
+        return new CachingSessionFactory<>(factory);
+    }
+
+    @Bean
+    public IntegrationFlow sftpInboundFlow(SessionFactory<LsEntry> sftpSessionFactory) {
+        return IntegrationFlows.from(Sftp.inboundAdapter(sftpSessionFactory)
+                        .preserveTimestamp(true)
+                        .remoteDirectory("/remote/directory")
+                        .localDirectory(new File("/local/directory")))
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, we configure an SFTP inbound adapter to download files from a remote directory and print their details.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 26. How do you handle transactions in Spring Integration?
+
+Spring Integration supports managing transactions through the use of transaction managers. Transactions ensure that a series of operations either complete successfully as a unit or fail altogether, maintaining data consistency.
+
+### Example
+
+```java
+@Configuration
+@EnableTransactionManagement
+public class TransactionConfig {
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+
+    @Bean
+    public IntegrationFlow transactionalFlow(PlatformTransactionManager transactionManager) {
+        return IntegrationFlows.from("inputChannel")
+                .handle(Jdbc.outboundAdapter(dataSource)
+                        .sql("INSERT INTO my_table (data) VALUES (:payload)")
+                        .transactional(transactionManager))
+                .get();
+    }
+}
+```
+
+In this example, the `transactionalFlow` ensures that inserting data into the database is managed within a transaction.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 27. What is a Bridge in Spring Integration?
+
+A Bridge in Spring Integration is a simple component that connects two channels, allowing messages to pass through without any transformation or processing. It is used to decouple components and facilitate message routing.
+
+### Example
+
+```java
+@Configuration
+public class BridgeConfig {
+
+    @Bean
+    public IntegrationFlow bridgeFlow() {
+        return IntegrationFlows.from("inputChannel")
+                .bridge()
+                .channel("outputChannel")
+                .get();
+    }
+}
+```
+
+In this example, the bridge connects the `inputChannel` to the `outputChannel`, allowing messages to flow through without any changes.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 28. Describe the concept of a Messaging Gateway Interface.
+
+A Messaging Gateway Interface in Spring Integration is a Java interface that defines methods for sending and receiving messages. It acts as an entry point to the messaging system, allowing components to interact with the message flow without being tightly coupled to the messaging infrastructure.
+
+### Example
+
+```java
+@MessagingGateway
+public interface MyGateway {
+    @Gateway(requestChannel = "inputChannel")
+    void sendMessage(String message);
+}
+
+@Configuration
+public class GatewayConfig {
+
+    @Bean
+    public IntegrationFlow gatewayFlow() {
+        return IntegrationFlows.from("inputChannel")
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, `MyGateway` is a messaging gateway interface that sends messages to the `inputChannel`, which are then printed to the console.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 29. What are the benefits of using Spring Integration over traditional messaging?
+
+Spring Integration offers several benefits over traditional messaging systems:
+
+1. **Ease of Use**: Spring Integration provides a declarative and configuration-based approach, making it easier to define complex message flows.
+2. **Extensibility**: Offers a wide range of adapters and components for integrating with various systems and protocols.
+3. **Consistency**: Leverages Spring Framework's core features like dependency injection, transaction management, and security.
+4. **Modularity**: Encourages a modular design, making it easier to manage and maintain message flows.
+5. **Support for Enterprise Integration Patterns**: Implements well-known integration patterns, facilitating the design of robust and scalable systems.
+
+### Example
+
+Traditional messaging systems often require boilerplate code and complex configurations, whereas Spring Integration simplifies these tasks with concise and readable configurations.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 30. Explain the use of the `@MessagingGateway` annotation.
+
+The `@MessagingGateway` annotation in Spring Integration is used to define a messaging gateway interface, allowing methods to send and receive messages. It simplifies the interaction with message channels and facilitates the creation of messaging endpoints.
+
+### Example
+
+```java
+@MessagingGateway
+public interface MessageGateway {
+    @Gateway(requestChannel = "inputChannel")
+    void send(String message);
+}
+
+@Configuration
+public class MessagingGatewayConfig {
+
+    @Bean
+    public IntegrationFlow gatewayFlow() {
+        return IntegrationFlows.from("inputChannel")
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, `MessageGateway` is a messaging gateway interface that sends messages to the `inputChannel`, which are then printed to the console.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 31. What is a Channel Interceptor?
+
+A Channel Interceptor in Spring Integration is used to intercept messages as they are sent to or received from a message channel. It allows you to perform actions such as logging, modifying messages, or implementing security checks.
+
+### Example
+
+```java
+@Configuration
+public class InterceptorConfig {
+
+    @Bean
+    public MessageChannel inputChannel() {
+        DirectChannel channel = new DirectChannel();
+        channel.addInterceptor(new ChannelInterceptorAdapter() {
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                System.out.println("Intercepted message: " + message);
+                return message;
+            }
+        });
+        return channel;
+    }
+
+    @Bean
+    public IntegrationFlow interceptorFlow() {
+        return IntegrationFlows.from("inputChannel")
+                .handle(System.out::println)
+                .get();
+    }
+}
+```
+
+In this example, a channel interceptor is added to the `inputChannel` to log messages before they are processed.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
+
+### 32. How do you implement retry logic in Spring Integration?
+
+Spring Integration provides support for retry logic using the `RetryTemplate` class. This allows you to define retry policies for handling transient errors.
+
+### Example
+
+```java
+@Configuration
+public class RetryConfig {
+
+    @Bean
+    public RetryTemplate retryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        retryTemplate.setRetryPolicy(retryPolicy);
+        return retryTemplate;
+    }
+
+    @Bean
+    public IntegrationFlow retryFlow(RetryTemplate retryTemplate) {
+        return IntegrationFlows.from("inputChannel")
+                .handle(Jpa.outboundAdapter(entityManagerFactory)
+                        .entityClass(MyEntity.class)
+                        .persistMode(PersistMode.PERSIST)
+                        .retryTemplate(retryTemplate))
+                .get();
+    }
+}
+```
+
+In this example, the `RetryTemplate` is configured with a simple retry policy that retries up to three times for transient errors.
+
+#### **[⬆ Back to Top](#spring-integration)**
+---
