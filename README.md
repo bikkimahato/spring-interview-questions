@@ -785,6 +785,8 @@ Happy coding! If you find this repository helpful, please give it a star ⭐ and
 | 49  | [How do you use Spring Integration with Kafka?](#49-how-do-you-use-spring-integration-with-kafka) |
 | 50  | [What are the best practices for designing Spring Integration flows?](#50-what-are-the-best-practices-for-designing-spring-integration-flows) |
 
+---
+
 # Spring Core Easy Interview Questions and Answers
 ### 1. What is the Spring Framework?
 
